@@ -30,8 +30,8 @@
   "private": true,
   "type": "module",
   "build": {
-    "appId": "com.family.apps",
-    "productName": "FamilyApps",
+    "appId": "com.compcwgit.stampplay",
+    "productName": "StampPlay",
     "directories": {
       "output": "release"
     },
