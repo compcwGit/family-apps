@@ -1,0 +1,16 @@
+name: 🔨 작업
+description: 출퇴근 한 번(30~40분)에 끝낼 개발 작업
+labels: ["🔨 작업"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: 할 일
+      placeholder: 예) 강아지 버튼을 누르면 실제 멍멍 소리가 나게
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: 완료 기준
+      placeholder: 예) 태블릿에서 눌렀을 때 소리가 나고, 연속으로 눌러도 끊기지 않음

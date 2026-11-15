@@ -1,0 +1,21 @@
+name: 💡 아이디어
+description: 떠오른 아이디어를 대충 적어두기 (Claude가 정리·검토)
+labels: ["💡 아이디어"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: 아이디어
+      description: 생각나는 대로 편하게 적어주세요
+      placeholder: 예) 아이가 양치하면 캐릭터가 반짝반짝 빛나는 기능
+    validations:
+      required: true
+  - type: dropdown
+    id: app
+    attributes:
+      label: 어느 앱?
+      options:
+        - 칭찬도장 모험 게임
+        - 동물 친구들
+        - 새 앱
+        - 공통 / 모르겠음
