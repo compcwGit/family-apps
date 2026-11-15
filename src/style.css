@@ -1,0 +1,14 @@
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+html, body { margin: 0; height: 100%; background: #FFF8E1; font-family: system-ui, sans-serif; }
+main { min-height: 100%; display: flex; flex-direction: column; align-items: center; padding: 24px; }
+h1 { font-size: 2.2rem; color: #5D4037; margin: 8px 0 24px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; width: 100%; max-width: 900px; }
+.card { border: none; border-radius: 28px; aspect-ratio: 1; display: flex; flex-direction: column;
+        align-items: center; justify-content: center; box-shadow: 0 6px 0 rgba(0,0,0,.15);
+        transition: transform .1s; cursor: pointer; }
+.card:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.15); }
+.card.pop .emoji { animation: pop .4s ease; }
+.emoji { font-size: 4.5rem; }
+.label { font-size: 1.4rem; font-weight: 700; color: #3E2723; margin-top: 8px; }
+footer { margin-top: auto; padding-top: 24px; color: #A1887F; font-size: .85rem; }
+@keyframes pop { 50% { transform: scale(1.35) rotate(-8deg); } }

@@ -1,0 +1,23 @@
+# Windows exe: 분 소모가 커서 main 에 push 할 때와 수동 실행 때만 빌드
+name: Windows EXE
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run electron:build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: family-apps-windows
+          path: release/*.exe

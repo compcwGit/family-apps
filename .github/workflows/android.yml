@@ -1,0 +1,43 @@
+# 안드로이드 APK: 모든 push/PR 에서 빌드, main 에 push 하면 Releases 에 APK 게시
+name: Android APK
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - run: npm ci
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: 1
+      - run: npm run build
+      # android 폴더가 아직 저장소에 없으면 CI 에서 생성 (나중에 PC에서 만들어 커밋해도 됨)
+      - run: '[ -d android ] || npx cap add android'
+      - run: npx cap sync android
+      - run: cd android && chmod +x gradlew && ./gradlew assembleDebug
+      - run: cp android/app/build/outputs/apk/debug/app-debug.apk family-apps.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: family-apps-apk
+          path: family-apps.apk
+      - if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: android-${{ github.run_number }}
+          name: Android build ${{ github.run_number }}
+          files: family-apps.apk
