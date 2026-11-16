@@ -46,10 +46,16 @@ export default function App() {
         </button>
       </main>
     )
+  // 부모 화면 도장판: 지금 판이 다 찼으면 다음 판(빈 판)을 보여 줌
+  const current = boards[boards.length - 1]
+  const parentBoard = current.done ? { no: current.no + 1, plan: nextPlanOf(stamps, plans), stamps: [], done: false } : current
+
   if (screen === 'parent')
     return (
       <ParentPanel
         stamps={stamps}
+        board={parentBoard}
+        newestId={newestId}
         reasons={reasons}
         onReasons={(list) => setReasons(saveReasons(list))}
         plan={nextPlanOf(stamps, plans)}
@@ -71,7 +77,7 @@ export default function App() {
   return (
     <main onAnimationEnd={() => setNewestId(null)}>
       <h1>칭찬 도장판</h1>
-      <StampBoard board={boards[boards.length - 1]} newestId={newestId} />
+      <StampBoard board={current} newestId={newestId} />
       <button className="core-btn history-btn" onClick={() => setScreen('history')}>
         📖 칭찬 기록
       </button>

@@ -79,3 +79,12 @@ footer { margin-top: auto; padding-top: 24px; color: #A1887F; font-size: .85rem;
 .history-stamps { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
 .slot-icon .good-stamp { font-size: .42em; }
 .reason-emoji .good-stamp, .icon-opt .good-stamp { font-size: .36em; }
+
+/* 부모 화면에서 도장판에 직접 찍기 */
+.parent-help { margin: 0 0 12px; color: #8D6E63; font-size: 1.05rem; text-align: center; }
+.reason.on { background: #FFEBEE; box-shadow: 0 0 0 3px #E53935, 0 4px 0 rgba(0,0,0,.1); }
+.slot-tap { padding: 0; font: inherit; cursor: pointer; }
+.slot-tap:active { background: #FFEBEE; }
+.slot.next { border-color: #E57373; animation: next-slot 1.2s ease-in-out infinite; }
+@keyframes next-slot { 50% { transform: scale(1.06); } }
+.reason-edit ~ .board { margin-top: 16px; }

@@ -3,7 +3,8 @@ import { StampIcon } from './StampIcon'
 import { iconOf, stampTime, type Board } from './stamps'
 
 // 도장판: 약속한 칸 수만큼. 도장을 누르면 찍은 날짜·시간을 보여 줌
-export function StampBoard({ board, newestId }: { board: Board; newestId: string | null }) {
+// onEmpty 가 있으면(부모 화면) 빈 칸을 눌러 도장을 찍음. 다음에 찍힐 칸은 깜빡임
+export function StampBoard({ board, newestId, onEmpty }: { board: Board; newestId: string | null; onEmpty?: () => void }) {
   const { no, plan, stamps, done } = board
   const [pickedId, setPickedId] = useState<string | null>(null)
   const picked = stamps.find((s) => s.id === pickedId)
@@ -21,6 +22,12 @@ export function StampBoard({ board, newestId }: { board: Board; newestId: string
       <div className="board-grid">
         {Array.from({ length: plan.target }, (_, i) => {
           const s = stamps[i]
+          if (!s && onEmpty)
+            return (
+              <button key={i} className={'slot slot-tap' + (i === stamps.length ? ' next' : '')} onClick={onEmpty} aria-label={`${i + 1}번 칸에 도장 찍기`}>
+                <span className="slot-no">{i + 1}</span>
+              </button>
+            )
           if (!s)
             return (
               <div key={i} className="slot">

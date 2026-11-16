@@ -1,10 +1,13 @@
 import { useState } from 'react'
+import { StampBoard } from './StampBoard'
 import { StampIcon } from './StampIcon'
-import { ICONS, MAX_TARGET, iconOf, type Plan, type Reason, type Stamp } from './stamps'
+import { ICONS, MAX_TARGET, iconOf, type Board, type Plan, type Reason, type Stamp } from './stamps'
 
-// 부모 화면: 칭찬도장 찍기·만들기·지우기, 약속 정하기, 최근 기록, 지우기
+// 부모 화면: 도장 고르고 도장판 빈 칸 눌러 찍기(아이 화면과 같은 도장판), 칭찬도장 만들기·지우기, 약속 정하기, 최근 기록, 지우기
 export function ParentPanel({
   stamps,
+  board,
+  newestId,
   reasons,
   onReasons,
   plan,
@@ -14,6 +17,8 @@ export function ParentPanel({
   onClose,
 }: {
   stamps: Stamp[]
+  board: Board
+  newestId: string | null
   reasons: Reason[]
   onReasons: (list: Reason[]) => void
   plan: Plan
@@ -26,6 +31,8 @@ export function ParentPanel({
   const [target, setTarget] = useState(plan.target)
   const [reward, setReward] = useState(plan.reward)
   const [editing, setEditing] = useState(false)
+  const [pickedLabel, setPickedLabel] = useState(reasons[0]?.label ?? '')
+  const picked = reasons.find((r) => r.label === pickedLabel) ?? reasons[0]
   const [newLabel, setNewLabel] = useState('')
   const [newEmoji, setNewEmoji] = useState('')
   const label = newLabel.trim()
@@ -35,12 +42,13 @@ export function ParentPanel({
   return (
     <main>
       <h1>칭찬도장 찍기</h1>
+      <p className="parent-help">{picked ? '① 도장을 고르고 ② 도장판 빈 칸을 누르세요' : '먼저 칭찬도장을 만들어 주세요'}</p>
       <div className="reason-grid">
         {reasons.map((r) => (
           <button
             key={r.label}
-            className={editing ? 'reason editing' : 'reason'}
-            onClick={() => (editing ? onReasons(reasons.filter((x) => x !== r)) : onStamp(r))}
+            className={editing ? 'reason editing' : r === picked ? 'reason on' : 'reason'}
+            onClick={() => (editing ? onReasons(reasons.filter((x) => x !== r)) : setPickedLabel(r.label))}
           >
             {editing && <span className="reason-del">✕</span>}
             <span className="reason-emoji">
@@ -77,6 +85,8 @@ export function ParentPanel({
           </button>
         </div>
       )}
+
+      <StampBoard board={board} newestId={newestId} onEmpty={picked && !editing ? () => onStamp(picked) : undefined} />
 
       <h2 className="recent-title">약속</h2>
       <div className="promise">
