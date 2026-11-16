@@ -1,0 +1,62 @@
+.board { width: 100%; max-width: 900px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+
+/* 탭 */
+.tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 4px 0 20px; }
+.tab { border: none; border-radius: 999px; padding: 12px 20px; font-size: 1.25rem; font-weight: 800;
+       background: #EFEBE9; color: #8D6E63; cursor: pointer; }
+.tab.on { background: #FFB74D; color: #3E2723; box-shadow: 0 4px 0 rgba(0,0,0,.15); }
+
+/* 자음/모음 전환 */
+.seg { display: flex; background: #EFEBE9; border-radius: 999px; padding: 4px; }
+.seg-btn { border: none; background: none; border-radius: 999px; padding: 10px 22px; font-size: 1.2rem; font-weight: 800; color: #8D6E63; cursor: pointer; }
+.seg-btn.on { background: #fff; color: #3E2723; box-shadow: 0 2px 0 rgba(0,0,0,.1); }
+
+/* 자모 카드 */
+.jamo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 14px; width: 100%; }
+.jamo { position: relative; border: none; border-radius: 22px; aspect-ratio: 1; font-size: 3.2rem; font-weight: 800;
+        color: #3E2723; box-shadow: 0 5px 0 rgba(0,0,0,.15); cursor: pointer; }
+.jamo:active, .pick:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.15); }
+.jamo.on { outline: 5px solid #FF9800; }
+.badge { position: absolute; top: 4px; right: 6px; font-size: 1.1rem; }
+
+.hero { border: none; border-radius: 32px; padding: 16px 36px; display: flex; align-items: center; gap: 28px;
+        box-shadow: 0 6px 0 rgba(0,0,0,.15); animation: pop .35s ease; cursor: pointer; }
+.hero-ch { font-size: 6rem; font-weight: 900; color: #3E2723; line-height: 1; }
+.hero-word { display: flex; flex-direction: column; align-items: center; font-size: 1.8rem; font-weight: 800; color: #5D4037; }
+.hero-emoji { font-size: 4rem; }
+@keyframes pop { 50% { transform: scale(1.08); } }
+
+/* 글자 만들기 */
+.formula { display: flex; align-items: center; gap: 14px; margin: 8px 0 12px; }
+.f-part { font-size: 3.6rem; font-weight: 800; color: #5D4037; min-width: 64px; text-align: center; }
+.f-op { font-size: 2.4rem; color: #A1887F; }
+.f-result { border: none; background: #FFD54F; border-radius: 28px; font-size: 6rem; font-weight: 900; color: #3E2723;
+            padding: 4px 28px; box-shadow: 0 6px 0 rgba(0,0,0,.15); animation: pop .35s ease; cursor: pointer; }
+.pick-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.pick { border: none; border-radius: 16px; width: 62px; height: 62px; font-size: 2rem; font-weight: 800; color: #3E2723;
+        box-shadow: 0 4px 0 rgba(0,0,0,.15); cursor: pointer; }
+.pick.on { outline: 4px solid #FF9800; }
+
+/* 따라쓰기 */
+.trace-top { display: flex; align-items: center; gap: 16px; }
+.arrow { border: none; background: #EFEBE9; border-radius: 50%; width: 56px; height: 56px; font-size: 1.4rem; color: #8D6E63; cursor: pointer; }
+.trace-title { border: none; background: none; font-size: 2.6rem; font-weight: 900; color: #3E2723; cursor: pointer; }
+.trace-title small { font-size: 1.3rem; color: #8D6E63; }
+.trace-pad { width: min(78vw, 60vh, 520px); aspect-ratio: 1; background: #fff; border-radius: 28px;
+             box-shadow: 0 6px 0 rgba(0,0,0,.1); touch-action: none; }
+.trace-pad polyline { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.g-todo { stroke: #EEEEEE; stroke-width: 14; }
+.g-done { stroke: #81C784; stroke-width: 14; }
+.g-now { stroke: #BDBDBD; stroke-width: 3; stroke-dasharray: 4 4; }
+.g-ink { stroke: #FF7043; stroke-width: 9; }
+.g-start { fill: #43A047; }
+.g-num { fill: #fff; font-size: 7px; font-weight: 800; text-anchor: middle; pointer-events: none; }
+.trace-msg { min-height: 1.6em; font-size: 1.4rem; font-weight: 800; color: #E65100; margin: 0; }
+.trace-actions { display: flex; gap: 14px; }
+
+/* 부모 화면 */
+.info { max-width: 640px; margin: 0 auto; text-align: left; align-items: stretch; }
+.info h1 { text-align: center; }
+.info h2 { font-size: 1.2rem; color: #5D4037; margin: 18px 0 6px; }
+.info p { color: #5D4037; line-height: 1.6; margin: 6px 0; }
+.info .core-btn { align-self: center; margin-top: 24px; }

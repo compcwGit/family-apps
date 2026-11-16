@@ -8,6 +8,7 @@
 ```
 apps/<앱>/            앱마다 하나 (패키지 이름, 화면, 아이콘)
   └─ stampplay/       칭찬도장 모험 게임 (com.compcwgit.stampplay)
+  └─ hangulplay/      한글 놀이 (com.compcwgit.hangulplay, 가칭)
 packages/core/        모든 앱 공통
   ├─ ParentGate       부모 잠금 (두 자리 덧셈)
   ├─ storage          기기 안 저장
