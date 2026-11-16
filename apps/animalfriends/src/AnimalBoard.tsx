@@ -11,7 +11,7 @@ const ANIMALS = [
   { emoji: '🦁', name: '사자', freq: 196, color: '#FFD54F' },
 ]
 
-export function AnimalBoard({ onBack }: { onBack: () => void }) {
+export function AnimalBoard() {
   const [active, setActive] = useState<string | null>(null)
 
   const tap = (name: string, freq: number) => {
@@ -36,9 +36,6 @@ export function AnimalBoard({ onBack }: { onBack: () => void }) {
           </button>
         ))}
       </div>
-      <button className="core-link" onClick={onBack}>
-        ← 도장판으로
-      </button>
     </main>
   )
 }
