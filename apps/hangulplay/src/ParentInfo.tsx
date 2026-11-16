@@ -1,17 +1,23 @@
 import pkg from '../package.json'
+import type { SpeechOptions } from '@family/core'
 import type { NumRead } from './Trace'
+import { VoiceSettings } from './VoiceSettings'
 
 // 부모 화면(산수 잠금 뒤): 진도, 앱 정보, 개인정보처리방침
 export function ParentInfo({
   doneCount,
   numRead,
   onNumRead,
+  voice,
+  onVoice,
   onReset,
   onClose,
 }: {
   doneCount: number
   numRead: NumRead
   onNumRead: (r: NumRead) => void
+  voice: SpeechOptions
+  onVoice: (v: SpeechOptions) => void
   onReset: () => void
   onClose: () => void
 }) {
@@ -23,6 +29,7 @@ export function ParentInfo({
         <p>따라쓰기 완료: {doneCount} / 34 (한글 24 + 숫자 10)</p>
         <button className="core-link" onClick={onReset}>진도 초기화</button>
       </section>
+      <VoiceSettings value={voice} onChange={onVoice} />
       <section>
         <h2>숫자 읽는 소리</h2>
         <div className="seg">

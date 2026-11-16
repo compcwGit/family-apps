@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ParentGate, createStore, setSpeechRate, stopSpeaking } from '@family/core'
+import { ParentGate, createStore, setSpeechOptions, stopSpeaking, type SpeechOptions } from '@family/core'
 import { JamoBoard } from './JamoBoard'
 import { Builder } from './Builder'
 import { Trace, type NumRead } from './Trace'
@@ -8,8 +8,9 @@ import './app.css'
 
 type Screen = 'jamo' | 'build' | 'trace' | 'gate' | 'parent'
 
-// 아이가 또박또박 들을 수 있게 조금 천천히 읽기
-setSpeechRate(0.75)
+// 읽기 설정 (부모 화면에서 변경). 기본: 아이가 또박또박 들을 수 있게 조금 천천히
+const voiceStore = createStore<SpeechOptions>('hangulplay.voice', { rate: 0.75, pitch: 1.2, voice: '' })
+setSpeechOptions(voiceStore.get())
 
 // 따라쓰기를 끝낸 자모 목록 (기기 안에만 저장)
 const store = createStore<string[]>('hangulplay.done', [])
@@ -21,6 +22,7 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>('jamo')
   const [done, setDone] = useState(store.get)
   const [numRead, setNumRead] = useState(numStore.get)
+  const [voice, setVoice] = useState(voiceStore.get)
   const go = (s: Screen) => {
     stopSpeaking()
     setScreen(s)
@@ -41,6 +43,11 @@ export default function App() {
         onNumRead={(r) => {
           setNumRead(r)
           numStore.set(r)
+        }}
+        voice={voice}
+        onVoice={(v) => {
+          setVoice(v)
+          voiceStore.set(v)
         }}
         onReset={() => {
           setDone([])

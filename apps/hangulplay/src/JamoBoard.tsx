@@ -1,15 +1,18 @@
 import { useState } from 'react'
 import { speak } from '@family/core'
 import { CONSONANTS, VOWELS, type Jamo } from './hangul'
+import { iEyo } from './talk'
 
-// 자모 카드: 누르면 "기역! 기차!" 하고 그림 단어를 보여 줌
+// 자모 카드: 누르면 "기역이에요. 기차의 기!" 하고 그림 단어를 보여 줌
 export function JamoBoard({ done }: { done: string[] }) {
   const [group, setGroup] = useState<'c' | 'v'>('c')
   const [active, setActive] = useState<Jamo | null>(null)
   const list = group === 'c' ? CONSONANTS : VOWELS
 
   const tap = (j: Jamo) => {
-    speak(`${j.name}! ${j.word}!`)
+    // 자음(기역)은 "기역이에요.", 모음(아)은 "아!"
+    const intro = j.name.length > 1 ? `${iEyo(j.name)}.` : `${j.name}!`
+    speak(`${intro} ${j.word}의 ${j.word[0]}!`)
     setActive(j)
   }
 

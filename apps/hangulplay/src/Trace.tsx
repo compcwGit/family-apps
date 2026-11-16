@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { playTone, speak } from '@family/core'
 import { ALL_JAMO, NUMBERS, type Pt } from './hangul'
+import { cheer, praise } from './talk'
 
 // 따라쓰기: 초록 점에서 시작해 회색 길을 따라 그리기. 획 순서대로 하나씩.
 const near = 13 // 허용 거리 (100×100 기준)
@@ -77,14 +78,16 @@ export function Trace({ done, onDone, numRead }: { done: string[]; onDone: (ch: 
       setStep(next)
       setDrawn([])
       if (next >= j.strokes.length) {
-        speak(`잘했어요! ${label}!`)
-        setMsg('잘했어요! ⭐')
+        const p = praise()
+        speak(`${p} ${label}!`)
+        setMsg(`${p} ⭐`)
         onDone(j.ch)
       } else playTone(660)
     } else {
       setDrawn([])
-      setMsg('초록 점에서 다시 해 볼까?')
-      playTone(220)
+      const c = cheer()
+      setMsg(c)
+      speak(c, 220)
     }
   }
 

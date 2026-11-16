@@ -1,7 +1,7 @@
 export { ParentGate } from './ParentGate'
 export { createStore } from './storage'
 export { playTone } from './sound'
-export { speak, stopSpeaking, setSpeechRate } from './speech'
+export { speak, stopSpeaking, setSpeechRate, setSpeechOptions, listKoreanVoices, type SpeechOptions } from './speech'
 export { getPlatform } from './platform'
 export { AD_CONFIG, shouldShowAds, showBanner } from './ads'
 export { isAdFree, purchaseRemoveAds, restorePurchases } from './billing'

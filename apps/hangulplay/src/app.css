@@ -70,3 +70,8 @@
 .info p { color: #5D4037; line-height: 1.6; margin: 6px 0; }
 .info .seg { display: inline-flex; }
 .info .core-btn { align-self: center; margin-top: 24px; }
+.voice-list { display: flex; flex-direction: column; gap: 8px; }
+.voice { border: 2px solid #EFEBE9; background: #fff; border-radius: 14px; padding: 10px 14px; font-size: 1.05rem;
+         font-weight: 700; color: #5D4037; text-align: left; cursor: pointer; }
+.voice.on { border-color: #FF9800; background: #FFF3E0; }
+.voice small { font-weight: 400; color: #A1887F; margin-left: 6px; }
