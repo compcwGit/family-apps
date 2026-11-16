@@ -7,7 +7,7 @@ export function ParentInfo({ doneCount, onReset, onClose }: { doneCount: number;
       <h1>부모님께</h1>
       <section>
         <h2>진도</h2>
-        <p>따라쓰기 완료: {doneCount} / 24 글자</p>
+        <p>따라쓰기 완료: {doneCount} / 34 (한글 24 + 숫자 10)</p>
         <button className="core-link" onClick={onReset}>진도 초기화</button>
       </section>
       <section>

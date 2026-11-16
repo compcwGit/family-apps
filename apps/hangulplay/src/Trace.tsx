@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { playTone, speak } from '@family/core'
-import { ALL_JAMO, type Pt } from './hangul'
+import { ALL_JAMO, NUMBERS, type Pt } from './hangul'
 
 // 따라쓰기: 초록 점에서 시작해 회색 길을 따라 그리기. 획 순서대로 하나씩.
 const near = 13 // 허용 거리 (100×100 기준)
@@ -31,6 +31,7 @@ function passed(stroke: Pt[], drawn: Pt[]) {
 const path = (pts: Pt[]) => pts.map((p) => p.join(',')).join(' ')
 
 export function Trace({ done, onDone }: { done: string[]; onDone: (ch: string) => void }) {
+  const [set, setSet] = useState<'h' | 'n'>('h') // 한글 / 숫자
   const [idx, setIdx] = useState(0)
   const [step, setStep] = useState(0) // 지금 그릴 획 번호
   const [drawn, setDrawn] = useState<Pt[]>([])
@@ -38,11 +39,12 @@ export function Trace({ done, onDone }: { done: string[]; onDone: (ch: string) =
   const svg = useRef<SVGSVGElement>(null)
   const drawing = useRef(false)
 
-  const j = ALL_JAMO[idx]
+  const list = set === 'h' ? ALL_JAMO : NUMBERS
+  const j = list[idx]
   const finished = step >= j.strokes.length
 
   const go = (i: number) => {
-    setIdx((i + ALL_JAMO.length) % ALL_JAMO.length)
+    setIdx((i + list.length) % list.length)
     setStep(0)
     setDrawn([])
     setMsg('')
@@ -87,6 +89,23 @@ export function Trace({ done, onDone }: { done: string[]; onDone: (ch: string) =
 
   return (
     <div className="board">
+      <div className="seg">
+        {(['h', 'n'] as const).map((s) => (
+          <button
+            key={s}
+            className={set === s ? 'seg-btn on' : 'seg-btn'}
+            onClick={() => {
+              setSet(s)
+              setIdx(0)
+              setStep(0)
+              setDrawn([])
+              setMsg('')
+            }}
+          >
+            {s === 'h' ? '한글 ㄱㅏ' : '숫자 123'}
+          </button>
+        ))}
+      </div>
       <div className="trace-top">
         <button className="arrow" onClick={() => go(idx - 1)} aria-label="이전">◀</button>
         <button className="trace-title" onClick={() => speak(j.name)}>

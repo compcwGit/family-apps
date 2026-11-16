@@ -53,6 +53,35 @@ export const VOWELS: Jamo[] = [
 
 export const ALL_JAMO = [...CONSONANTS, ...VOWELS]
 
+// 호(곡선): 각도는 도(°), 0° = 오른쪽, 각도가 커지면 화면에서 시계 방향
+const arc = (cx: number, cy: number, rx: number, ry: number, from: number, to: number): Pt[] => {
+  const n = Math.max(2, Math.round(Math.abs(to - from) / 15))
+  return Array.from({ length: n + 1 }, (_, i) => {
+    const a = ((from + ((to - from) * i) / n) * Math.PI) / 180
+    return [cx + rx * Math.cos(a), cy + ry * Math.sin(a)] as Pt
+  })
+}
+
+// 숫자 0~9 따라쓰기 (흔히 쓰는 획 순서)
+const NUM_COLOR = ['#FFCDD2', '#F8BBD0', '#E1BEE7', '#C5CAE9', '#BBDEFB', '#B2EBF2', '#C8E6C9', '#F0F4C3', '#FFE0B2', '#D7CCC8']
+const NUM_NAME = ['영', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
+const NUM_WORD = ['영', '하나', '둘', '셋', '넷', '다섯', '여섯', '일곱', '여덟', '아홉']
+const NUM_STROKES: Pt[][][] = [
+  [arc(50, 50, 22, 32, -90, -450)], // 0: 위에서 시작해 왼쪽으로 한 바퀴
+  [[[40, 27], [50, 18], [50, 82]]], // 1
+  [[...arc(50, 36, 19, 17, 180, 360), [32, 82], [72, 82]]], // 2
+  [[...arc(48, 34, 17, 15, -150, 90), ...arc(48, 66, 19, 17, -90, 150)]], // 3
+  [[[56, 18], [28, 62], [76, 62]], [[60, 36], [60, 85]]], // 4: ㄴ자 → 세로
+  [[[37, 20], [35, 46], ...arc(48, 62, 20, 19, -128, 150)], [[37, 20], [68, 20]]], // 5: 세로·곡선 → 윗줄
+  [[[62, 18], [42, 38], ...arc(50, 64, 18, 18, 180, -180)]], // 6
+  [[[30, 20], [70, 20], [42, 84]]], // 7
+  [[...arc(50, 33, 15, 15, -45, -270), ...arc(50, 66, 18, 18, -90, 270), ...arc(50, 33, 15, 15, 90, -45)]], // 8
+  [[...arc(50, 36, 17, 17, 0, -360), [64, 84]]], // 9
+]
+export const NUMBERS: Jamo[] = NUM_STROKES.map((strokes, n) => ({
+  ch: String(n), name: NUM_NAME[n], word: NUM_WORD[n], emoji: '', color: NUM_COLOR[n], strokes,
+}))
+
 // 자음 + 모음 (+ 받침) → 글자 (유니코드: 가 + (초성×21 + 중성)×28 + 종성)
 const CHO = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'
 const JUNG = 'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ'
