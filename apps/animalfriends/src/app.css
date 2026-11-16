@@ -7,3 +7,26 @@
 .emoji { font-size: 4.5rem; }
 .label { font-size: 1.4rem; font-weight: 700; color: #3E2723; margin-top: 8px; }
 @keyframes pop { 50% { transform: scale(1.35) rotate(-8deg); } }
+
+/* 탭 */
+.tabs { display: flex; gap: 12px; margin: 4px 0 20px; }
+.tab { border: none; border-radius: 999px; padding: 12px 22px; font-size: 1.3rem; font-weight: 800;
+       background: #EFEBE9; color: #8D6E63; cursor: pointer; }
+.tab.on { background: #FFB74D; color: #3E2723; box-shadow: 0 4px 0 rgba(0,0,0,.15); }
+
+/* 퀴즈 */
+.quiz { width: 100%; max-width: 760px; display: flex; flex-direction: column; align-items: center; }
+.quiz-top { display: flex; align-items: center; gap: 20px; margin-bottom: 18px; }
+.quiz-stars { font-size: 1.8rem; font-weight: 800; color: #F57F17; }
+.quiz-party { font-size: 2rem; font-weight: 800; color: #E65100; margin: 0 0 12px; }
+.quiz-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; max-width: 520px; }
+.card.correct { outline: 6px solid #43A047; }
+.card.shake { animation: shake .45s; }
+@keyframes shake { 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
+
+/* 부모 화면 */
+.info { max-width: 640px; margin: 0 auto; text-align: left; align-items: stretch; }
+.info h1 { text-align: center; }
+.info h2 { font-size: 1.2rem; color: #5D4037; margin: 18px 0 6px; }
+.info p { color: #5D4037; line-height: 1.6; margin: 6px 0; }
+.info .core-btn { align-self: center; margin-top: 24px; }
