@@ -8,5 +8,15 @@ export function iEyo(word: string) {
   return word + (hasBatchim ? '이에요' : '예요')
 }
 
-export const praise = () => pick(['우와, 잘했어요!', '최고예요!', '멋지게 썼어요!', '참 잘했어요!', '와, 대단해요!'])
-export const cheer = () => pick(['괜찮아, 다시 해 보자!', '초록 점에서 시작해 볼까?', '천천히 따라가 보자!'])
+// 음성 파일 목록(scripts/voice-lines.ts)도 이 문장들을 그대로 씀
+export const PRAISES = ['우와, 잘했어요!', '최고예요!', '멋지게 썼어요!', '참 잘했어요!', '와, 대단해요!']
+export const CHEERS = ['괜찮아, 다시 해 보자!', '초록 점에서 시작해 볼까?', '천천히 따라가 보자!']
+export const SAMPLE = '안녕! 같이 한글 놀이 하자!'
+export const praise = () => pick(PRAISES)
+export const cheer = () => pick(CHEERS)
+
+// 자모 카드: 자음(기역)은 "기역이에요. 기차의 기!", 모음(아)은 "아! 아기의 아!"
+export function jamoLine(j: { name: string; word: string }) {
+  const intro = j.name.length > 1 ? `${iEyo(j.name)}.` : `${j.name}!`
+  return `${intro} ${j.word}의 ${j.word[0]}!`
+}

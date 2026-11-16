@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { listKoreanVoices, setSpeechOptions, speak, type SpeechOptions } from '@family/core'
-
-const SAMPLE = '안녕! 같이 한글 놀이 하자!'
+import { SAMPLE } from './talk'
 const RATES = [
   { v: 0.6, label: '천천히' },
   { v: 0.75, label: '조금 천천히' },

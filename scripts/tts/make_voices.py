@@ -6,6 +6,7 @@
 
   --speed 0.9          읽는 속도 (작을수록 천천히, 기본 0.9)
   --only native/23 ... 이 id만 다시 만들기 (마음에 안 드는 것만 고칠 때)
+                       '/'로 끝나면 그 묶음 전체: --only jamo/ praise/
   --force              이미 있는 파일도 전부 다시 만들기
   --format wav         mp3 대신 wav (ffmpeg 없을 때)
 
@@ -39,10 +40,11 @@ def main() -> None:
 
     lines: dict[str, str] = json.loads(Path(a.lines).read_text(encoding='utf-8'))
     if a.only:
-        missing = [k for k in a.only if k not in lines]
+        hit = lambda k, o: k.startswith(o) if o.endswith('/') else k == o
+        missing = [o for o in a.only if not any(hit(k, o) for k in lines)]
         if missing:
             sys.exit(f'목록에 없는 id: {missing}')
-        lines = {k: lines[k] for k in a.only}
+        lines = {k: v for k, v in lines.items() if any(hit(k, o) for o in a.only)}
     if a.format == 'mp3' and not shutil.which('ffmpeg'):
         sys.exit('ffmpeg가 필요합니다: sudo apt install ffmpeg  (또는 --format wav)')
 

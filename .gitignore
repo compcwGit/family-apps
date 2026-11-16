@@ -6,3 +6,4 @@ site/
 **/android/.gradle/
 *.log
 .DS_Store
+__pycache__/

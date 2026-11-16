@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "electron:dev": "vite build && electron .",
     "electron:build": "vite build && electron-builder --win --publish never",
-    "android:sync": "vite build && cap sync android"
+    "android:sync": "vite build && cap sync android",
+    "voice-lines": "node scripts/voice-lines.ts"
   },
   "dependencies": {
     "@capacitor-community/text-to-speech": "^8.0.2",
