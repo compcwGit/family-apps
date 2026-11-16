@@ -2,16 +2,23 @@ import { useState } from 'react'
 import { speak, playTone } from '@family/core'
 import { readNumber, ROW_COLORS, type Mode } from './numbers'
 
+let sayId = 0
+
 // 하나씩 세기: 화면을 누를 때마다 1씩 늘고 소리로 읽어 줌
 // 아래에 "10개 묶음(막대) + 낱개(점)"로 수의 크기를 보여 줌
 export function Counter({ n, setN, mode }: { n: number; setN: (n: number) => void; mode: Mode }) {
   const [pop, setPop] = useState(false)
 
-  const say = (v: number) => {
-    const word = readNumber(v, mode)
-    if (v === 100) speak(`${word}! 다 셌어요! 최고!`, 784)
-    else if (v % 10 === 0) speak(`${word}! 잘했어요!`, 659)
-    else speak(word, 523)
+  // 숫자를 끝까지 읽은 뒤에 칭찬 (한 번에 읽히면 숫자가 씹힘)
+  // 그 사이 다시 누르면 칭찬은 건너뜀
+  const say = async (v: number, praise = true) => {
+    const id = ++sayId
+    await speak(readNumber(v, mode), 523)
+    if (id !== sayId || !praise || v % 10 !== 0) return
+    playTone(880)
+    await new Promise((r) => setTimeout(r, 400))
+    if (id !== sayId) return
+    speak(v === 100 ? '다 셌어요! 최고!' : '잘했어요!', 659)
   }
 
   const next = () => {
@@ -19,11 +26,10 @@ export function Counter({ n, setN, mode }: { n: number; setN: (n: number) => voi
     const v = n + 1
     setN(v)
     say(v)
-    if (v % 10 === 0) playTone(880)
     setPop(true)
     setTimeout(() => setPop(false), 300)
   }
-  const back = () => n > 0 && (setN(n - 1), n - 1 > 0 && say(n - 1))
+  const back = () => n > 0 && (setN(n - 1), n - 1 > 0 && say(n - 1, false))
   const reset = () => setN(0)
 
   const tens = Math.floor(n / 10)
