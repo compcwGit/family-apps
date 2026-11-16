@@ -3,10 +3,16 @@
 import { TextToSpeech } from '@capacitor-community/text-to-speech'
 import { playTone } from './sound'
 
+// 읽는 속도 (1.0 = 보통). 앱마다 setSpeechRate 로 바꿀 수 있음
+let speechRate = 0.95
+export function setSpeechRate(rate: number) {
+  speechRate = rate
+}
+
 export async function speak(text: string, fallbackFreq = 523): Promise<void> {
   try {
     await TextToSpeech.stop()
-    await TextToSpeech.speak({ text, lang: 'ko-KR', rate: 0.95, pitch: 1.2, volume: 1, category: 'ambient' })
+    await TextToSpeech.speak({ text, lang: 'ko-KR', rate: speechRate, pitch: 1.2, volume: 1, category: 'ambient' })
   } catch {
     playTone(fallbackFreq)
   }

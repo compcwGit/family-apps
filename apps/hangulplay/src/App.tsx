@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ParentGate, createStore, stopSpeaking } from '@family/core'
+import { ParentGate, createStore, setSpeechRate, stopSpeaking } from '@family/core'
 import { JamoBoard } from './JamoBoard'
 import { Builder } from './Builder'
 import { Trace, type NumRead } from './Trace'
@@ -7,6 +7,9 @@ import { ParentInfo } from './ParentInfo'
 import './app.css'
 
 type Screen = 'jamo' | 'build' | 'trace' | 'gate' | 'parent'
+
+// 아이가 또박또박 들을 수 있게 조금 천천히 읽기
+setSpeechRate(0.75)
 
 // 따라쓰기를 끝낸 자모 목록 (기기 안에만 저장)
 const store = createStore<string[]>('hangulplay.done', [])
