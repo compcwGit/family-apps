@@ -1,0 +1,34 @@
+{
+  "name": "@family/lifeplay",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "electron:dev": "vite build && electron .",
+    "electron:build": "vite build && electron-builder --win --publish never",
+    "android:sync": "vite build && cap sync android"
+  },
+  "dependencies": {
+    "@capacitor-community/text-to-speech": "^8.0.2",
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/core": "^8.6.2"
+  },
+  "devDependencies": {
+    "@family/core": "*",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "electron": "45.3.2",
+    "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "com.compcwgit.lifeplay",
+    "productName": "생활 놀이",
+    "directories": { "output": "release" },
+    "files": ["dist/**", "electron/**"],
+    "win": { "target": "nsis" }
+  }
+}

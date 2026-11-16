@@ -9,6 +9,7 @@
 | 2 | 동물 친구들 (별도 앱, `apps/animalfriends`) | 유아 | 🔨 개발 중 (첫 출시, 무료) | [002-animalfriends.md](002-animalfriends.md) |
 | 3 | 한글 놀이 (가칭, `apps/hangulplay`) | 유치원생 | 🔨 개발 중 (시안 v1) | [003-hangulplay.md](003-hangulplay.md) |
 | 4 | 숫자 놀이 (가칭, `apps/numberplay`) — 1~100 세기 | 유치원생 | 🔨 개발 중 (시안 v1) | [004-numberplay.md](004-numberplay.md) |
+| 5 | 누리과정 놀이 묶음 — 놀이 12개를 앱 5개에 (새 앱: 모양 놀이 `shapeplay`, 생활 놀이 `lifeplay`) | 유치원생 | 🔨 개발 중 (시안 v1) | [005-nuri-games.md](005-nuri-games.md) |
 
 공통 방침: [수익화 — 광고 + 광고 제거 결제](monetization.md)
 

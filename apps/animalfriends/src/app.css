@@ -9,7 +9,7 @@
 @keyframes pop { 50% { transform: scale(1.35) rotate(-8deg); } }
 
 /* 탭 */
-.tabs { display: flex; gap: 12px; margin: 4px 0 20px; }
+.tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 4px 0 20px; }
 .tab { border: none; border-radius: 999px; padding: 12px 22px; font-size: 1.3rem; font-weight: 800;
        background: #EFEBE9; color: #8D6E63; cursor: pointer; }
 .tab.on { background: #FFB74D; color: #3E2723; box-shadow: 0 4px 0 rgba(0,0,0,.15); }
@@ -30,3 +30,12 @@
 .info h2 { font-size: 1.2rem; color: #5D4037; margin: 18px 0 6px; }
 .info p { color: #5D4037; line-height: 1.6; margin: 6px 0; }
 .info .core-btn { align-self: center; margin-top: 24px; }
+
+/* 동물 피아노 */
+.piano { display: flex; gap: 8px; width: 100%; max-width: 900px; height: min(56vh, 420px); }
+.piano-key { flex: 1; border: none; border-radius: 0 0 22px 22px; display: flex; flex-direction: column; align-items: center;
+             justify-content: flex-end; padding-bottom: 18px; box-shadow: 0 8px 0 rgba(0,0,0,.18); cursor: pointer; touch-action: manipulation; }
+.piano-key.hit { transform: translateY(6px); box-shadow: 0 2px 0 rgba(0,0,0,.18); }
+.piano-key.hit .piano-animal { animation: pop .3s ease; }
+.piano-animal { font-size: clamp(2rem, 6vw, 3.6rem); }
+.piano-note { font-size: 1.4rem; font-weight: 900; color: #3E2723; margin-top: 8px; }

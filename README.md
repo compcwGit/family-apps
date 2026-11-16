@@ -9,8 +9,15 @@
 apps/<앱>/            앱마다 하나 (패키지 이름, 화면, 아이콘)
   └─ stampplay/       칭찬도장 모험 게임 (com.compcwgit.stampplay)
   └─ hangulplay/      한글 놀이 (com.compcwgit.hangulplay, 가칭)
+  └─ animalfriends/   동물 친구들 (com.compcwgit.animalfriends)
+  └─ numberplay/      숫자 놀이 (가칭)
+  └─ shapeplay/       모양 놀이 — 도형·분류·색칠 (가칭)
+  └─ lifeplay/        생활 놀이 — 생활 순서·기분 (가칭)
 packages/core/        모든 앱 공통
   ├─ ParentGate       부모 잠금 (두 자리 덧셈)
+  ├─ ParentPage       부모 화면 공통 (소개, 누리과정, 개인정보처리방침)
+  ├─ game, DragMatch  놀이 공통 반응·별, 끌어다 맞추기 (useDrag)
+  ├─ talk             조사·칭찬 문구
   ├─ storage          기기 안 저장
   ├─ sound, platform  소리, 실행 환경 판별
   └─ ads, billing     광고·광고 제거 결제 (준비 중)

@@ -13,3 +13,48 @@ h1 { font-size: 2.2rem; color: #5D4037; margin: 8px 0 24px; }
 .core-gate-title { color: #8D6E63; font-size: 1.1rem; margin: 0; }
 .core-gate-q { font-size: 3rem; font-weight: 800; color: #3E2723; margin: 16px 0 28px; }
 .core-gate-choices { display: grid; grid-template-columns: repeat(2, 120px); gap: 16px; }
+
+/* 놀이 공통 (core/game.tsx) */
+.g-game { width: 100%; max-width: 860px; display: flex; flex-direction: column; align-items: center; gap: 22px; }
+.g-top { width: 100%; display: flex; align-items: center; gap: 16px; }
+.g-again { padding: 10px 18px; }
+.g-ask { flex: 1; text-align: center; font-size: 1.6rem; font-weight: 800; color: #5D4037; }
+.g-stars { font-size: 1.6rem; font-weight: 800; color: #F57F17; min-width: 80px; text-align: right; }
+.g-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; }
+.g-card { border: none; border-radius: 24px; background: #fff; min-width: 120px; min-height: 120px; padding: 12px;
+          display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+          box-shadow: 0 6px 0 rgba(0,0,0,.12); cursor: pointer; font-size: 4rem; line-height: 1; color: #3E2723;
+          transition: transform .15s; }
+.g-card:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.12); }
+.g-card small { font-size: 1.2rem; font-weight: 800; color: #5D4037; word-break: keep-all; text-align: center; }
+.g-card.ok { outline: 6px solid #43A047; animation: g-pop .4s ease; }
+.g-card.done { opacity: .35; pointer-events: none; }
+.g-drop { border: 4px dashed #BCAAA4; border-radius: 24px; background: rgba(255,255,255,.6);
+          min-width: 130px; min-height: 130px; display: flex; align-items: center; justify-content: center; }
+.g-shake { animation: g-shake .45s; }
+.g-party { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none;
+           font-size: 12rem; animation: g-party 1s ease forwards; z-index: 50; }
+@keyframes g-pop { 50% { transform: scale(1.2); } }
+@keyframes g-shake { 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
+@keyframes g-party { 0% { transform: scale(.2); opacity: 0; } 40% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1.4); opacity: 0; } }
+.g-tray { min-height: 140px; }
+.g-piece, .g-slot { width: 130px; height: 130px; display: flex; align-items: center; justify-content: center; cursor: grab; }
+.g-piece { transition: transform .2s; }
+.g-piece svg, .g-placed svg, .g-drop svg { width: 110px; height: 110px; }
+.g-placed { animation: g-pop .4s ease; }
+.g-emoji { font-size: 5.5rem; line-height: 1; }
+.g-shadow { filter: brightness(0); opacity: .3; }
+
+/* 부모 화면 공통 (core/ParentPage.tsx) */
+.core-info { max-width: 640px; margin: 0 auto; text-align: left; align-items: stretch; }
+.core-info h1 { text-align: center; }
+.core-info h2 { font-size: 1.2rem; color: #5D4037; margin: 18px 0 6px; }
+.core-info p, .core-info li { color: #5D4037; line-height: 1.6; margin: 6px 0; }
+.core-info > .core-btn { align-self: center; margin-top: 24px; }
+.core-btn.off { background: #EFEBE9; color: #8D6E63; }
+
+/* 놀이 탭 (앱 위쪽) */
+.core-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 4px 0 20px; }
+.core-tabs .tab { border: none; border-radius: 999px; padding: 12px 20px; font-size: 1.25rem; font-weight: 800;
+                        background: #EFEBE9; color: #8D6E63; cursor: pointer; }
+.core-tabs .tab.on { background: #FFB74D; color: #3E2723; box-shadow: 0 4px 0 rgba(0,0,0,.15); }

@@ -31,6 +31,10 @@
 - 광고·결제는 아직 없음. 쌍자음·이중모음·겹받침은 2차
 - 웹 미리보기: https://compcwgit.github.io/family-apps/hangulplay/ (main·external push 시 배포)
 
+## 추가 (2026-11-17, [005](005-nuri-games.md))
+
+- 👂 듣고 찾기, ㄱ 첫소리 찾기 (그림 낱말 48개, `src/words.ts`)
+
 ## ⚠️ 찬욱이 직접 확인·결정할 것
 
 - [ ] **앱 이름/패키지명** (현재 가칭 `hangulplay` / "한글 놀이")

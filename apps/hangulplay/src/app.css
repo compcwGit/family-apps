@@ -75,3 +75,9 @@
          font-weight: 700; color: #5D4037; text-align: left; cursor: pointer; }
 .voice.on { border-color: #FF9800; background: #FFF3E0; }
 .voice small { font-weight: 400; color: #A1887F; margin-left: 6px; }
+
+/* 듣고 찾기 · 첫소리 찾기 */
+.word-card { width: 170px; height: 170px; font-size: 5rem; }
+.word-card small { font-size: 1.5rem; min-height: 1.8rem; }
+.first-jamo { display: inline-block; min-width: 64px; padding: 2px 12px; border-radius: 16px; font-size: 2.6rem; color: #3E2723; }
+.first-hl { color: #E65100; }
