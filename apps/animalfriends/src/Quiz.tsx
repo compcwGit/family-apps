@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { speak } from '@family/core'
-import { ANIMALS, isIt, topic, type Animal } from './animals'
+import { ANIMALS, type Animal } from './animals'
+import { SAY } from './voice'
 
 // "누구일까요?" 퀴즈: 울음소리를 듣고 4마리 중에서 고르기
 function makeRound(prev?: Animal) {
@@ -16,7 +17,7 @@ export function Quiz() {
   const [wrong, setWrong] = useState<string | null>(null)
   const [solved, setSolved] = useState(false)
 
-  const ask = (a: Animal) => speak(`${a.sound}! ${a.sound}! 누구일까요?`, a.freq)
+  const ask = (a: Animal) => speak(SAY.quizAsk(a), a.freq)
 
   useEffect(() => {
     ask(round.answer)
@@ -27,14 +28,14 @@ export function Quiz() {
     if (a === round.answer) {
       setSolved(true)
       setStars((s) => s + 1)
-      speak(`딩동댕! ${isIt(a.name)}!`, 784)
+      speak(SAY.quizOk(a), 784)
       setTimeout(() => {
         setSolved(false)
         setRound(makeRound(round.answer))
       }, 2200)
     } else {
       setWrong(a.name)
-      speak(`${topic(a.name)} ${a.sound}! 다시 들어볼까요?`, 220)
+      speak(SAY.quizNo(a), 220)
       setTimeout(() => {
         setWrong(null)
         ask(round.answer)

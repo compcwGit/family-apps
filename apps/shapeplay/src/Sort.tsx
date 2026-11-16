@@ -1,14 +1,9 @@
 import { useState, type ReactNode } from 'react'
-import { useDrag, useFeedback, useSay, Party, GameTop, speak, shuffle, pick, eun, type GameProps } from '@family/core'
+import { useDrag, useFeedback, useSay, Party, GameTop, speak, shuffle, pick, type GameProps } from '@family/core'
 import { SHAPES, ShapeIcon } from './shapes'
+import { COLORS, SAY } from './voice'
 
 // 끼리끼리 모으기: 섞여 있는 것을 같은 색(또는 같은 모양) 바구니에 담기. 판마다 색/모양 번갈아
-const COLORS = [
-  { id: 'red', name: '빨간색', bg: '#EF9A9A', items: ['🍎', '🍓', '🍒', '🍅', '🚒', '🌹'] },
-  { id: 'yellow', name: '노란색', bg: '#FFF59D', items: ['🍌', '🌽', '🐤', '🍋', '⭐', '🌻'] },
-  { id: 'green', name: '초록색', bg: '#A5D6A7', items: ['🥦', '🐸', '🍀', '🥒', '🌲', '🍏'] },
-  { id: 'blue', name: '파란색', bg: '#90CAF9', items: ['🐳', '💧', '💙', '🧢', '🚙', '🦋'] },
-]
 const PAINTS = ['#EF5350', '#42A5F5', '#66BB6A', '#FFCA28', '#AB47BC', '#FF7043']
 
 type Item = { id: string; group: string; view: ReactNode }
@@ -21,7 +16,7 @@ function makeRound(n: number): { rule: string; baskets: Basket[]; items: Item[] 
       shuffle(c.items).slice(0, 3).map((e, i) => ({ id: `${c.id}${i}`, group: c.id, view: <span className="g-emoji">{e}</span> })),
     )
     return {
-      rule: `${eun(a.name)} ${a.name} 바구니에, ${eun(b.name)} ${b.name} 바구니에 담아요!`,
+      rule: SAY.sortRule(a.name, b.name),
       baskets: [a, b].map((c) => ({ id: c.id, name: c.name, bg: c.bg, label: <span className="sort-dot" style={{ background: c.bg }} /> })),
       items: shuffle(items),
     }
@@ -31,7 +26,7 @@ function makeRound(n: number): { rule: string; baskets: Basket[]; items: Item[] 
     shuffle(PAINTS).slice(0, 3).map((c, i) => ({ id: `${s.id}${i}`, group: s.id, view: <ShapeIcon shape={s} color={c} /> })),
   )
   return {
-    rule: `${eun(a.name)} ${a.name} 바구니에, ${eun(b.name)} ${b.name} 바구니에 담아요!`,
+    rule: SAY.sortRule(a.name, b.name),
     baskets: [a, b].map((s) => ({ id: s.id, name: s.name, bg: '#FFE0B2', label: <ShapeIcon shape={s} hole /> })),
     items: shuffle(items),
   }
@@ -52,11 +47,11 @@ export function Sort({ stars, onStar }: GameProps) {
   const drag = useDrag((id, dropId) => {
     if (!dropId) return
     const item = round.items.find((i) => i.id === id)!
-    if (item.group !== dropId) return fb.no(id, '그 바구니가 아니에요. 다시 볼까?')
+    if (item.group !== dropId) return fb.no(id, SAY.sortNo)
     const done = [...inBasket, id]
     setIn(done)
-    if (done.length === round.items.length) fb.ok('모두 담았어요!', next)
-    else speak(pick(['쏙!', '좋아요!', '맞아요!']), 659)
+    if (done.length === round.items.length) fb.ok(SAY.sortOk, next)
+    else speak(pick(SAY.sortIn), 659)
   })
 
   return (

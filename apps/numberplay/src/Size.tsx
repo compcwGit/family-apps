@@ -1,16 +1,8 @@
 import { useState } from 'react'
-import { useFeedback, useSay, Party, GameTop, speak, shuffle, pick, iga, type GameProps } from '@family/core'
+import { useFeedback, useSay, Party, GameTop, speak, shuffle, pick, type GameProps } from '@family/core'
+import { SAY, SIZE_THINGS as THINGS } from './voice'
 
 // 크기 순서: 작은 것부터(또는 큰 것부터) 차례로 눌러서 줄 세우기. 판마다 방향을 바꿈. 별 6개부터 4개, 12개부터 5개
-const THINGS = [
-  { e: '🐻', n: '곰' },
-  { e: '🐘', n: '코끼리' },
-  { e: '🐟', n: '물고기' },
-  { e: '🍎', n: '사과' },
-  { e: '🌳', n: '나무' },
-  { e: '🚗', n: '자동차' },
-  { e: '🎈', n: '풍선' },
-]
 const SIZES = [3, 4.4, 5.8, 7.2, 8.6] // rem
 
 function makeRound(k: number, n: number) {
@@ -23,24 +15,23 @@ export function Size({ stars, onStar }: GameProps) {
   const [round, setRound] = useState(() => makeRound(k, 0))
   const [line, setLine] = useState<number[]>([]) // 줄 선 것 (크기 번호)
   const fb = useFeedback(onStar)
-  const word = round.big ? '큰' : '작은'
-  const ask = `제일 ${word} ${round.thing.n}부터 차례로 눌러요!`
+  const ask = SAY.sizeAsk(round.big, round.thing.n)
   useSay(ask, [round])
 
   // 다음에 눌러야 할 크기 번호 (0 = 제일 작음)
   const want = round.big ? round.order.length - 1 - line.length : line.length
   const tap = (s: number) => {
     if (line.includes(s) || fb.busy()) return
-    if (s !== want) return fb.no(String(s), `더 ${word} ${iga(round.thing.n)} 있어요!`)
+    if (s !== want) return fb.no(String(s), SAY.sizeNo(round.big, round.thing.n))
     const l = [...line, s]
     setLine(l)
     if (l.length === round.order.length)
-      fb.ok(round.big ? '큰 것부터 줄을 섰어요!' : '작은 것부터 줄을 섰어요!', () => {
+      fb.ok(SAY.sizeOk(round.big), () => {
         setN(n + 1)
         setRound(makeRound(k, n + 1))
         setLine([])
       })
-    else speak(`${l.length}번!`, 523 + l.length * 60)
+    else speak(SAY.sizeStep(l.length), 523 + l.length * 60)
   }
 
   return (

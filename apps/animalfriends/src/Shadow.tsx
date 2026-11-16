@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { DragMatch, shuffle, type GameProps } from '@family/core'
 import { ANIMALS } from './animals'
+import { SAY } from './voice'
 
 // 그림자 맞추기: 동물을 같은 모양 그림자에 끌어다 놓기. 별 6개부터 4마리씩
 export function Shadow({ stars, onStar }: GameProps) {
@@ -16,7 +17,7 @@ export function Shadow({ stars, onStar }: GameProps) {
         piece: <span className="g-emoji">{a.emoji}</span>,
         hole: <span className="g-emoji g-shadow">{a.emoji}</span>,
       }))}
-      prompt="누구 그림자일까요? 끌어다 놓아요!"
+      prompt={SAY.shadow}
       stars={stars}
       onStar={onStar}
       onNext={() => setRound((r) => r + 1)}

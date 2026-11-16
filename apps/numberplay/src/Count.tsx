@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useFeedback, useSay, Party, GameTop, speak, pick, type GameProps } from '@family/core'
 import { readNumber, type Mode } from './numbers'
+import { SAY } from './voice'
 
 // 몇 개일까?: 그림을 세어 보고 숫자 고르기. 그림을 누르면 하나씩 세어 줌. 별 5개부터 10까지
 const THINGS = ['🍎', '🐶', '🐱', '🐟', '⭐', '🚗', '🎈', '🐤', '🍓', '🦋', '🌸', '🐸']
@@ -21,7 +22,7 @@ export function Count({ stars, onStar, mode }: GameProps & { mode: Mode }) {
   const [round, setRound] = useState(() => makeRound(max))
   const [tapped, setTapped] = useState<number[]>([]) // 누른 순서
   const fb = useFeedback(onStar)
-  const ask = '몇 개일까요? 하나씩 눌러서 세어 봐요!'
+  const ask = SAY.countAsk
   useSay(ask, [round])
 
   const count = (i: number) => {
@@ -32,11 +33,11 @@ export function Count({ stars, onStar, mode }: GameProps & { mode: Mode }) {
   }
   const choose = (c: number) => {
     if (c === round.n)
-      fb.ok(`모두 ${readNumber(c, mode)}!`, () => {
+      fb.ok(SAY.countOk(c, mode), () => {
         setRound(makeRound(max, round.n))
         setTapped([])
       })
-    else fb.no(String(c), '다시 하나씩 세어 볼까?')
+    else fb.no(String(c), SAY.countNo)
   }
 
   return (

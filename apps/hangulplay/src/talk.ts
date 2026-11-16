@@ -8,7 +8,7 @@ export function iEyo(word: string) {
   return word + (hasBatchim ? '이에요' : '예요')
 }
 
-// 음성 파일 목록(scripts/voice-lines.ts)도 이 문장들을 그대로 씀
+// 음성 파일 목록(src/voice.ts)도 이 문장들을 그대로 씀
 export const PRAISES = ['우와, 잘했어요!', '최고예요!', '멋지게 썼어요!', '참 잘했어요!', '와, 대단해요!']
 export const CHEERS = ['괜찮아, 다시 해 보자!', '초록 점에서 시작해 볼까?', '천천히 따라가 보자!']
 export const SAMPLE = '안녕! 같이 한글 놀이 하자!'

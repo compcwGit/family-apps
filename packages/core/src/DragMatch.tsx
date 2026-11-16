@@ -4,7 +4,7 @@ import { useState, type ReactNode } from 'react'
 import { useDrag } from './drag'
 import { speak } from './speech'
 import { useFeedback, Party, GameTop } from './game'
-import { shuffle, eun, ieyo } from './talk'
+import { shuffle, MATCH } from './talk'
 
 export type MatchItem = { id: string; name: string; piece: ReactNode; hole: ReactNode }
 
@@ -32,9 +32,9 @@ export function DragMatch({
     if (dropId === id) {
       const next = [...placed, id]
       setPlaced(next)
-      if (next.length === items.length) fb.ok('모두 맞췄어요!', onNext)
-      else speak(`${ieyo(item.name)}! 딱 맞아요!`, 659)
-    } else fb.no(id, `${eun(item.name)} 거기가 아니에요. 다시 해 볼까?`)
+      if (next.length === items.length) fb.ok(MATCH.all, onNext)
+      else speak(MATCH.placed(item.name), 659)
+    } else fb.no(id, MATCH.wrong(item.name))
   })
 
   return (
@@ -58,7 +58,7 @@ export function DragMatch({
               key={id}
               className={'g-piece' + (fb.wrong === id ? ' g-shake' : '')}
               {...drag.handle(id)}
-              onPointerDownCapture={() => speak(byId(id).name)}
+              onPointerDownCapture={() => speak(MATCH.name(byId(id).name))}
               style={drag.style(id)}
             >
               {byId(id).piece}

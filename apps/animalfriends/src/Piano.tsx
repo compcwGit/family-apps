@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { playTone, speak } from '@family/core'
 import { ANIMALS } from './animals'
+import { SAY } from './voice'
 
 // 동물 피아노: 건반 8개(도~높은 도). 🎵 피아노 소리 / 🐾 동물 울음소리 바꾸기
 const KEYS = [
@@ -21,7 +22,7 @@ export function Piano() {
   const press = (i: number) => {
     setHit(i)
     setTimeout(() => setHit((h) => (h === i ? null : h)), 250)
-    if (animal) speak(ANIMAL_KEYS[i].sound, KEYS[i].freq)
+    if (animal) speak(SAY.piano(ANIMAL_KEYS[i]), KEYS[i].freq)
     else playTone(KEYS[i].freq)
   }
   return (

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useFeedback, useSay, Party, GameTop, speak, shuffle, type GameProps } from '@family/core'
+import { SAY } from './voice'
 
 // 다음은 뭘까?: 되풀이되는 규칙(패턴)을 보고 빈칸에 올 것 고르기
 // 쉬운 것(AB)부터 시작해서 별이 모이면 AAB, ABB, ABC 도 나옴
@@ -26,13 +27,13 @@ export function Pattern({ stars, onStar }: GameProps) {
   const [round, setRound] = useState(() => makeRound(stars))
   const [solved, setSolved] = useState(false)
   const fb = useFeedback(onStar)
-  const ask = '규칙을 찾아봐요. 다음에는 뭐가 올까요?'
+  const ask = SAY.patternAsk
   useSay(ask, [round])
 
   const choose = (c: string) => {
-    if (c !== round.answer) return fb.no(c, '처음부터 하나씩 따라 읽어 볼까?')
+    if (c !== round.answer) return fb.no(c, SAY.patternNo)
     setSolved(true)
-    fb.ok('규칙을 찾았어요!', () => {
+    fb.ok(SAY.patternOk, () => {
       setSolved(false)
       setRound(makeRound(stars + 1))
     })

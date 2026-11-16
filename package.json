@@ -7,13 +7,15 @@
   "workspaces": ["packages/*", "apps/*"],
   "scripts": {
     "new-app": "node scripts/new-app.mjs",
-    "build:pages": "node scripts/build-pages.mjs"
+    "build:pages": "node scripts/build-pages.mjs",
+    "voice-lines": "tsx scripts/tts/lines.ts"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.6.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.3.0",
+    "tsx": "^4.20.0",
     "typescript": "^7.0.2",
     "vite": "^8.3.8"
   }

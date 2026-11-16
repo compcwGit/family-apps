@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { speak, playTone } from '@family/core'
 import { readNumber, ROW_COLORS, type Mode } from './numbers'
+import { SAY } from './voice'
 
 let sayId = 0
 
@@ -18,7 +19,7 @@ export function Counter({ n, setN, mode }: { n: number; setN: (n: number) => voi
     playTone(880)
     await new Promise((r) => setTimeout(r, 800))
     if (id !== sayId) return
-    speak(v === 100 ? '다 셌어요! 최고!' : '잘했어요!', 659)
+    speak(v === 100 ? SAY.done : SAY.good, 659)
   }
 
   const next = () => {

@@ -9,9 +9,15 @@
                        '/'로 끝나면 그 묶음 전체: --only jamo/ praise/
   --force              이미 있는 파일도 전부 다시 만들기
   --format wav         mp3 대신 wav (ffmpeg 없을 때)
+  --index-only         음성은 만들지 않고 재생 목록(src/voice-files.json)만 다시 쓰기
+
+--only 에는 id 대신 읽을 말을 그대로 써도 됨: --only "모두 맞췄어요!"
 
 목록 JSON 형식: { "파일 id": "읽을 말" }  →  <저장 폴더>/<파일 id>.mp3
 예) "native/23": "스물셋"  →  apps/numberplay/public/voice/native/23.mp3
+
+다 만들면 <앱>/src/voice-files.json 에 { "읽을 말": "파일 경로" } 를 씀 → 앱이 이 파일이 있는 말은 녹음으로,
+없는 말은 기기 음성(TTS)으로 읽음 (packages/core/src/speech.ts)
 """
 import argparse
 import json
@@ -36,11 +42,16 @@ def main() -> None:
     ap.add_argument('--only', nargs='*', default=None)
     ap.add_argument('--force', action='store_true')
     ap.add_argument('--format', choices=['mp3', 'wav'], default='mp3')
+    ap.add_argument('--index-only', action='store_true')
     a = ap.parse_args()
 
-    lines: dict[str, str] = json.loads(Path(a.lines).read_text(encoding='utf-8'))
+    full: dict[str, str] = json.loads(Path(a.lines).read_text(encoding='utf-8'))
+    lines = full
+    out = Path(a.out)
+    if a.index_only:
+        return write_index(full, out, Path(a.lines))
     if a.only:
-        hit = lambda k, o: k.startswith(o) if o.endswith('/') else k == o
+        hit = lambda k, o: (k.startswith(o) if o.endswith('/') else k == o) or lines[k] == o
         missing = [o for o in a.only if not any(hit(k, o) for k in lines)]
         if missing:
             sys.exit(f'목록에 없는 id: {missing}')
@@ -52,7 +63,6 @@ def main() -> None:
 
     model = TTS(language='KR', device='auto')  # 첫 실행 때 모델을 내려받음
     speaker = model.hps.data.spk2id['KR']
-    out = Path(a.out)
     tmp = Path(tempfile.gettempdir()) / 'melo_tmp.wav'
 
     made = skipped = 0
@@ -75,6 +85,20 @@ def main() -> None:
         print(f'[{i}/{len(lines)}] {vid}: {text}')
 
     print(f'완료: 새로 만듦 {made}개, 이미 있어서 건너뜀 {skipped}개 → {out}')
+    write_index(full, out, Path(a.lines))
+
+
+def write_index(lines: dict[str, str], out: Path, lines_path: Path) -> None:
+    """앱이 읽는 재생 목록: 파일이 실제로 있는 말만 { "읽을 말": "id.mp3" }"""
+    index = {}
+    for vid, text in lines.items():
+        for ext in ('mp3', 'wav'):
+            if (out / f'{vid}.{ext}').exists():
+                index.setdefault(text, f'{vid}.{ext}')
+                break
+    dst = lines_path.parent / 'src' / 'voice-files.json'
+    dst.write_text(json.dumps(index, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+    print(f'재생 목록: {len(index)}/{len(lines)}개 녹음 있음 → {dst}')
 
 
 if __name__ == '__main__':

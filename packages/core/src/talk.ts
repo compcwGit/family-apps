@@ -17,3 +17,19 @@ export const praise = () => pick(PRAISES)
 export const cheer = () => pick(CHEERS)
 
 export const shuffle = <T,>(list: readonly T[]) => [...list].sort(() => Math.random() - 0.5)
+
+// 문장 나누기: "우와, 잘했어요! 모두 맞췄어요!" → ["우와, 잘했어요!", "모두 맞췄어요!"]
+// 녹음 파일은 문장 단위로 만들고, 재생할 때도 같은 규칙으로 나눠서 이어 붙임 (speech.ts, voicelist.ts)
+export const splitSentences = (text: string) =>
+  text
+    .split(/(?<=[!?.])\s+/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+
+// 끌어다 맞추기(core/DragMatch) 말
+export const MATCH = {
+  all: '모두 맞췄어요!',
+  name: (n: string) => `${n}!`,
+  placed: (n: string) => `${ieyo(n)}! 딱 맞아요!`,
+  wrong: (n: string) => `${eun(n)} 거기가 아니에요. 다시 해 볼까?`,
+}

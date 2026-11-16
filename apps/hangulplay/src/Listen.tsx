@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { useFeedback, useSay, Party, GameTop, speak, shuffle, eul, type GameProps } from '@family/core'
+import { useFeedback, useSay, Party, GameTop, speak, shuffle, type GameProps } from '@family/core'
 import { WORDS } from './words'
+import { SAY } from './voice'
 
 // 듣고 찾기: 낱말을 듣고 그림 고르기 (글자는 맞힌 뒤에 보여 줌). 별 5개부터 4개 중에서
 function makeRound(k: number, prev?: string) {
@@ -13,13 +14,13 @@ export function Listen({ stars, onStar }: GameProps) {
   const [round, setRound] = useState(() => makeRound(k))
   const [solved, setSolved] = useState(false)
   const fb = useFeedback(onStar)
-  const ask = `${eul(round.answer.w)} 찾아 보세요!`
+  const ask = SAY.listenAsk(round.answer.w)
   useSay(ask, [round])
 
   const choose = (w: string) => {
-    if (w !== round.answer.w) return fb.no(w, `그건 ${w}! ${eul(round.answer.w)} 찾아 볼까?`)
+    if (w !== round.answer.w) return fb.no(w, SAY.listenNo(w, round.answer.w))
     setSolved(true)
-    fb.ok(`${round.answer.w}!`, () => {
+    fb.ok(SAY.listenOk(round.answer.w), () => {
       setSolved(false)
       setRound(makeRound(k, round.answer.w))
     })

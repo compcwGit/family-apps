@@ -2,6 +2,7 @@
 // 안 되는 환경(음성 미설치 등)에서는 짧은 효과음으로 대신함
 import { TextToSpeech } from '@capacitor-community/text-to-speech'
 import { playTone } from './sound'
+import { splitSentences } from './talk'
 
 // 읽기 설정. 앱마다 setSpeechOptions 로 바꿀 수 있음 (기본값은 기존과 같음)
 // voice: 목소리 id (listKoreanVoices 의 id), '' = 기기 기본 목소리
@@ -38,7 +39,47 @@ export async function listKoreanVoices(): Promise<{ id: string; name: string; lo
     .map((v) => ({ id: voiceId(v), name: v.name, local: v.localService !== false }))
 }
 
+// 녹음 파일: { "읽을 말": "파일 경로" } (scripts/tts/make_voices.py 가 만드는 src/voice-files.json)
+// 앱 main.tsx 에서 setVoiceFiles 로 넘겨 줌. 말 전체 → 없으면 문장마다 찾아서, 모두 있으면 파일로 재생
+// 하나라도 없으면 지금처럼 기기 음성(TTS)으로 읽음
+let files: Record<string, string> = {}
+let base = './voice/'
+export function setVoiceFiles(index: Record<string, string> | undefined, folder = './voice/') {
+  files = index ?? {}
+  base = folder
+}
+
+let audio: HTMLAudioElement | null = null
+let playId = 0
+function playFile(src: string, id: number): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (id !== playId) return resolve(false)
+    audio = new Audio(base + src)
+    audio.onended = () => resolve(true)
+    audio.onerror = () => resolve(false)
+    audio.onpause = () => resolve(false) // 다른 말이 시작되거나 멈춤
+    audio.play().catch(() => resolve(false))
+  })
+}
+function clipsFor(text: string): string[] | null {
+  if (files[text]) return [files[text]]
+  const parts = splitSentences(text).map((s) => files[s])
+  return parts.length && parts.every(Boolean) ? parts : null
+}
+
 export async function speak(text: string, fallbackFreq = 523): Promise<void> {
+  const id = ++playId
+  audio?.pause()
+  const clips = clipsFor(text)
+  if (clips) {
+    try {
+      await TextToSpeech.stop()
+    } catch {
+      /* 무시 */
+    }
+    for (const c of clips) if (!(await playFile(c, id))) break
+    return
+  }
   try {
     const idx = opts.voice ? (await allVoices()).findIndex((v) => voiceId(v) === opts.voice) : -1
     await TextToSpeech.stop()
@@ -57,6 +98,8 @@ export async function speak(text: string, fallbackFreq = 523): Promise<void> {
 }
 
 export async function stopSpeaking(): Promise<void> {
+  playId++
+  audio?.pause()
   try {
     await TextToSpeech.stop()
   } catch {

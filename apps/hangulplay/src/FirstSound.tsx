@@ -1,17 +1,11 @@
 import { useState } from 'react'
-import { useFeedback, useSay, Party, GameTop, speak, shuffle, pick, eun, type GameProps } from '@family/core'
+import { useFeedback, useSay, Party, GameTop, speak, shuffle, pick, type GameProps } from '@family/core'
 import { WORDS, firstSound } from './words'
 import { CONSONANTS } from './hangul'
+import { SAY } from './voice'
 
 // 첫소리 찾기: "기역으로 시작하는 건?" — 첫 글자가 그 자음으로 시작하는 그림 고르기
 // 글자 아래 낱말을 쓰고 첫 글자를 색으로 강조 (글자와 소리 연결)
-// 받침이 있으면 '으로', 없거나 ㄹ 받침이면 '로' (기역으로, 리을로)
-const euro = (w: string) => {
-  const b = (w.charCodeAt(w.length - 1) - 0xac00) % 28
-  return w + (b === 0 || b === 8 ? '로' : '으로')
-}
-const nameOf = (ch: string) => CONSONANTS.find((c) => c.ch === ch)?.name ?? ch
-
 const usable = CONSONANTS.filter((c) => WORDS.some((x) => firstSound(x.w) === c.ch))
 
 function makeRound(k: number, prev?: string) {
@@ -30,13 +24,13 @@ export function FirstSound({ stars, onStar }: GameProps) {
   const [solved, setSolved] = useState(false)
   const fb = useFeedback(onStar)
   const name = round.jamo.name
-  const ask = `${name}! ${euro(name)} 시작하는 건 뭘까요?`
+  const ask = SAY.firstAsk(name)
   useSay(ask, [round])
 
   const choose = (w: string) => {
-    if (w !== round.answer.w) return fb.no(w, `${eun(w)} ${euro(nameOf(firstSound(w)))} 시작해요. 다시 찾아볼까?`)
+    if (w !== round.answer.w) return fb.no(w, SAY.firstNo(w))
     setSolved(true)
-    fb.ok(`${round.answer.w}의 ${round.answer.w[0]}!`, () => {
+    fb.ok(SAY.firstOk(round.answer.w), () => {
       setSolved(false)
       setRound(makeRound(k, round.jamo.ch))
     })
