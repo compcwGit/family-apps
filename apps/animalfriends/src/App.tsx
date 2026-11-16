@@ -1,25 +1,37 @@
 import { useState } from 'react'
-import { ParentGate } from '@family/core'
+import { ParentGate, stopSpeaking } from '@family/core'
 import { AnimalBoard } from './AnimalBoard'
+import { ParentInfo } from './ParentInfo'
+import { Quiz } from './Quiz'
 import './app.css'
 
-// 동물 친구들: 누르면 소리가 나는 동물 버튼판
-export default function App() {
-  const [parent, setParent] = useState<'closed' | 'gate' | 'open'>('closed')
+type Screen = 'play' | 'quiz' | 'gate' | 'parent'
 
-  if (parent === 'gate') return <ParentGate onPass={() => setParent('open')} onCancel={() => setParent('closed')} />
-  if (parent === 'open')
-    return (
-      <main>
-        <h1>부모 화면</h1>
-        <button className="core-btn" onClick={() => setParent('closed')}>돌아가기</button>
-      </main>
-    )
+// 동물 친구들: 동물 버튼판 + "누구일까요?" 퀴즈
+export default function App() {
+  const [screen, setScreen] = useState<Screen>('play')
+  const go = (s: Screen) => {
+    stopSpeaking()
+    setScreen(s)
+  }
+
+  if (screen === 'gate') return <ParentGate onPass={() => go('parent')} onCancel={() => go('play')} />
+  if (screen === 'parent') return <ParentInfo onClose={() => go('play')} />
 
   return (
-    <>
-      <AnimalBoard />
-      <button className="core-parent-btn" onClick={() => setParent('gate')} aria-label="부모 메뉴">⚙️</button>
-    </>
+    <main>
+      <nav className="tabs">
+        <button className={screen === 'play' ? 'tab on' : 'tab'} onClick={() => go('play')}>
+          🐾 동물 친구들
+        </button>
+        <button className={screen === 'quiz' ? 'tab on' : 'tab'} onClick={() => go('quiz')}>
+          ❓ 누구일까요?
+        </button>
+      </nav>
+      {screen === 'play' ? <AnimalBoard /> : <Quiz />}
+      <button className="core-parent-btn" onClick={() => go('gate')} aria-label="부모 메뉴">
+        ⚙️
+      </button>
+    </main>
   )
 }
