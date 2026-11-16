@@ -6,7 +6,9 @@
         display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .slot-no { color: #D7CCC8; font-size: 1.6rem; font-weight: 800; }
 .slot.filled { border: 4px solid #E53935; background: #FFEBEE; }
-.slot-emoji { font-size: 2.6rem; }
+.slot-icon { font-size: 2.6rem; line-height: 1; }
+button.slot { padding: 0; font: inherit; cursor: pointer; }
+.slot.picked { box-shadow: 0 0 0 4px #FFB300; }
 .slot-mark { color: #E53935; font-size: .75rem; font-weight: 800; margin-top: 2px; }
 .stamp-in { animation: stamp .6s cubic-bezier(.2, 1.6, .4, 1) .2s both; }
 @keyframes stamp { 0% { transform: scale(2.4) rotate(-25deg); opacity: 0; } 100% { transform: scale(1) rotate(-6deg); opacity: 1; } }
@@ -25,7 +27,7 @@
 .recent-date { color: #A1887F; font-size: .9rem; }
 .recent .recent-del { margin: 0; font-size: .9rem; }
 .recent-empty { color: #A1887F; justify-content: center; }
-@media (max-width: 520px) { .board-grid { gap: 8px; } .slot-emoji { font-size: 1.8rem; } .slot-mark { display: none; } }
+@media (max-width: 520px) { .board-grid { gap: 8px; } .slot-icon { font-size: 1.8rem; } .slot-mark { display: none; } }
 
 footer { margin-top: auto; padding-top: 24px; color: #A1887F; font-size: .85rem; }
 
@@ -50,3 +52,30 @@ footer { margin-top: auto; padding-top: 24px; color: #A1887F; font-size: .85rem;
 .history-reward { margin: 6px 0 0; font-size: 1.2rem; color: #E65100; font-weight: 700; }
 .history-stamps { margin: 8px 0 0; font-size: 1.6rem; line-height: 1.4; word-break: break-all; }
 .history-date { margin: 4px 0 0; color: #A1887F; font-size: .9rem; }
+
+/* 도장 그림: 기본 "참 잘했어요" 도장 (크기는 font-size 기준) */
+.good-stamp { display: inline-flex; align-items: center; justify-content: center; text-align: center; flex-shrink: 0;
+              font-size: .3em; width: 3.9em; height: 3.9em; border-radius: 50%;
+              border: .2em solid #E53935; box-shadow: inset 0 0 0 .15em #fff, inset 0 0 0 .3em #E53935;
+              color: #E53935; font-weight: 900; line-height: 1.05; letter-spacing: -.03em; white-space: nowrap; transform: rotate(-12deg); }
+.mini { display: inline-flex; vertical-align: middle; font-size: 1.4rem; }
+.mini .icon-emoji { font-size: 1em; }
+.stamp-detail { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
+                text-align: center; font-size: 1.2rem; color: #5D4037; background: #fff; border-radius: 14px; padding: 10px 14px; margin: 14px 0 0; }
+
+/* 칭찬도장 만들기 (부모 화면) */
+.reason { position: relative; }
+.reason.editing { background: #FFF3E0; }
+.reason-del { position: absolute; top: 6px; right: 10px; color: #E53935; font-size: 1rem; }
+.reason-edit { margin-top: 12px; }
+.reason-new { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.reason-new-help { margin: 0; color: #A1887F; font-size: .9rem; }
+.icon-pick { display: flex; flex-wrap: wrap; gap: 8px; }
+.icon-opt { width: 52px; height: 52px; border: 3px solid transparent; border-radius: 14px; background: #fff; font-size: 1.7rem;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
+.icon-opt.on { border-color: #E53935; }
+.history li { list-style: none; }
+.history-item { width: 100%; text-align: left; font: inherit; border: none; cursor: pointer; }
+.history-stamps { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.slot-icon .good-stamp { font-size: .42em; }
+.reason-emoji .good-stamp, .icon-opt .good-stamp { font-size: .36em; }

@@ -1,9 +1,15 @@
 import { createStore } from '@family/core'
 
 // 도장 기록: 태블릿 안에만 저장
-export type Stamp = { id: string; reason: string; at: number }
+// emoji: 찍을 때의 도장 그림을 함께 저장 (도장 종류를 지워도 기록은 그대로). '' = 참 잘했어요 도장
+export type Stamp = { id: string; reason: string; at: number; emoji?: string }
 
-export const REASONS = [
+// 칭찬도장 종류: 부모가 직접 만들고 지울 수 있음. emoji '' = 기본 "참 잘했어요" 도장
+export type Reason = { label: string; emoji: string }
+
+export const ICONS = ['', '⭐', '❤️', '🌈', '🧸', '🪥', '🙇', '🍚', '🤝', '🛒', '📚', '🎨', '🚿', '🛏️', '🧹', '💪', '😊', '🌱']
+
+export const REASONS: Reason[] = [
   { label: '정리정돈', emoji: '🧸' },
   { label: '양치하기', emoji: '🪥' },
   { label: '인사 잘하기', emoji: '🙇' },
@@ -22,6 +28,13 @@ export type Board = { no: number; plan: Plan; stamps: Stamp[]; done: boolean }
 const DEFAULT_PLAN: Plan = { target: BOARD_SIZE, reward: '' }
 
 const store = createStore<Stamp[]>('stampplay.stamps', [])
+const reasonStore = createStore<Reason[]>('stampplay.reasons', REASONS)
+
+export const loadReasons = () => reasonStore.get()
+export function saveReasons(list: Reason[]): Reason[] {
+  reasonStore.set(list)
+  return list
+}
 const planStore = createStore<Plan[]>('stampplay.plans', [])
 
 export const loadPlans = () => planStore.get()
@@ -58,8 +71,8 @@ export function nextPlanOf(stamps: Stamp[], plans: Plan[]): Plan {
 
 export const loadStamps = () => store.get()
 
-export function addStamp(reason: string): Stamp[] {
-  const next = [...store.get(), { id: crypto.randomUUID(), reason, at: Date.now() }]
+export function addStamp(r: Reason): Stamp[] {
+  const next = [...store.get(), { id: crypto.randomUUID(), reason: r.label, at: Date.now(), emoji: r.emoji }]
   store.set(next)
   return next
 }
@@ -70,4 +83,8 @@ export function removeStamp(id: string): Stamp[] {
   return next
 }
 
-export const emojiOf = (reason: string) => REASONS.find((r) => r.label === reason)?.emoji ?? '⭐'
+// 예전 기록(emoji 없음)은 기본 목록에서 찾음
+export const iconOf = (s: Stamp) => s.emoji ?? REASONS.find((r) => r.label === s.reason)?.emoji ?? ''
+
+export const stampTime = (at: number) =>
+  new Date(at).toLocaleString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short', hour: 'numeric', minute: '2-digit' })

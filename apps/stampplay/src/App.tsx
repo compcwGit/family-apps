@@ -3,10 +3,10 @@ import { ParentGate, getPlatform, playTone } from '@family/core'
 import { ParentPanel } from './ParentPanel'
 import { StampBoard } from './StampBoard'
 import { History } from './History'
-import { addStamp, boardsOf, loadPlans, loadStamps, nextPlanOf, removeStamp, setPlan } from './stamps'
+import { addStamp, boardsOf, loadPlans, loadReasons, loadStamps, nextPlanOf, removeStamp, saveReasons, setPlan } from './stamps'
 import './app.css'
 
-type Screen = 'home' | 'gate' | 'parent' | 'history'
+type Screen = 'home' | 'gate' | 'parent' | 'history' | 'board'
 
 // 도장 찍는 "쾅" + 짧은 축하음
 const stampSound = () => {
@@ -19,15 +19,39 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>('home')
   const [stamps, setStamps] = useState(loadStamps)
   const [plans, setPlans] = useState(loadPlans)
+  const [reasons, setReasons] = useState(loadReasons)
+  const [openNo, setOpenNo] = useState(1) // 칭찬 기록에서 연 도장판 번호
   const boards = boardsOf(stamps, plans)
   const [newestId, setNewestId] = useState<string | null>(null)
 
   if (screen === 'gate') return <ParentGate onPass={() => setScreen('parent')} onCancel={() => setScreen('home')} />
-  if (screen === 'history') return <History boards={boards} onClose={() => setScreen('home')} />
+  if (screen === 'history')
+    return (
+      <History
+        boards={boards}
+        onOpen={(no) => {
+          setOpenNo(no)
+          setScreen('board')
+        }}
+        onClose={() => setScreen('home')}
+      />
+    )
+  if (screen === 'board')
+    return (
+      <main>
+        <h1>📖 지난 도장판</h1>
+        <StampBoard board={boards[openNo - 1] ?? boards[boards.length - 1]} newestId={null} />
+        <button className="core-btn history-btn" onClick={() => setScreen('history')}>
+          ← 칭찬 기록
+        </button>
+      </main>
+    )
   if (screen === 'parent')
     return (
       <ParentPanel
         stamps={stamps}
+        reasons={reasons}
+        onReasons={(list) => setReasons(saveReasons(list))}
         plan={nextPlanOf(stamps, plans)}
         onPlan={(p) => setPlans(setPlan(stamps, p))}
         onStamp={(reason) => {
