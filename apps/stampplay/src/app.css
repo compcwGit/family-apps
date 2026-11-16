@@ -88,3 +88,6 @@ footer { margin-top: auto; padding-top: 24px; color: #A1887F; font-size: .85rem;
 .slot.next { border-color: #E57373; animation: next-slot 1.2s ease-in-out infinite; }
 @keyframes next-slot { 50% { transform: scale(1.06); } }
 .reason-edit ~ .board { margin-top: 16px; }
+
+/* 부모 화면 위쪽 "아이 화면으로" 버튼 */
+.parent-back { align-self: flex-start; font-size: 1.1rem; padding: 10px 18px; }

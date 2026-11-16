@@ -41,6 +41,9 @@ export function ParentPanel({
 
   return (
     <main>
+      <button className="core-btn parent-back" onClick={onClose}>
+        ← 아이 화면으로
+      </button>
       <h1>칭찬도장 찍기</h1>
       <p className="parent-help">{picked ? '① 도장을 고르고 ② 도장판 빈 칸을 누르세요' : '먼저 칭찬도장을 만들어 주세요'}</p>
       <div className="reason-grid">
