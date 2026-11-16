@@ -1,0 +1,6 @@
+export { ParentGate } from './ParentGate'
+export { createStore } from './storage'
+export { playTone } from './sound'
+export { getPlatform } from './platform'
+export { AD_CONFIG, shouldShowAds, showBanner } from './ads'
+export { isAdFree, purchaseRemoveAds, restorePurchases } from './billing'

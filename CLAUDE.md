@@ -19,4 +19,8 @@
 - 코드는 최소한으로, 필요한 부분만 고친다 (전체 재작성 지양)
 - 코드 변경은 브랜치 → PR. `docs/`와 `*.md` 문서만 바뀌면 main에 바로 올려도 된다
 - 스택: React + Vite + TypeScript, Electron(Windows), Capacitor(Android). 서버 없이 동작
+- 모노레포(npm workspaces): 앱은 `apps/<앱>`, 공통 기능은 `packages/core`에 둔다
+  - 두 앱 이상에서 쓸 기능(부모 잠금, 저장, 광고, 결제, 공통 UI)은 앱이 아니라 core에 만든다
+  - 새 앱은 `npm run new-app -- <영문이름> "<표시 이름>"`으로 만든다 (패키지 com.compcwgit.<이름>)
+  - Electron 버전은 정확한 버전으로 고정한다 (범위 지정 시 electron-builder가 실패함)
 - 아이용 앱은 Google Play 가족 정책을 따른다 (`docs/ideas/monetization.md` 참고)

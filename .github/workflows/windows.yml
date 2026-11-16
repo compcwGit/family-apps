@@ -1,4 +1,4 @@
-# Windows exe: 분 소모가 커서 main 에 push 할 때와 수동 실행 때만 빌드
+# Windows exe: 분 소모가 커서 main 에 push 할 때와 수동 실행 때만, 바뀐 앱만 빌드
 name: Windows EXE
 
 on:
@@ -8,8 +8,27 @@ on:
   workflow_dispatch:
 
 jobs:
+  apps:
+    runs-on: ubuntu-latest
+    outputs:
+      list: ${{ steps.list.outputs.list }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: list
+        run: echo "list=$(node scripts/changed-apps.mjs)" >> "$GITHUB_OUTPUT"
+        env:
+          BASE_SHA: ${{ github.event.before }}
+
   build:
+    needs: apps
+    if: needs.apps.outputs.list != '[]'
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: ${{ fromJson(needs.apps.outputs.list) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -17,8 +36,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run electron:build
+      - run: npm run electron:build -w apps/${{ matrix.app }}
       - uses: actions/upload-artifact@v4
         with:
-          name: family-apps-windows
-          path: release/*.exe
+          name: ${{ matrix.app }}-windows
+          path: apps/${{ matrix.app }}/release/*.exe
