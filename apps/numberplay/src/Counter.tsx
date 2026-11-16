@@ -16,7 +16,7 @@ export function Counter({ n, setN, mode }: { n: number; setN: (n: number) => voi
     await speak(readNumber(v, mode), 523)
     if (id !== sayId || !praise || v % 10 !== 0) return
     playTone(880)
-    await new Promise((r) => setTimeout(r, 400))
+    await new Promise((r) => setTimeout(r, 800))
     if (id !== sayId) return
     speak(v === 100 ? '다 셌어요! 최고!' : '잘했어요!', 659)
   }
