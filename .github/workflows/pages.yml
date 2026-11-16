@@ -4,8 +4,10 @@ name: Web Preview (Pages)
 on:
   # 브랜치 미리보기를 원하면: Settings → Environments → github-pages → Deployment branches 를
   # No restriction 으로 바꾸고 아래 branches 줄을 지우세요
+  # external(외부 작업)도 배포 → 폰에서 바로 확인. 마지막에 push한 브랜치가 사이트에 보임
+  # external 배포가 막히면: Settings → Environments → github-pages → Deployment branches 에 external 추가
   push:
-    branches: [main]
+    branches: [main, external]
     paths-ignore: ['docs/**', '**/*.md']
   workflow_dispatch:
 

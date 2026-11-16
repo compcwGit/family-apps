@@ -36,6 +36,15 @@
 .pick { border: none; border-radius: 16px; width: 62px; height: 62px; font-size: 2rem; font-weight: 800; color: #3E2723;
         box-shadow: 0 4px 0 rgba(0,0,0,.15); cursor: pointer; }
 .pick.on { outline: 4px solid #FF9800; }
+.pick.none { background: #EFEBE9; font-size: 1.1rem; color: #8D6E63; }
+@media (max-width: 600px) {
+  .formula { gap: 6px; }
+  .f-part { font-size: 2.4rem; min-width: 36px; }
+  .f-op { font-size: 1.6rem; }
+  .f-result { font-size: 4rem; padding: 2px 18px; }
+  .pick { width: 52px; height: 52px; font-size: 1.7rem; }
+}
+.pick-label { margin: 6px 0 -8px; font-size: 1rem; font-weight: 800; color: #A1887F; }
 
 /* 따라쓰기 */
 .trace-top { display: flex; align-items: center; gap: 16px; }

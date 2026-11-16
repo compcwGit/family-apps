@@ -53,8 +53,9 @@ export const VOWELS: Jamo[] = [
 
 export const ALL_JAMO = [...CONSONANTS, ...VOWELS]
 
-// 자음 + 모음 → 글자 (유니코드: 가 + (초성×21 + 중성)×28)
+// 자음 + 모음 (+ 받침) → 글자 (유니코드: 가 + (초성×21 + 중성)×28 + 종성)
 const CHO = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'
 const JUNG = 'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ'
-export const compose = (c: string, v: string) =>
-  String.fromCharCode(0xac00 + (CHO.indexOf(c) * 21 + JUNG.indexOf(v)) * 28)
+const JONG = ' ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ' // 0번 = 받침 없음
+export const compose = (c: string, v: string, b = '') =>
+  String.fromCharCode(0xac00 + (CHO.indexOf(c) * 21 + JUNG.indexOf(v)) * 28 + (b ? JONG.indexOf(b) : 0))
