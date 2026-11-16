@@ -1,7 +1,8 @@
 node_modules/
 dist/
 release/
-android/app/build/
-android/.gradle/
+site/
+**/android/app/build/
+**/android/.gradle/
 *.log
 .DS_Store

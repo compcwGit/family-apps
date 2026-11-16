@@ -1,4 +1,4 @@
-# 웹 미리보기: push 할 때마다 GitHub Pages 에 배포 → 아이폰 Safari 로 확인
+# 웹 미리보기: 모든 앱을 빌드해 GitHub Pages 에 배포 → https://compcwgit.github.io/family-apps/<앱>/
 name: Web Preview (Pages)
 
 on:
@@ -30,9 +30,9 @@ jobs:
       - run: npm ci
         env:
           ELECTRON_SKIP_BINARY_DOWNLOAD: 1
-      - run: npm run build
+      - run: npm run build:pages
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: site
       - id: deployment
         uses: actions/deploy-pages@v4

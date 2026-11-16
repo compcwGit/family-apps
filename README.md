@@ -1,63 +1,66 @@
 # family-apps
 
-React 하나로 **웹 미리보기 + Windows(Electron) + Android(Capacitor)** 를 만드는 서버 없는 앱 템플릿.
-첫 화면은 아이용 "동물 친구들" 소리 버튼판입니다.
+서버 없는 앱 모음. React 하나로 **웹 미리보기 + Windows(Electron) + Android(Capacitor)** 를 만듭니다.
+공통 기능(부모 잠금, 저장, 광고·결제)은 한 번만 만들고, 앱은 화면만 따로 만드는 **모노레포** 구조입니다.
 
-## 처음 한 번 (집 PC)
+## 구조
+
+```
+apps/<앱>/            앱마다 하나 (패키지 이름, 화면, 아이콘)
+  └─ stampplay/       칭찬도장 모험 게임 (com.compcwgit.stampplay)
+packages/core/        모든 앱 공통
+  ├─ ParentGate       부모 잠금 (두 자리 덧셈)
+  ├─ storage          기기 안 저장
+  ├─ sound, platform  소리, 실행 환경 판별
+  └─ ads, billing     광고·광고 제거 결제 (준비 중)
+templates/app/        새 앱 뼈대
+scripts/              new-app, build-pages, changed-apps(CI용)
+docs/ideas/           아이디어·방침 정리
+```
+
+## 집 PC 명령어
+
+Node.js 22 이상 필요.
 
 ```bash
+git clone https://github.com/compcwgit/family-apps.git   # 처음 한 번
+cd family-apps
+git pull                                  # 매번 시작할 때
+npm install                               # 처음, 그리고 package.json 이 바뀌었을 때
+
+npm run dev -w apps/stampplay             # 브라우저에서 개발
+npm run electron:dev -w apps/stampplay    # Windows 앱으로 실행
+```
+
+새 앱 만들기:
+
+```bash
+npm run new-app -- animalfriends "동물 친구들"   # → apps/animalfriends, 패키지 com.compcwgit.animalfriends
 npm install
-npm run dev            # 브라우저 개발 서버
-npm run electron:dev   # Windows 앱으로 실행
 ```
 
-GitHub에 올리기:
-
-```bash
-git init && git add . && git commit -m "init"
-git branch -M main
-git remote add origin https://github.com/<내아이디>/family-apps.git
-git push -u origin main
-```
-
-## GitHub 설정 (한 번만)
-
-1. **Settings → Pages → Source: GitHub Actions** 선택
-2. **Settings → Environments → github-pages → Deployment branches** 를 `No restriction` 으로
-   (브랜치에 push 해도 미리보기가 갱신됨. 마지막 push 가 화면에 보임)
-3. 미리보기 주소: `https://<내아이디>.github.io/family-apps/`
-
-> 비공개 저장소에서 Pages 를 쓰려면 유료 플랜이 필요합니다. 이 저장소에는 비밀 정보가 없으니
-> **공개 저장소**를 추천합니다. 가족사진은 저장소에 넣지 말고, 앱에서 기기 갤러리로 불러오세요.
+> 패키지 이름(com.compcwgit.<이름>)은 Play 스토어에 올린 뒤 바꿀 수 없습니다. 영문 이름을 신중하게 정하세요.
 
 ## 자동 빌드 (.github/workflows)
 
 | 워크플로 | 언제 | 결과 |
 |---|---|---|
-| Web Preview (Pages) | 모든 push | 아이폰 Safari 로 확인 |
-| Android APK | 모든 push/PR | Actions 아티팩트, main 이면 **Releases** 에 APK |
-| Windows EXE | main push, 수동 | Actions 아티팩트에 설치 파일 |
+| Web Preview (Pages) | 코드 push | `https://compcwgit.github.io/family-apps/` 에 앱 목록 |
+| Android APK | 코드 push/PR, **바뀐 앱만** | 아티팩트, main 이면 Releases 에 `<앱>-android-<번호>` |
+| Windows EXE | main push·수동, **바뀐 앱만** | 아티팩트에 설치 파일 |
 
-태블릿 설치: 태블릿 브라우저로 저장소 **Releases** → `family-apps.apk` 다운로드 → 설치
-(처음엔 "출처를 알 수 없는 앱 설치" 허용 필요).
-아이에게 줄 땐 **설정 → 보안 → 앱 고정(화면 고정)** 을 켜 두세요.
+`packages/`, `templates/`, `scripts/`, 워크플로가 바뀌면 모든 앱을 다시 빌드합니다. 문서만 바뀌면 빌드하지 않습니다.
+
+## 태블릿 설치
+
+Releases → `<앱>.apk` 다운로드 → 설치 (처음엔 "알 수 없는 앱" 허용).
+아이에게 줄 땐 **화면 고정**을 켜 두세요. 부모 메뉴는 오른쪽 아래 ⚙️ → 산수 문제.
 
 ## 하루 흐름
 
-1. 출근길: Projects 보드에서 Issue 하나 → 아이폰 Claude Code 로 브랜치 작업 → PR
-2. 자동: Pages 미리보기 + APK 빌드
-3. 퇴근길: Safari 로 미리보기 확인, PR 에 수정 요청
-4. 집: 태블릿에 APK 설치해 터치 테스트 → merge
+1. 출근길: Issue 하나 → 아이폰 Claude Code 로 브랜치 작업 → PR
+2. 자동: 미리보기 + APK 빌드
+3. 퇴근길: 미리보기 확인, PR 에 수정 요청
+4. 집: 태블릿에 APK 설치해 확인 → merge
 
-## 구조
-
-```
-src/App.tsx        첫 화면 (동물 버튼판)
-src/sound.ts       소리 재생 (지금은 WebAudio 톤)
-src/platform.ts    android / electron / web 판별
-electron/main.cjs  Windows 앱 진입점
-capacitor.config.json  안드로이드 설정 (android/ 폴더는 CI에서 자동 생성)
-docs/ROADMAP.md    주차별 Issue 목록
-```
-
-안드로이드 아이콘·권한을 바꾸고 싶어지면 PC에서 `npx cap add android` 후 `android/` 폴더를 커밋하세요.
+안드로이드 아이콘·권한을 바꾸려면 PC에서 `cd apps/<앱> && npx cap add android` 후 `android/` 폴더를 커밋하세요.

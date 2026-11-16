@@ -1,0 +1,15 @@
+{
+  "name": "@family/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "모든 앱 공통: 부모 잠금, 저장, 소리, 실행 환경, 광고·결제(준비 중)",
+  "exports": {
+    ".": "./src/index.ts",
+    "./style.css": "./src/style.css"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "@capacitor/core": "^8.0.0"
+  }
+}
