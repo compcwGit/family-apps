@@ -1,0 +1,43 @@
+/* 탭 */
+.tabs { display: flex; gap: 12px; margin: 4px 0 20px; }
+.tab { border: none; border-radius: 999px; padding: 12px 22px; font-size: 1.3rem; font-weight: 800;
+       background: #EFEBE9; color: #8D6E63; cursor: pointer; }
+.tab.on { background: #FFB74D; color: #3E2723; box-shadow: 0 4px 0 rgba(0,0,0,.15); }
+
+/* 하나씩 세기 */
+.counter { width: 100%; max-width: 720px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.big { width: min(80vw, 420px); aspect-ratio: 1; border: none; border-radius: 40px; cursor: pointer;
+       display: flex; flex-direction: column; align-items: center; justify-content: center;
+       box-shadow: 0 8px 0 rgba(0,0,0,.15); transition: transform .1s; }
+.big:active { transform: translateY(5px); box-shadow: 0 3px 0 rgba(0,0,0,.15); }
+.big:disabled { cursor: default; }
+.big-num { font-size: clamp(5rem, 22vw, 9rem); font-weight: 900; color: #3E2723; line-height: 1; }
+.big-word { font-size: 1.8rem; font-weight: 800; color: #5D4037; margin-top: 12px; }
+.big.pop .big-num { animation: pop .3s ease; }
+@keyframes pop { 50% { transform: scale(1.25); } }
+.party { font-size: 2rem; font-weight: 800; color: #E65100; margin: 0; }
+
+/* 10개 묶음(막대) + 낱개(점) */
+.blocks { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center; gap: 6px; min-height: 64px; max-width: 640px; }
+.ten { width: 18px; height: 64px; border-radius: 6px; outline: 2px solid rgba(0,0,0,.15);
+       background-image: repeating-linear-gradient(transparent 0 5.4px, rgba(0,0,0,.18) 5.4px 6.4px); }
+.one { width: 18px; height: 18px; border-radius: 50%; outline: 2px solid rgba(0,0,0,.15); }
+
+.row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.core-btn:disabled { opacity: .4; }
+.core-btn.off { background: #EFEBE9; color: #8D6E63; }
+
+/* 100판 */
+.board { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; width: 100%; max-width: 720px; }
+.cell { border: none; border-radius: 12px; aspect-ratio: 1; font-size: clamp(1rem, 3.6vw, 1.7rem);
+        font-weight: 800; color: #3E2723; opacity: .45; cursor: pointer; padding: 0; }
+.cell.done { opacity: 1; box-shadow: 0 3px 0 rgba(0,0,0,.15); }
+.cell.pop { animation: pop .4s ease; opacity: 1; }
+
+/* 부모 화면 */
+.info { max-width: 640px; margin: 0 auto; text-align: left; align-items: stretch; }
+.info h1 { text-align: center; }
+.info h2 { font-size: 1.2rem; color: #5D4037; margin: 18px 0 6px; }
+.info p { color: #5D4037; line-height: 1.6; margin: 6px 0; }
+.info .row { justify-content: flex-start; }
+.info > .core-btn { align-self: center; margin-top: 24px; }
