@@ -28,3 +28,25 @@
 @media (max-width: 520px) { .board-grid { gap: 8px; } .slot-emoji { font-size: 1.8rem; } .slot-mark { display: none; } }
 
 footer { margin-top: auto; padding-top: 24px; color: #A1887F; font-size: .85rem; }
+
+/* 약속 */
+.board-promise { text-align: center; font-size: 1.4rem; color: #5D4037; background: #FFF8E1; border-radius: 16px; padding: 10px 16px; margin: 0 0 12px; }
+.board-promise b { color: #E65100; }
+.promise { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 10px; }
+.promise-count { display: flex; align-items: center; gap: 12px; font-size: 1.2rem; color: #5D4037; }
+.promise-count b { min-width: 3.5em; text-align: center; font-size: 1.4rem; }
+.promise-step { width: 44px; height: 44px; border: none; border-radius: 50%; background: #fff; font-size: 1.5rem;
+                box-shadow: 0 3px 0 rgba(0,0,0,.1); cursor: pointer; }
+.promise-input { font-size: 1.2rem; padding: 12px 14px; border: 2px solid #D7CCC8; border-radius: 12px; }
+.promise-save { align-self: flex-start; font-size: 1.1rem; padding: 10px 20px; }
+.promise-save:disabled { opacity: .5; }
+
+/* 칭찬 기록 (아이 화면) */
+.history-btn { margin-top: 20px; font-size: 1.2rem; }
+.history { list-style: none; padding: 0; margin: 0 0 24px; width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 12px; }
+.history-item { background: #fff; border-radius: 18px; padding: 14px 16px; box-shadow: 0 3px 0 rgba(0,0,0,.08); color: #5D4037; }
+.history-item.done { border: 3px solid #FFB74D; }
+.history-head { display: flex; justify-content: space-between; font-size: 1.1rem; }
+.history-reward { margin: 6px 0 0; font-size: 1.2rem; color: #E65100; font-weight: 700; }
+.history-stamps { margin: 8px 0 0; font-size: 1.6rem; line-height: 1.4; word-break: break-all; }
+.history-date { margin: 4px 0 0; color: #A1887F; font-size: .9rem; }

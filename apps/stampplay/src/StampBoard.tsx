@@ -1,20 +1,22 @@
-import { BOARD_SIZE, emojiOf, type Stamp } from './stamps'
+import { emojiOf, type Board } from './stamps'
 
-// 아이 화면: 10칸 도장판. 꽉 차면 다음 판.
-export function StampBoard({ stamps, newestId }: { stamps: Stamp[]; newestId: string | null }) {
-  const filled = stamps.length % BOARD_SIZE === 0 && stamps.length > 0 ? BOARD_SIZE : stamps.length % BOARD_SIZE
-  const current = stamps.slice(stamps.length - filled)
-  const boardNo = Math.max(1, Math.ceil(stamps.length / BOARD_SIZE))
-  const complete = filled === BOARD_SIZE
+// 아이 화면: 약속한 칸 수만큼의 도장판. 꽉 차면 다음 도장 때 다음 판.
+export function StampBoard({ board, newestId }: { board: Board; newestId: string | null }) {
+  const { no, plan, stamps, done } = board
 
   return (
     <section className="board">
+      {plan.reward && (
+        <p className="board-promise">
+          🎁 {plan.target}개 모으면 <b>{plan.reward}</b>
+        </p>
+      )}
       <p className="board-info">
-        {boardNo}번째 도장판 · {filled}/{BOARD_SIZE}
+        {no}번째 도장판 · {stamps.length}/{plan.target}
       </p>
       <div className="board-grid">
-        {Array.from({ length: BOARD_SIZE }, (_, i) => {
-          const s = current[i]
+        {Array.from({ length: plan.target }, (_, i) => {
+          const s = stamps[i]
           return (
             <div key={i} className={'slot' + (s ? ' filled' : '') + (s && s.id === newestId ? ' stamp-in' : '')}>
               {s ? (
@@ -29,7 +31,7 @@ export function StampBoard({ stamps, newestId }: { stamps: Stamp[]; newestId: st
           )
         })}
       </div>
-      {complete && <p className="board-complete">🎉 도장판 완성! 🎉</p>}
+      {done && <p className="board-complete">🎉 도장판 완성!{plan.reward && ` 약속: ${plan.reward}`} 🎉</p>}
     </section>
   )
 }
