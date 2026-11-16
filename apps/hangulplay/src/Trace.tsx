@@ -30,7 +30,9 @@ function passed(stroke: Pt[], drawn: Pt[]) {
 
 const path = (pts: Pt[]) => pts.map((p) => p.join(',')).join(' ')
 
-export function Trace({ done, onDone }: { done: string[]; onDone: (ch: string) => void }) {
+export type NumRead = 'native' | 'sino' // 하나·둘 / 일·이
+
+export function Trace({ done, onDone, numRead }: { done: string[]; onDone: (ch: string) => void; numRead: NumRead }) {
   const [set, setSet] = useState<'h' | 'n'>('h') // 한글 / 숫자
   const [idx, setIdx] = useState(0)
   const [step, setStep] = useState(0) // 지금 그릴 획 번호
@@ -42,6 +44,7 @@ export function Trace({ done, onDone }: { done: string[]; onDone: (ch: string) =
   const list = set === 'h' ? ALL_JAMO : NUMBERS
   const j = list[idx]
   const finished = step >= j.strokes.length
+  const label = set === 'n' && numRead === 'native' ? j.word : j.name // 숫자 읽는 소리
 
   const go = (i: number) => {
     setIdx((i + list.length) % list.length)
@@ -74,7 +77,7 @@ export function Trace({ done, onDone }: { done: string[]; onDone: (ch: string) =
       setStep(next)
       setDrawn([])
       if (next >= j.strokes.length) {
-        speak(`잘했어요! ${j.name}!`)
+        speak(`잘했어요! ${label}!`)
         setMsg('잘했어요! ⭐')
         onDone(j.ch)
       } else playTone(660)
@@ -108,8 +111,8 @@ export function Trace({ done, onDone }: { done: string[]; onDone: (ch: string) =
       </div>
       <div className="trace-top">
         <button className="arrow" onClick={() => go(idx - 1)} aria-label="이전">◀</button>
-        <button className="trace-title" onClick={() => speak(j.name)}>
-          {j.ch} <small>{j.name}</small> {done.includes(j.ch) && '⭐'}
+        <button className="trace-title" onClick={() => speak(label)}>
+          {j.ch} <small>{label}</small> {done.includes(j.ch) && '⭐'}
         </button>
         <button className="arrow" onClick={() => go(idx + 1)} aria-label="다음">▶</button>
       </div>

@@ -1,7 +1,20 @@
 import pkg from '../package.json'
+import type { NumRead } from './Trace'
 
 // 부모 화면(산수 잠금 뒤): 진도, 앱 정보, 개인정보처리방침
-export function ParentInfo({ doneCount, onReset, onClose }: { doneCount: number; onReset: () => void; onClose: () => void }) {
+export function ParentInfo({
+  doneCount,
+  numRead,
+  onNumRead,
+  onReset,
+  onClose,
+}: {
+  doneCount: number
+  numRead: NumRead
+  onNumRead: (r: NumRead) => void
+  onReset: () => void
+  onClose: () => void
+}) {
   return (
     <main className="info">
       <h1>부모님께</h1>
@@ -9,6 +22,17 @@ export function ParentInfo({ doneCount, onReset, onClose }: { doneCount: number;
         <h2>진도</h2>
         <p>따라쓰기 완료: {doneCount} / 34 (한글 24 + 숫자 10)</p>
         <button className="core-link" onClick={onReset}>진도 초기화</button>
+      </section>
+      <section>
+        <h2>숫자 읽는 소리</h2>
+        <div className="seg">
+          <button className={numRead === 'native' ? 'seg-btn on' : 'seg-btn'} onClick={() => onNumRead('native')}>
+            하나, 둘, 셋
+          </button>
+          <button className={numRead === 'sino' ? 'seg-btn on' : 'seg-btn'} onClick={() => onNumRead('sino')}>
+            일, 이, 삼
+          </button>
+        </div>
       </section>
       <section>
         <h2>한글 놀이</h2>

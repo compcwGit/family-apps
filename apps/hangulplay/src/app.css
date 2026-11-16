@@ -68,4 +68,5 @@
 .info h1 { text-align: center; }
 .info h2 { font-size: 1.2rem; color: #5D4037; margin: 18px 0 6px; }
 .info p { color: #5D4037; line-height: 1.6; margin: 6px 0; }
+.info .seg { display: inline-flex; }
 .info .core-btn { align-self: center; margin-top: 24px; }

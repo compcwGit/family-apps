@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ParentGate, createStore, stopSpeaking } from '@family/core'
 import { JamoBoard } from './JamoBoard'
 import { Builder } from './Builder'
-import { Trace } from './Trace'
+import { Trace, type NumRead } from './Trace'
 import { ParentInfo } from './ParentInfo'
 import './app.css'
 
@@ -10,11 +10,14 @@ type Screen = 'jamo' | 'build' | 'trace' | 'gate' | 'parent'
 
 // 따라쓰기를 끝낸 자모 목록 (기기 안에만 저장)
 const store = createStore<string[]>('hangulplay.done', [])
+// 숫자 읽는 소리 (부모 화면에서 선택)
+const numStore = createStore<NumRead>('hangulplay.numRead', 'native')
 
 // 한글 놀이: 자모 카드 + 글자 만들기 + 따라쓰기
 export default function App() {
   const [screen, setScreen] = useState<Screen>('jamo')
   const [done, setDone] = useState(store.get)
+  const [numRead, setNumRead] = useState(numStore.get)
   const go = (s: Screen) => {
     stopSpeaking()
     setScreen(s)
@@ -31,6 +34,11 @@ export default function App() {
     return (
       <ParentInfo
         doneCount={done.length}
+        numRead={numRead}
+        onNumRead={(r) => {
+          setNumRead(r)
+          numStore.set(r)
+        }}
         onReset={() => {
           setDone([])
           store.set([])
@@ -54,7 +62,7 @@ export default function App() {
       </nav>
       {screen === 'jamo' && <JamoBoard done={done} />}
       {screen === 'build' && <Builder />}
-      {screen === 'trace' && <Trace done={done} onDone={markDone} />}
+      {screen === 'trace' && <Trace done={done} onDone={markDone} numRead={numRead} />}
       <button className="core-parent-btn" onClick={() => go('gate')} aria-label="부모 메뉴">
         ⚙️
       </button>
