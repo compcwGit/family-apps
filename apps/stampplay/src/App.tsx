@@ -1,55 +1,56 @@
 import { useState } from 'react'
 import { ParentGate, getPlatform, playTone } from '@family/core'
+import { AnimalBoard } from './AnimalBoard'
+import { ParentPanel } from './ParentPanel'
+import { StampBoard } from './StampBoard'
+import { addStamp, loadStamps, removeStamp } from './stamps'
 import './app.css'
 
-// 임시 첫 화면: 동물 버튼판 (StampPlay 본 화면이 생기면 교체 — Issue 참고)
-const ANIMALS = [
-  { emoji: '🐶', name: '강아지', freq: 523, color: '#FFB74D' },
-  { emoji: '🐱', name: '고양이', freq: 659, color: '#F06292' },
-  { emoji: '🐮', name: '소', freq: 262, color: '#81C784' },
-  { emoji: '🐷', name: '돼지', freq: 392, color: '#F48FB1' },
-  { emoji: '🐸', name: '개구리', freq: 784, color: '#AED581' },
-  { emoji: '🦁', name: '사자', freq: 196, color: '#FFD54F' },
-]
+type Screen = 'home' | 'animals' | 'gate' | 'parent'
+
+// 도장 찍는 "쾅" + 짧은 축하음
+const stampSound = () => {
+  playTone(196)
+  setTimeout(() => playTone(523), 180)
+  setTimeout(() => playTone(784), 330)
+}
 
 export default function App() {
-  const [active, setActive] = useState<string | null>(null)
-  const [parent, setParent] = useState<'closed' | 'gate' | 'open'>('closed')
+  const [screen, setScreen] = useState<Screen>('home')
+  const [stamps, setStamps] = useState(loadStamps)
+  const [newestId, setNewestId] = useState<string | null>(null)
 
-  const tap = (name: string, freq: number) => {
-    playTone(freq)
-    setActive(name)
-    setTimeout(() => setActive(null), 400)
-  }
-
-  if (parent === 'gate') return <ParentGate onPass={() => setParent('open')} onCancel={() => setParent('closed')} />
-  if (parent === 'open')
+  if (screen === 'animals') return <AnimalBoard onBack={() => setScreen('home')} />
+  if (screen === 'gate') return <ParentGate onPass={() => setScreen('parent')} onCancel={() => setScreen('home')} />
+  if (screen === 'parent')
     return (
-      <main>
-        <h1>부모 화면</h1>
-        <p>여기에 도장 찍기, 기록 보기가 들어갈 예정이에요.</p>
-        <button className="core-btn" onClick={() => setParent('closed')}>돌아가기</button>
-      </main>
+      <ParentPanel
+        stamps={stamps}
+        onStamp={(reason) => {
+          const next = addStamp(reason)
+          setStamps(next)
+          setNewestId(next[next.length - 1].id)
+          playTone(196)
+        }}
+        onRemove={(id) => setStamps(removeStamp(id))}
+        onClose={() => {
+          setScreen('home')
+          if (newestId) stampSound()
+        }}
+      />
     )
 
   return (
-    <main>
-      <h1>동물 친구들</h1>
-      <div className="grid">
-        {ANIMALS.map((a) => (
-          <button
-            key={a.name}
-            className={active === a.name ? 'card pop' : 'card'}
-            style={{ background: a.color }}
-            onClick={() => tap(a.name, a.freq)}
-          >
-            <span className="emoji">{a.emoji}</span>
-            <span className="label">{a.name}</span>
-          </button>
-        ))}
-      </div>
+    <main onAnimationEnd={() => setNewestId(null)}>
+      <h1>칭찬 도장판</h1>
+      <StampBoard stamps={stamps} newestId={newestId} />
+      <button className="core-btn small-btn" onClick={() => setScreen('animals')}>
+        🐶 동물 친구들
+      </button>
       <footer>실행 환경: {getPlatform()}</footer>
-      <button className="core-parent-btn" onClick={() => setParent('gate')} aria-label="부모 메뉴">⚙️</button>
+      <button className="core-parent-btn" onClick={() => setScreen('gate')} aria-label="부모 메뉴">
+        ⚙️
+      </button>
     </main>
   )
 }
