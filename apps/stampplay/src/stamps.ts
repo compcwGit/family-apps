@@ -2,20 +2,23 @@ import { createStore } from '@family/core'
 
 // 도장 기록: 태블릿 안에만 저장
 // emoji: 찍을 때의 도장 그림을 함께 저장 (도장 종류를 지워도 기록은 그대로). '' = 참 잘했어요 도장
-export type Stamp = { id: string; reason: string; at: number; emoji?: string }
+// ink: 도장 잉크 색 (빨강·파랑·초록)
+export type Ink = 'red' | 'blue' | 'green'
+export const INKS: Ink[] = ['red', 'blue', 'green']
+export type Stamp = { id: string; reason: string; at: number; emoji?: string; ink?: Ink }
 
 // 칭찬도장 종류: 부모가 직접 만들고 지울 수 있음. emoji '' = 기본 "참 잘했어요" 도장
-export type Reason = { label: string; emoji: string }
+export type Reason = { label: string; emoji: string; ink?: Ink }
 
 export const ICONS = ['', '⭐', '❤️', '🌈', '🧸', '🪥', '🙇', '🍚', '🤝', '🛒', '📚', '🎨', '🚿', '🛏️', '🧹', '💪', '😊', '🌱']
 
 export const REASONS: Reason[] = [
-  { label: '정리정돈', emoji: '🧸' },
-  { label: '양치하기', emoji: '🪥' },
-  { label: '인사 잘하기', emoji: '🙇' },
-  { label: '밥 잘 먹기', emoji: '🍚' },
-  { label: '동생 돌보기', emoji: '🤝' },
-  { label: '심부름', emoji: '🛒' },
+  { label: '정리정돈', emoji: '🧸', ink: 'red' },
+  { label: '양치하기', emoji: '🪥', ink: 'blue' },
+  { label: '인사 잘하기', emoji: '🙇', ink: 'green' },
+  { label: '밥 잘 먹기', emoji: '🍚', ink: 'red' },
+  { label: '동생 돌보기', emoji: '🤝', ink: 'blue' },
+  { label: '심부름', emoji: '🛒', ink: 'green' },
 ]
 
 export const BOARD_SIZE = 10 // 약속을 정하지 않은 도장판의 칸 수
@@ -72,7 +75,7 @@ export function nextPlanOf(stamps: Stamp[], plans: Plan[]): Plan {
 export const loadStamps = () => store.get()
 
 export function addStamp(r: Reason): Stamp[] {
-  const next = [...store.get(), { id: crypto.randomUUID(), reason: r.label, at: Date.now(), emoji: r.emoji }]
+  const next = [...store.get(), { id: crypto.randomUUID(), reason: r.label, at: Date.now(), emoji: r.emoji, ink: r.ink ?? 'red' }]
   store.set(next)
   return next
 }
@@ -85,6 +88,7 @@ export function removeStamp(id: string): Stamp[] {
 
 // 예전 기록(emoji 없음)은 기본 목록에서 찾음
 export const iconOf = (s: Stamp) => s.emoji ?? REASONS.find((r) => r.label === s.reason)?.emoji ?? ''
+export const inkOf = (s: Stamp): Ink => s.ink ?? REASONS.find((r) => r.label === s.reason)?.ink ?? 'red'
 
 export const stampTime = (at: number) =>
   new Date(at).toLocaleString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short', hour: 'numeric', minute: '2-digit' })

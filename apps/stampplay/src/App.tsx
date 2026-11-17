@@ -1,12 +1,17 @@
 import { useState } from 'react'
-import { ParentGate, getPlatform, playTone } from '@family/core'
+import { getPlatform, playTone } from '@family/core'
+import { Done } from './Done'
+import { Gate } from './Gate'
+import { GoalPanel } from './GoalPanel'
+import { History } from './History'
+import { BackIcon, BookIcon, LockIcon } from './Icons'
 import { ParentPanel } from './ParentPanel'
 import { StampBoard } from './StampBoard'
-import { History } from './History'
+import { StampMark } from './StampMark'
 import { addStamp, boardsOf, loadPlans, loadReasons, loadStamps, nextPlanOf, removeStamp, saveReasons, setPlan } from './stamps'
 import './app.css'
 
-type Screen = 'home' | 'gate' | 'parent' | 'history' | 'board'
+type Screen = 'home' | 'gate' | 'parent' | 'history' | 'board' | 'done'
 
 // 도장 찍는 "쾅" + 짧은 축하음
 const stampSound = () => {
@@ -25,11 +30,12 @@ export default function App() {
   const boards = boardsOf(stamps, plans)
   const [newestId, setNewestId] = useState<string | null>(null)
 
-  if (screen === 'gate') return <ParentGate onPass={() => setScreen('parent')} onCancel={() => setScreen('home')} />
+  if (screen === 'gate') return <Gate onPass={() => setScreen('parent')} onCancel={() => setScreen('home')} />
   if (screen === 'history')
     return (
       <History
         boards={boards}
+        closeLabel={fromParent ? '부모 화면으로' : '도장판으로'}
         onOpen={(no) => {
           setOpenNo(no)
           setScreen('board')
@@ -37,21 +43,25 @@ export default function App() {
         onClose={() => setScreen(fromParent ? 'parent' : 'home')}
       />
     )
-  if (screen === 'board')
+  if (screen === 'board') {
+    const b = boards[openNo - 1] ?? boards[boards.length - 1]
     return (
-      <main>
-        <h1>📖 지난 도장판</h1>
-        <StampBoard
-          key={openNo}
-          board={boards[openNo - 1] ?? boards[boards.length - 1]}
-          newestId={null}
-          onRemove={fromParent ? (id) => setStamps(removeStamp(id)) : undefined}
-        />
-        <button className="core-btn history-btn" onClick={() => setScreen('history')}>
-          ← 칭찬 기록
-        </button>
+      <main className="sp-page">
+        <header className="sp-head">
+          <button className="sp-pill sp-pill-light" onClick={() => setScreen('history')}>
+            <BackIcon />
+            칭찬 기록
+          </button>
+          <h1 className="sp-h1">지난 도장판</h1>
+        </header>
+        <div className="sp-body">
+          <StampBoard key={openNo} board={b} newestId={null} onRemove={fromParent ? (id) => setStamps(removeStamp(id)) : undefined} />
+          <GoalPanel board={b} />
+        </div>
       </main>
     )
+  }
+
   // 부모 화면: 지금 판이 다 찼으면 다음 판(빈 판)도 함께 보여 줌
   const current = boards[boards.length - 1]
   const nextBoard = current.done ? { no: current.no + 1, plan: nextPlanOf(stamps, plans), stamps: [], done: false } : undefined
@@ -72,35 +82,65 @@ export default function App() {
           setNewestId(next[next.length - 1].id)
           playTone(196)
         }}
-        onRemove={(id) => setStamps(removeStamp(id))}
+        onRemove={(id) => {
+          setStamps(removeStamp(id))
+          if (id === newestId) setNewestId(null)
+        }}
         onHistory={() => {
           setFromParent(true)
           setScreen('history')
         }}
         onClose={() => {
-          setScreen('home')
-          if (newestId) stampSound()
+          // 새로 찍은 도장이 있으면 "도장 찍힘" 화면을 먼저 보여 줌
+          if (newestId && stamps.some((s) => s.id === newestId)) {
+            setScreen('done')
+            stampSound()
+          } else {
+            setNewestId(null)
+            setScreen('home')
+          }
         }}
       />
     )
 
+  if (screen === 'done') {
+    const stamp = stamps.find((s) => s.id === newestId) ?? stamps[stamps.length - 1]
+    const board = boards.find((b) => b.stamps.some((s) => s.id === stamp?.id)) ?? current
+    if (stamp) return <Done stamp={stamp} board={board} total={stamps.length} onClose={() => setScreen('home')} />
+  }
+
   return (
-    <main onAnimationEnd={() => setNewestId(null)}>
-      <h1>칭찬 도장판</h1>
-      <StampBoard board={current} newestId={newestId} />
-      <button
-        className="core-btn history-btn"
-        onClick={() => {
-          setFromParent(false)
-          setScreen('history')
-        }}
-      >
-        📖 칭찬 기록
-      </button>
-      <footer>실행 환경: {getPlatform()}</footer>
-      <button className="core-parent-btn" onClick={() => setScreen('gate')} aria-label="부모 메뉴">
-        ⚙️
-      </button>
+    <main className="sp-page" onAnimationEnd={(e) => e.animationName === 'sp-stamp-in' && setNewestId(null)}>
+      <header className="sp-head">
+        <div className="sp-brand">
+          <StampMark emoji="" tilt={-8} className="sp-mark-logo" />
+          <div>
+            <h1 className="sp-h1">칭찬도장판</h1>
+            <p className="sp-sub">도장을 모으면 선물이 와요</p>
+          </div>
+        </div>
+        <div className="sp-head-end sp-head-actions">
+          <button
+            className="sp-pill sp-pill-light"
+            onClick={() => {
+              setFromParent(false)
+              setScreen('history')
+            }}
+          >
+            <BookIcon size={22} />
+            칭찬 기록
+          </button>
+          <button className="sp-pill sp-pill-dark" onClick={() => setScreen('gate')}>
+            <LockIcon />
+            엄마·아빠
+          </button>
+        </div>
+      </header>
+      <div className="sp-body">
+        <StampBoard board={current} newestId={newestId} />
+        <GoalPanel board={current} />
+      </div>
+      {getPlatform() === 'web' && <p className="sp-foot">웹 미리보기</p>}
     </main>
   )
 }

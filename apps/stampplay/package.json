@@ -14,20 +14,29 @@
   },
   "dependencies": {
     "@capacitor/android": "^8.6.2",
-    "@capacitor/core": "^8.6.2"
+    "@capacitor/core": "^8.6.2",
+    "@fontsource/gowun-dodum": "^5.3.0",
+    "@fontsource/jua": "^5.3.0"
   },
   "devDependencies": {
     "@family/core": "*",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1",
     "electron": "45.3.2",
-    "electron-builder": "^26.18.0"
+    "electron-builder": "^26.18.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "build": {
     "appId": "com.compcwgit.stampplay",
     "productName": "StampPlay",
-    "directories": { "output": "release" },
-    "files": ["dist/**", "electron/**"],
-    "win": { "target": "nsis" }
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**",
+      "electron/**"
+    ],
+    "win": {
+      "target": "nsis"
+    }
   }
 }
