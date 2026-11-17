@@ -38,7 +38,13 @@ def main() -> None:
     ap = argparse.ArgumentParser(description='MeloTTS로 음성 파일 만들기')
     ap.add_argument('lines', help='음성 목록 JSON')
     ap.add_argument('out', help='저장 폴더')
-    ap.add_argument('--speed', type=float, default=0.9)
+    # 목소리 설정 — 찬욱이 샘플 비교로 고른 "D1" (2026-11-17): 조금 신나는 억양 + 안정적, 반음 2개 높게.
+    # (D3 가 더 신나지만 가끔 발음이 흐트러져서 D1 로 결정) 비교: 샘플만들기-windows.bat
+    ap.add_argument('--speed', type=float, default=1.0)
+    ap.add_argument('--sdp', type=float, default=0.8, help='억양 다양성 (MeloTTS 기본 0.2, 최대 1.0)')
+    ap.add_argument('--noise', type=float, default=0.85, help='말투 변화 (MeloTTS 기본 0.6)')
+    ap.add_argument('--noise-w', type=float, default=1.0, help='길이 변화 (MeloTTS 기본 0.8)')
+    ap.add_argument('--pitch', type=float, default=2, help='목소리 높이, 반음 (0 = 원래 높이)')
     ap.add_argument('--only', nargs='*', default=None)
     ap.add_argument('--force', action='store_true')
     ap.add_argument('--format', choices=['mp3', 'wav'], default='mp3')
@@ -77,20 +83,25 @@ def main() -> None:
             skipped += 1
             continue
         dst.parent.mkdir(parents=True, exist_ok=True)
-        if a.format == 'wav':
-            model.tts_to_file(text, speaker, str(dst), speed=a.speed)
-        else:
-            model.tts_to_file(text, speaker, str(tmp), speed=a.speed)
-            subprocess.run(
-                [ffmpeg, '-y', '-loglevel', 'error', '-i', str(tmp),
-                 '-af', TRIM, '-ac', '1', '-b:a', '64k', str(dst)],
-                check=True,
-            )
+        model.tts_to_file(text, speaker, str(tmp), speed=a.speed, sdp_ratio=a.sdp, noise_scale=a.noise, noise_scale_w=a.noise_w)
+        subprocess.run(
+            [ffmpeg, '-y', '-loglevel', 'error', '-i', str(tmp), '-af', audio_filter(a.pitch), '-ac', '1']
+            + (['-b:a', '64k'] if a.format == 'mp3' else []) + [str(dst)],
+            check=True,
+        )
         made += 1
         print(f'[{i}/{len(lines)}] {vid}: {text}')
 
     print(f'완료: 새로 만듦 {made}개, 이미 있어서 건너뜀 {skipped}개 → {out}')
     write_index(full, out, Path(a.lines))
+
+
+def audio_filter(pitch: float) -> str:
+    """앞뒤 무음 자르기 + (pitch 가 있으면) 빠르기는 그대로 두고 높이만 바꾸기"""
+    if not pitch:
+        return TRIM
+    f = 2 ** (pitch / 12)
+    return f'asetrate=44100*{f:.5f},aresample=44100,atempo={1 / f:.5f},{TRIM}'
 
 
 def write_index(lines: dict[str, str], out: Path, lines_path: Path) -> None:

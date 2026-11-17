@@ -7,3 +7,4 @@ site/
 *.log
 .DS_Store
 __pycache__/
+scripts/tts/samples/
