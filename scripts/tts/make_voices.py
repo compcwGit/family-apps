@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""MeloTTS(MIT 라이선스)로 앱에 넣을 음성 파일 만들기 — 집 PC(WSL)에서 실행
+"""MeloTTS(MIT 라이선스)로 앱에 넣을 음성 파일 만들기 — 집 PC(WSL 또는 Windows: 음성만들기-windows.bat)에서 실행
 
 사용법 (저장소 루트에서, melo 가상환경을 켠 상태로):
   python scripts/tts/make_voices.py apps/numberplay/voice-lines.json apps/numberplay/public/voice
@@ -56,8 +56,13 @@ def main() -> None:
         if missing:
             sys.exit(f'목록에 없는 id: {missing}')
         lines = {k: v for k, v in lines.items() if any(hit(k, o) for o in a.only)}
-    if a.format == 'mp3' and not shutil.which('ffmpeg'):
-        sys.exit('ffmpeg가 필요합니다: sudo apt install ffmpeg  (또는 --format wav)')
+    ffmpeg = shutil.which('ffmpeg')
+    if a.format == 'mp3' and not ffmpeg:
+        try:  # Windows: pip 의 imageio-ffmpeg 가 ffmpeg 실행 파일을 같이 줌
+            import imageio_ffmpeg
+            ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
+        except ImportError:
+            sys.exit('ffmpeg가 필요합니다: sudo apt install ffmpeg 또는 pip install imageio-ffmpeg  (또는 --format wav)')
 
     from melo.api import TTS  # 설치 안 됐으면 여기서 에러 → scripts/tts/README.md 참고
 
@@ -77,7 +82,7 @@ def main() -> None:
         else:
             model.tts_to_file(text, speaker, str(tmp), speed=a.speed)
             subprocess.run(
-                ['ffmpeg', '-y', '-loglevel', 'error', '-i', str(tmp),
+                [ffmpeg, '-y', '-loglevel', 'error', '-i', str(tmp),
                  '-af', TRIM, '-ac', '1', '-b:a', '64k', str(dst)],
                 check=True,
             )
