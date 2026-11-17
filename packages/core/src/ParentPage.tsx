@@ -1,6 +1,8 @@
-// 부모 화면(산수 잠금 뒤) 공통 — 디자인 시안 "스티커북" 부모 화면: 차분한 2단 카드
-// 앱 소개, 누리과정 영역, 소리(녹음/기기 음성), 모은 별, 앱별 설정(children), 개인정보처리방침
-import { useState, type CSSProperties, type ReactNode } from 'react'
+// 부모 화면(산수 잠금 뒤) 공통 — 디자인 시안 "스티커북" 부모 화면
+// 앱 소개, 누리과정 영역, 소리(녹음/기기 음성), 모은 별, 앱별 설정(children = ParentSection), 개인정보처리방침
+// 칸을 위쪽 탭으로 하나씩 보여 주고, 화면에 맞게 확대/축소 → 폰에서도 스크롤 없음
+import { Children, isValidElement, useState, type CSSProperties, type ReactElement, type ReactNode } from 'react'
+import { FitStage } from './FitStage'
 import { eun } from './talk'
 import { hasVoiceFiles, setUseVoiceFiles, usesVoiceFiles } from './speech'
 
@@ -71,6 +73,94 @@ export function ParentPage({
 }) {
   const [files, setFiles] = useState(usesVoiceFiles)
   const [armed, setArmed] = useState(false) // 별 초기화: 실수 막기 위해 두 번 누르기
+  const [tab, setTab] = useState(0)
+
+  const sections: ReactElement<{ title: string }>[] = [
+    <ParentSection key="about" title="앱 소개">
+      <p>{about}</p>
+    </ParentSection>,
+  ]
+  if (nuri)
+    sections.push(
+      <ParentSection key="nuri" title="누리과정">
+        <p className="muted">2019 개정 누리과정(만 3~5세)의 영역에 맞춰 놀이를 구성했습니다.</p>
+        <ul className="sb-nuri">
+          {nuri.map(([area, what]) => (
+            <li key={area}>
+              <span className="sb-chip" style={{ borderColor: NURI_COLORS[area] ?? '#2A2840' }}>
+                {area}
+              </span>
+              <span>{what}</span>
+            </li>
+          ))}
+        </ul>
+      </ParentSection>,
+    )
+  if (stars)
+    sections.push(
+      <ParentSection
+        key="stars"
+        title="모은 별"
+        action={
+          onReset && (
+            <button
+              className="sb-pill quiet"
+              onClick={() => {
+                if (!armed) return setArmed(true)
+                setArmed(false)
+                onReset()
+              }}
+            >
+              {armed ? '한 번 더 누르면 지워요' : '처음부터'}
+            </button>
+          )
+        }
+      >
+        <div className="sb-stars">
+          {stars.map(([game, n]) => (
+            <div key={game}>
+              <span>{game}</span>
+              <b>{n}</b>
+            </div>
+          ))}
+        </div>
+      </ParentSection>,
+    )
+  sections.push(
+    <ParentSection key="sound" title="소리">
+      {hasVoiceFiles() ? (
+        <Segmented
+          label="읽어 주는 목소리"
+          value={files ? 'files' : 'tts'}
+          options={[
+            ['files', '녹음한 목소리'],
+            ['tts', '기기 음성 (TTS)'],
+          ]}
+          onChange={(v) => {
+            setFiles(v === 'files')
+            setUseVoiceFiles(v === 'files')
+          }}
+        />
+      ) : null}
+      <p className="muted">소리가 나지 않으면 기기 설정의 "텍스트 음성 변환"에서 한국어 음성을 설치해 주세요.</p>
+    </ParentSection>,
+  )
+  // 앱별 설정 (ParentSection 의 title 이 탭 이름)
+  Children.forEach(children, (c) => {
+    if (isValidElement<{ title: string }>(c)) sections.push(c)
+  })
+  sections.push(
+    <ParentSection key="privacy" title="개인정보">
+      <p>
+        {eun(title)} 이름, 사진, 위치, 기기 정보 등 <b>어떤 개인정보도 수집·저장·전송하지 않습니다.</b>
+      </p>
+      <p className="muted">
+        놀이 기록(모은 별 등)과 설정은 기기 안에만 저장되며, 인터넷 연결 없이 동작합니다. 광고·결제·회원가입·외부 링크가 없습니다.
+      </p>
+    </ParentSection>,
+  )
+  const at = Math.min(tab, sections.length - 1)
+
   return (
     <div className="sb-parent" style={{ '--accent': accent } as CSSProperties}>
       <header className="sb-parent-top">
@@ -84,87 +174,16 @@ export function ParentPage({
           아이 화면으로
         </button>
       </header>
-      <div className="sb-parent-grid">
-        <div className="sb-col">
-          <ParentSection title={title}>
-            <p>{about}</p>
-          </ParentSection>
-          {nuri && (
-            <ParentSection title="누리과정 영역">
-              <p className="muted">2019 개정 누리과정(만 3~5세)의 영역에 맞춰 놀이를 구성했습니다.</p>
-              <ul className="sb-nuri">
-                {nuri.map(([area, what]) => (
-                  <li key={area}>
-                    <span className="sb-chip" style={{ borderColor: NURI_COLORS[area] ?? '#2A2840' }}>
-                      {area}
-                    </span>
-                    <span>{what}</span>
-                  </li>
-                ))}
-              </ul>
-            </ParentSection>
-          )}
-          <ParentSection title="소리">
-            {hasVoiceFiles() ? (
-              <Segmented
-                label="읽어 주는 목소리"
-                value={files ? 'files' : 'tts'}
-                options={[
-                  ['files', '녹음한 목소리'],
-                  ['tts', '기기 음성 (TTS)'],
-                ]}
-                onChange={(v) => {
-                  setFiles(v === 'files')
-                  setUseVoiceFiles(v === 'files')
-                }}
-              />
-            ) : null}
-            <p className="muted">
-              소리가 나지 않으면 기기 설정의 "텍스트 음성 변환"에서 한국어 음성을 설치해 주세요.
-            </p>
-          </ParentSection>
-        </div>
-        <div className="sb-col">
-          {stars && (
-            <ParentSection
-              title="모은 별"
-              action={
-                onReset && (
-                  <button
-                    className="sb-pill quiet"
-                    onClick={() => {
-                      if (!armed) return setArmed(true)
-                      setArmed(false)
-                      onReset()
-                    }}
-                  >
-                    {armed ? '한 번 더 누르면 지워요' : '처음부터'}
-                  </button>
-                )
-              }
-            >
-              <div className="sb-stars">
-                {stars.map(([game, n]) => (
-                  <div key={game}>
-                    <span>{game}</span>
-                    <b>{n}</b>
-                  </div>
-                ))}
-              </div>
-            </ParentSection>
-          )}
-          {children}
-          <ParentSection title="개인정보처리방침">
-            <p>
-              {eun(title)} 이름, 사진, 위치, 기기 정보 등 <b>어떤 개인정보도 수집·저장·전송하지 않습니다.</b>
-            </p>
-            <p className="muted">
-              놀이 기록(모은 별 등)과 설정은 기기 안에만 저장되며, 인터넷 연결 없이 동작합니다. 광고·결제·회원가입·외부 링크가
-              없습니다.
-            </p>
-          </ParentSection>
-        </div>
-      </div>
+      <nav className="sb-ptabs" role="tablist" aria-label="부모 메뉴">
+        {sections.map((sec, i) => (
+          <button key={sec.props.title} role="tab" aria-selected={i === at} className={i === at ? 'on' : ''} onClick={() => setTab(i)}>
+            {sec.props.title}
+          </button>
+        ))}
+      </nav>
+      <FitStage key={at} className="sb-pstage" design={[760, 400]} max={1.25} narrow={700}>
+        {sections[at]}
+      </FitStage>
     </div>
   )
 }

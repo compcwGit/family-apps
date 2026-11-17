@@ -1,3 +1,4 @@
+import { FitStage } from './FitStage'
 import { useMemo } from 'react'
 
 // 부모 잠금: 두 자리 덧셈. 매번 새 문제, 틀리면 닫힘.
@@ -14,7 +15,7 @@ export function ParentGate({ onPass, onCancel }: { onPass: () => void; onCancel:
   const q = useMemo(makeQuestion, [])
 
   return (
-    <div className="core-gate">
+    <FitStage className="core-gate" design={[560, 420]} max={1.4}>
       <p className="core-gate-title">어른만 풀어주세요</p>
       <p className="core-gate-q">
         {q.a} + {q.b} = ?
@@ -29,6 +30,6 @@ export function ParentGate({ onPass, onCancel }: { onPass: () => void; onCancel:
       <button className="core-link" onClick={onCancel}>
         닫기
       </button>
-    </div>
+    </FitStage>
   )
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { listKoreanVoices, setSpeechOptions, speak, type SpeechOptions } from '@family/core'
+import { listKoreanVoices, setSpeechOptions, speak, type SpeechOptions, ParentSection } from '@family/core'
 import { SAMPLE } from './talk'
 const RATES = [
   { v: 0.6, label: '천천히' },
@@ -13,7 +13,8 @@ const PITCHES = [
 ]
 
 // 부모 화면: 목소리·속도·높낮이 고르기 (고르면 바로 들려줌)
-export function VoiceSettings({ value, onChange }: { value: SpeechOptions; onChange: (v: SpeechOptions) => void }) {
+// title: 부모 화면 탭 이름 (ParentPage 가 읽음)
+export function VoiceSettings({ value, onChange }: { title: string; value: SpeechOptions; onChange: (v: SpeechOptions) => void }) {
   const [voices, setVoices] = useState<{ id: string; name: string; local: boolean }[] | null>(null)
   useEffect(() => {
     listKoreanVoices().then(setVoices)
@@ -37,30 +38,28 @@ export function VoiceSettings({ value, onChange }: { value: SpeechOptions; onCha
   )
 
   return (
-    <section className="sb-card voice-settings">
-      <h2>목소리</h2>
-      <div className="voice-list">
-        <button className={value.voice === '' ? 'voice on' : 'voice'} onClick={() => change({ voice: '' })}>
-          기기 기본 목소리
-        </button>
+    <ParentSection title="목소리">
+      <select className="voice-select" aria-label="목소리 고르기" value={value.voice} onChange={(e) => change({ voice: e.target.value })}>
+        <option value="">기기 기본 목소리</option>
         {voices?.map((v, i) => (
-          <button key={v.id} className={value.voice === v.id ? 'voice on' : 'voice'} onClick={() => change({ voice: v.id })}>
-            목소리 {i + 1} <small>{v.name}{v.local ? '' : ' · 인터넷 필요'}</small>
-          </button>
+          <option key={v.id} value={v.id}>
+            목소리 {i + 1} · {v.name}
+            {v.local ? '' : ' · 인터넷 필요'}
+          </option>
         ))}
-      </div>
+      </select>
       {voices && voices.length === 0 && (
         <p>이 기기에서 고를 수 있는 한국어 목소리가 없어요. 기기 설정의 "텍스트 음성 변환"에서 한국어 음성을 설치해 주세요.</p>
       )}
-      <h2>읽는 속도</h2>
+      <h3>읽는 속도</h3>
       {seg(RATES, value.rate, (rate) => change({ rate }))}
-      <h2>목소리 높이</h2>
+      <h3>목소리 높이</h3>
       {seg(PITCHES, value.pitch, (pitch) => change({ pitch }))}
       <p>
         <button className="core-link" onClick={() => speak(SAMPLE)}>
-          🔊 들어 보기
+          들어 보기
         </button>
       </p>
-    </section>
+    </ParentSection>
   )
 }

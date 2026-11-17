@@ -92,6 +92,7 @@ export default function App() {
           />
         </ParentSection>
         <VoiceSettings
+          title="목소리"
           value={voice}
           onChange={(v) => {
             setVoice(v)

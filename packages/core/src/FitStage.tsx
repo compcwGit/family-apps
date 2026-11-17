@@ -6,10 +6,21 @@ import { createContext, useLayoutEffect, useRef, type ReactNode } from 'react'
 // 끌어다 놓기(useDrag)가 손가락 이동을 배율로 나눠서 쓰도록 지금 배율을 알려 줌
 export const FitScale = createContext<{ current: number }>({ current: 1 })
 
-const MAX = 1.5
 const PAD = 20
 
-export function FitStage({ children }: { children: ReactNode }) {
+export function FitStage({
+  children,
+  className = 'sb-stage',
+  design = [1000, 600],
+  max = 1.5,
+  narrow = 0,
+}: {
+  children: ReactNode
+  className?: string
+  design?: [landscape: number, portrait: number] // 배치할 때 쓰는 폭
+  max?: number // 최대 확대 배율
+  narrow?: number // 폭이 이보다 좁으면 가로로 길어도 세로용 폭으로 배치 (부모 화면)
+}) {
   const stage = useRef<HTMLDivElement>(null)
   const inner = useRef<HTMLDivElement>(null)
   const scale = useRef({ current: 1 }).current
@@ -24,8 +35,8 @@ export function FitStage({ children }: { children: ReactNode }) {
       const W = st.clientWidth - PAD * 2
       const H = st.clientHeight - PAD * 2
       if (W <= 0 || H <= 0) return void (busy = false)
-      const design = W >= H ? 1000 : 600
-      let s = Math.min(W / design, MAX)
+      const base = W >= H && W >= narrow ? design[0] : design[1]
+      let s = Math.min(W / base, max)
       el.style.width = `${W / s}px`
       let h = el.offsetHeight
       if (h * s > H) {
@@ -33,7 +44,7 @@ export function FitStage({ children }: { children: ReactNode }) {
         s = H / h
         el.style.width = `${W / s}px`
         h = el.offsetHeight
-        s = Math.min(s, H / h, MAX)
+        s = Math.min(s, H / h, max)
       }
       const w = el.offsetWidth
       scale.current = s
@@ -45,10 +56,11 @@ export function FitStage({ children }: { children: ReactNode }) {
     ro.observe(st)
     ro.observe(el)
     return () => ro.disconnect()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scale])
 
   return (
-    <div className="sb-stage" ref={stage}>
+    <div className={className} ref={stage}>
       <FitScale.Provider value={scale}>
         <div className="sb-fit" ref={inner}>
           {children}
