@@ -35,6 +35,12 @@ npm run dev -w apps/hangulplay    # 듣고 찾기, 첫소리 찾기
 
 자세한 내용: [docs/ideas/005-nuri-games.md](ideas/005-nuri-games.md)
 
+### 새 디자인 (스티커북, 2026-11-17)
+- [ ] 태블릿에서 왼쪽 놀이 목록·위 줄 말풍선 크기, 글꼴(Jua)이 보이는지
+- [ ] 칭찬 화면(별 +1)이 너무 길거나 가리지 않는지
+- [ ] 폰 세로 화면도 쓸 만한지 (놀이 목록이 위로 올라감)
+- [ ] 아직 이모지인 그림을 직접 그린 그림으로 바꿀지 → [docs/design.md](design.md)
+
 ## 3. 녹음 음성 만들기 (MeloTTS)
 
 처음이면 [scripts/tts/README.md](../scripts/tts/README.md) **1. 설치**부터 (WSL Ubuntu, 한 번만).

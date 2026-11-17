@@ -1,22 +1,39 @@
+/* 모양 놀이 — 스티커북 (공통 틀·카드는 core/style.css) */
+
 /* 끼리끼리 모으기 */
-.sort-baskets { width: 100%; }
-.sort-basket { flex: 1; min-width: 240px; max-width: 380px; min-height: 220px; border-radius: 32px; padding: 14px;
-               border: 5px dashed rgba(0,0,0,.18); display: flex; flex-direction: column; align-items: center; }
-.sort-label { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 800; color: #3E2723; }
+.sort-baskets { width: 100%; gap: 40px; }
+.sort-basket { flex: 1; min-width: 260px; max-width: 400px; min-height: 230px; border-radius: 36px; padding: 16px;
+               border: 5px dashed var(--ink); display: flex; flex-direction: column; align-items: center; }
+.sort-label { display: flex; align-items: center; gap: 12px; font-family: var(--jua); font-size: 30px; color: var(--ink);
+              background: #fff; border: 4px solid var(--ink); border-radius: 999px; padding: 4px 20px 4px 8px; }
 .sort-label svg { width: 48px; height: 48px; }
-.sort-dot { width: 40px; height: 40px; border-radius: 50%; border: 4px solid rgba(0,0,0,.2); }
-.sort-in { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-top: 10px; }
-.sort-mini { width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; animation: g-pop .4s ease; }
-.sort-mini .g-emoji { font-size: 3rem; }
-.sort-mini svg { width: 56px; height: 56px; }
+.sort-dot { width: 40px; height: 40px; border-radius: 50%; border: 4px solid var(--ink); }
+.sort-in { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 14px; }
+.sort-mini { width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; animation: g-pop .4s ease; }
+.sort-mini .g-emoji { font-size: 3.2rem; }
+.sort-mini svg { width: 60px; height: 60px; }
+.sort-tray { gap: 20px; }
+.sort-tray .g-piece { width: 120px; height: 120px; }
+.sort-tray .g-piece svg { width: 100px; height: 100px; }
+.sort-tray .g-emoji { font-size: 4.6rem; }
 
 /* 색칠 놀이 */
-.color-pics { flex: 1; }
-.color-pic { border: none; border-radius: 18px; font-size: 2.2rem; padding: 6px 14px; background: #EFEBE9; cursor: pointer; }
-.color-pic.on { background: #FFB74D; box-shadow: 0 4px 0 rgba(0,0,0,.15); }
-.color-canvas { width: min(88vw, 62vh, 560px); aspect-ratio: 1; background: #fff; border-radius: 28px;
-                box-shadow: 0 6px 0 rgba(0,0,0,.1); touch-action: manipulation; }
+.color-pics { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+.color-pic { height: 56px; padding: 0 22px; border-radius: 999px; font-family: var(--jua); font-size: 24px; color: var(--ink);
+             background: var(--paper); border: 4px solid var(--ink); box-shadow: 0 3px 0 var(--ink); cursor: pointer; }
+.color-pic.on { background: var(--accent); box-shadow: 0 5px 0 var(--ink); }
+.color-main { display: flex; align-items: center; justify-content: center; gap: 56px; flex-wrap: wrap; }
+.color-canvas { width: min(80vw, 54vh, 460px); aspect-ratio: 1; background: #fff; border: 4px solid var(--line); border-radius: 32px;
+                padding: 8px; touch-action: manipulation; }
 .color-canvas > * { cursor: pointer; transition: fill .15s; }
-.color-palette { align-items: center; }
-.color-chip { width: 58px; height: 58px; border-radius: 50%; border: 4px solid rgba(0,0,0,.15); cursor: pointer; font-size: 1.6rem; }
-.color-chip.on { border-color: #3E2723; transform: scale(1.15); }
+.color-palette { display: grid; grid-template-columns: repeat(3, 72px); gap: 20px; justify-items: center; }
+.color-chip { width: 72px; height: 72px; border-radius: 50%; border: 4px solid var(--ink); box-shadow: 0 5px 0 var(--ink); cursor: pointer;
+              display: flex; align-items: center; justify-content: center; color: var(--ink); }
+.color-chip.on { border-width: 5px; box-shadow: 0 0 0 6px #fff, 0 0 0 10px var(--ink); }
+.color-clear { grid-column: span 3; height: 52px; padding: 0 20px; border-radius: 999px; border: 3px solid var(--dash); background: #fff;
+               font-family: var(--jua); font-size: 22px; color: var(--ink-soft); cursor: pointer; }
+@media (max-width: 760px) {
+  .color-palette { grid-template-columns: repeat(6, 52px); gap: 12px; }
+  .color-chip { width: 52px; height: 52px; }
+  .color-clear { grid-column: span 6; }
+}

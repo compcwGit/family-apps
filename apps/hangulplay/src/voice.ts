@@ -15,7 +15,7 @@ import { CHEERS, PRAISES, SAMPLE, jamoLine } from './talk'
 import { WORDS, firstSound } from './words'
 
 // 받침이 있으면 '으로', 없거나 ㄹ 받침이면 '로' (기역으로, 리을로)
-const euro = (w: string) => {
+export const euro = (w: string) => {
   const b = (w.charCodeAt(w.length - 1) - 0xac00) % 28
   return w + (b === 0 || b === 8 ? '로' : '으로')
 }

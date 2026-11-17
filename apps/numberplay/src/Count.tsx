@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { useFeedback, useSay, Party, GameTop, speak, pick, type GameProps } from '@family/core'
+import { Critter, useFeedback, useSay, Party, GameTop, speak, pick, type CritterKind, type GameProps } from '@family/core'
 import { readNumber, type Mode } from './numbers'
 import { SAY } from './voice'
 
 // 몇 개일까?: 그림을 세어 보고 숫자 고르기. 그림을 누르면 하나씩 세어 줌. 별 5개부터 10까지
-const THINGS = ['🍎', '🐶', '🐱', '🐟', '⭐', '🚗', '🎈', '🐤', '🍓', '🦋', '🌸', '🐸']
+const THINGS: CritterKind[] = ['chick', 'cat', 'dog', 'pig', 'rabbit', 'bear', 'duck', 'frog']
 
 function makeRound(max: number, prev = 0) {
   let n = prev
@@ -43,12 +43,12 @@ export function Count({ stars, onStar, mode }: GameProps & { mode: Mode }) {
   return (
     <div className="g-game">
       <GameTop stars={stars} onAgain={() => speak(ask)}>
-        몇 개일까요?
+        몇 마리일까요?
       </GameTop>
       <div className="count-field">
         {Array.from({ length: round.n }, (_, i) => (
           <button key={i} className={'count-item' + (tapped.includes(i) ? ' on' : '')} onClick={() => count(i)}>
-            {round.thing}
+            <Critter kind={round.thing} size={round.n > 6 ? 96 : 130} />
             {tapped.includes(i) && <b>{tapped.indexOf(i) + 1}</b>}
           </button>
         ))}
@@ -60,7 +60,7 @@ export function Count({ stars, onStar, mode }: GameProps & { mode: Mode }) {
           </button>
         ))}
       </div>
-      <Party show={fb.party} />
+      <Party show={fb.party} text={fb.line} />
     </div>
   )
 }

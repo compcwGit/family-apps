@@ -29,7 +29,7 @@ export function Listen({ stars, onStar }: GameProps) {
   return (
     <div className="g-game">
       <GameTop stars={stars} onAgain={() => speak(ask)}>
-        잘 듣고 찾아요 👂
+        잘 듣고 찾아요
       </GameTop>
       <div className="g-row">
         {round.choices.map((c) => (
@@ -43,7 +43,7 @@ export function Listen({ stars, onStar }: GameProps) {
           </button>
         ))}
       </div>
-      <Party show={fb.party} />
+      <Party show={fb.party} text={fb.line} />
     </div>
   )
 }

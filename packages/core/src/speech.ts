@@ -3,6 +3,7 @@
 import { TextToSpeech } from '@capacitor-community/text-to-speech'
 import { playTone } from './sound'
 import { splitSentences } from './talk'
+import { createStore } from './storage'
 
 // 읽기 설정. 앱마다 setSpeechOptions 로 바꿀 수 있음 (기본값은 기존과 같음)
 // voice: 목소리 id (listKoreanVoices 의 id), '' = 기기 기본 목소리
@@ -61,7 +62,18 @@ function playFile(src: string, id: number): Promise<boolean> {
     audio.play().catch(() => resolve(false))
   })
 }
+// 부모 화면에서 "녹음한 목소리 / 기기 음성" 고르기 (기기 안에 저장)
+const preferStore = createStore<boolean>('core.voiceFiles', true)
+let preferFiles = preferStore.get()
+export const hasVoiceFiles = () => Object.keys(files).length > 0
+export const usesVoiceFiles = () => preferFiles
+export function setUseVoiceFiles(on: boolean) {
+  preferFiles = on
+  preferStore.set(on)
+}
+
 function clipsFor(text: string): string[] | null {
+  if (!preferFiles) return null
   if (files[text]) return [files[text]]
   const parts = splitSentences(text).map((s) => files[s])
   return parts.length && parts.every(Boolean) ? parts : null

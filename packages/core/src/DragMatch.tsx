@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react'
 import { useDrag } from './drag'
 import { speak } from './speech'
 import { useFeedback, Party, GameTop } from './game'
+import { CheckIcon } from './icons'
 import { shuffle, MATCH } from './talk'
 
 export type MatchItem = { id: string; name: string; piece: ReactNode; hole: ReactNode }
@@ -44,11 +45,21 @@ export function DragMatch({
       </GameTop>
       <div className="g-row">
         {items.map((i) => (
-          <div key={i.id} className="g-drop" data-drop={i.id}>
-            {placed.includes(i.id) ? <div className="g-placed">{i.piece}</div> : i.hole}
+          <div key={i.id} className={'g-drop' + (placed.includes(i.id) ? ' filled' : '')} data-drop={i.id}>
+            {placed.includes(i.id) ? (
+              <>
+                <div className="g-placed">{i.piece}</div>
+                <span className="g-check" aria-label="맞음">
+                  <CheckIcon />
+                </span>
+              </>
+            ) : (
+              i.hole
+            )}
           </div>
         ))}
       </div>
+      <div className="g-line" />
       <div className="g-row g-tray">
         {order.map((id) =>
           placed.includes(id) ? (
@@ -66,7 +77,7 @@ export function DragMatch({
           ),
         )}
       </div>
-      <Party show={fb.party} />
+      <Party show={fb.party} text={fb.line} />
     </div>
   )
 }

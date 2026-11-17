@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { DragMatch, shuffle, type GameProps } from '@family/core'
+import { Critter, DragMatch, shuffle, type GameProps } from '@family/core'
 import { ANIMALS } from './animals'
 import { SAY } from './voice'
 
@@ -14,8 +14,8 @@ export function Shadow({ stars, onStar }: GameProps) {
       items={rounds.get(round)!.map((a) => ({
         id: a.name,
         name: a.name,
-        piece: <span className="g-emoji">{a.emoji}</span>,
-        hole: <span className="g-emoji g-shadow">{a.emoji}</span>,
+        piece: <Critter kind={a.critter} size={150} />,
+        hole: <Critter kind={a.critter} size={150} shadow />,
       }))}
       prompt={SAY.shadow}
       stars={stars}

@@ -8,7 +8,8 @@
     ".": "./src/index.ts",
     "./style.css": "./src/style.css",
     "./talk": "./src/talk.ts",
-    "./voicelist": "./src/voicelist.ts"
+    "./voicelist": "./src/voicelist.ts",
+    "./critter": "./src/Critter.tsx"
   },
   "peerDependencies": {
     "react": "^19.0.0",

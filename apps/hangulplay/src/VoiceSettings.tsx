@@ -37,7 +37,7 @@ export function VoiceSettings({ value, onChange }: { value: SpeechOptions; onCha
   )
 
   return (
-    <section>
+    <section className="sb-card voice-settings">
       <h2>목소리</h2>
       <div className="voice-list">
         <button className={value.voice === '' ? 'voice on' : 'voice'} onClick={() => change({ voice: '' })}>

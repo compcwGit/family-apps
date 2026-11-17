@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { useFeedback, useSay, Party, GameTop, speak, shuffle, pick, type GameProps } from '@family/core'
+import { Critter, useFeedback, useSay, Party, GameTop, speak, shuffle, pick, type GameProps } from '@family/core'
 import { SAY, SIZE_THINGS as THINGS } from './voice'
 
 // 크기 순서: 작은 것부터(또는 큰 것부터) 차례로 눌러서 줄 세우기. 판마다 방향을 바꿈. 별 6개부터 4개, 12개부터 5개
-const SIZES = [3, 4.4, 5.8, 7.2, 8.6] // rem
+const SIZES = [64, 92, 120, 150, 180] // px
 
 function makeRound(k: number, n: number) {
   return { thing: pick(THINGS), big: n % 2 === 1, order: shuffle(SIZES.slice(0, k).map((_, i) => i)) }
@@ -37,29 +37,29 @@ export function Size({ stars, onStar }: GameProps) {
   return (
     <div className="g-game">
       <GameTop stars={stars} onAgain={() => speak(ask)}>
-        {round.big ? '큰 것부터 ⬇️' : '작은 것부터 ⬆️'}
+        {ask}
       </GameTop>
       <div className="size-field">
         {round.order.map((s) => (
           <button
             key={s}
             className={'size-item' + (line.includes(s) ? ' gone' : '') + (fb.wrong === String(s) ? ' g-shake' : '')}
-            style={{ fontSize: `${SIZES[s]}rem` }}
             onClick={() => tap(s)}
+            aria-label={`${round.thing.n} ${s + 1}`}
           >
-            {round.thing.e}
+            <Critter kind={round.thing.k} size={SIZES[s]} />
           </button>
         ))}
       </div>
       <div className="size-line">
         {line.map((s, i) => (
           <div key={s} className="size-slot">
-            <span style={{ fontSize: `${SIZES[s] * 0.8}rem` }}>{round.thing.e}</span>
+            <Critter kind={round.thing.k} size={SIZES[s] * 0.6} />
             <b>{i + 1}</b>
           </div>
         ))}
       </div>
-      <Party show={fb.party} />
+      <Party show={fb.party} text={fb.line} />
     </div>
   )
 }

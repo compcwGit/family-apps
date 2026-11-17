@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { playTone, speak } from '@family/core'
+import { Critter, playTone, speak } from '@family/core'
 import { ANIMALS } from './animals'
 import { SAY } from './voice'
 
-// 동물 피아노: 건반 8개(도~높은 도). 🎵 피아노 소리 / 🐾 동물 울음소리 바꾸기
+// 동물 피아노: 건반 8개(도~높은 도). 피아노 소리 소리 / 🐾 동물 울음소리 바꾸기
 const KEYS = [
   { note: '도', freq: 262, color: '#EF5350' },
   { note: '레', freq: 294, color: '#FF9800' },
@@ -27,18 +27,18 @@ export function Piano() {
   }
   return (
     <div className="g-game">
-      <div className="g-row">
-        <button className={'core-btn' + (animal ? ' off' : '')} onClick={() => setAnimal(false)}>
-          🎵 피아노
+      <div className="piano-mode" role="radiogroup" aria-label="소리 고르기">
+        <button role="radio" aria-checked={!animal} className={animal ? '' : 'on'} onClick={() => setAnimal(false)}>
+          피아노 소리
         </button>
-        <button className={'core-btn' + (animal ? '' : ' off')} onClick={() => setAnimal(true)}>
-          🐾 동물 소리
+        <button role="radio" aria-checked={animal} className={animal ? 'on' : ''} onClick={() => setAnimal(true)}>
+          동물 소리
         </button>
       </div>
       <div className="piano">
         {KEYS.map((k, i) => (
           <button key={i} className={'piano-key' + (hit === i ? ' hit' : '')} style={{ background: k.color }} onPointerDown={() => press(i)}>
-            <span className="piano-animal">{ANIMAL_KEYS[i].emoji}</span>
+            <span className="piano-animal"><Critter kind={ANIMAL_KEYS[i].critter} size={72} /></span>
             <span className="piano-note">{k.note}</span>
           </button>
         ))}

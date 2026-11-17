@@ -3,20 +3,22 @@
 import { voiceList, iga } from '@family/core/voicelist'
 import { readNumber, type Mode } from './numbers'
 
-export const SIZE_THINGS = [
-  { e: '🐻', n: '곰' },
-  { e: '🐘', n: '코끼리' },
-  { e: '🐟', n: '물고기' },
-  { e: '🍎', n: '사과' },
-  { e: '🌳', n: '나무' },
-  { e: '🚗', n: '자동차' },
-  { e: '🎈', n: '풍선' },
+import type { CritterKind } from '@family/core/critter'
+
+// 크기 순서에 나오는 캐릭터 (core/Critter.tsx)
+export const SIZE_THINGS: { k: CritterKind; n: string }[] = [
+  { k: 'bear', n: '곰' },
+  { k: 'elephant', n: '코끼리' },
+  { k: 'rabbit', n: '토끼' },
+  { k: 'dog', n: '강아지' },
+  { k: 'cat', n: '고양이' },
+  { k: 'chick', n: '병아리' },
 ]
 
 export const SAY = {
   good: '잘했어요!',
   done: '다 셌어요! 최고!',
-  countAsk: '몇 개일까요? 하나씩 눌러서 세어 봐요!',
+  countAsk: '몇 마리일까요? 하나씩 눌러서 세어 봐요!',
   countOk: (n: number, m: Mode) => `모두 ${readNumber(n, m)}!`,
   countNo: '다시 하나씩 세어 볼까?',
   sizeAsk: (big: boolean, thing: string) => `제일 ${big ? '큰' : '작은'} ${thing}부터 차례로 눌러요!`,

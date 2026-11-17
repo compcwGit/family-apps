@@ -36,6 +36,6 @@ export const PICTURES: { id: string; name: string; icon: string; parts: Part[] }
       d('M128 110 L154 150 L128 140 Z'), d('M82 140 L118 140 L100 190 Z'), c(30, 40, 6), c(170, 60, 5), c(160, 18, 4)],
   },
 ]
-export const PALETTE = ['#EF5350', '#FF9800', '#FFEB3B', '#66BB6A', '#42A5F5', '#3F51B5', '#AB47BC', '#F48FB1', '#8D6E63', '#212121', '#FFFFFF']
+export const PALETTE = ['#FF6B57', '#FF9A3C', '#FFC94A', '#63D2A1', '#6EC1F5', '#5B6CE0', '#B79CF7', '#FF9EC4', '#A86F4C', '#2A2840', '#FFFFFF']
 export const NAMES = ['빨강', '주황', '노랑', '초록', '파랑', '남색', '보라', '분홍', '갈색', '검정', '지우개']
 

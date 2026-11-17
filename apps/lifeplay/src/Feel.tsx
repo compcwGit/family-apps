@@ -37,7 +37,7 @@ export function Feel({ stars, onStar }: GameProps) {
           </button>
         ))}
       </div>
-      <Party show={fb.party} />
+      <Party show={fb.party} text={fb.line} />
     </div>
   )
 }

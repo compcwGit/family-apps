@@ -40,11 +40,11 @@ export function Counter({ n, setN, mode }: { n: number; setN: (n: number) => voi
     <div className="counter">
       <button className={pop ? 'big pop' : 'big'} onClick={next} disabled={n >= 100}
               style={{ background: ROW_COLORS[Math.min(tens, 9)] }}>
-        <span className="big-num">{n === 0 ? '👆' : n}</span>
+        <span className="big-num">{n}</span>
         <span className="big-word">{n === 0 ? '눌러서 세어 봐요' : readNumber(n, mode)}</span>
       </button>
 
-      {n === 100 && <p className="party">🎉 100까지 다 셌어요! 🎉</p>}
+      {n === 100 && <p className="party">100까지 다 셌어요!</p>}
 
       <div className="blocks" aria-hidden>
         {Array.from({ length: tens }, (_, i) => (
@@ -56,8 +56,8 @@ export function Counter({ n, setN, mode }: { n: number; setN: (n: number) => voi
       </div>
 
       <div className="row">
-        <button className="core-btn" onClick={back} disabled={n === 0}>◀ 하나 빼기</button>
-        <button className="core-btn" onClick={reset}>🔄 처음부터</button>
+        <button className="core-btn" onClick={back} disabled={n === 0}>하나 빼기</button>
+        <button className="core-btn" onClick={reset}>처음부터</button>
       </div>
     </div>
   )

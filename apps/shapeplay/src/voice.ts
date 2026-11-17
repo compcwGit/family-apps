@@ -6,10 +6,10 @@ import { PICTURES, NAMES } from './pictures'
 
 // 끼리끼리 모으기: 색 묶음
 export const COLORS = [
-  { id: 'red', name: '빨간색', bg: '#EF9A9A', items: ['🍎', '🍓', '🍒', '🍅', '🚒', '🌹'] },
-  { id: 'yellow', name: '노란색', bg: '#FFF59D', items: ['🍌', '🌽', '🐤', '🍋', '⭐', '🌻'] },
-  { id: 'green', name: '초록색', bg: '#A5D6A7', items: ['🥦', '🐸', '🍀', '🥒', '🌲', '🍏'] },
-  { id: 'blue', name: '파란색', bg: '#90CAF9', items: ['🐳', '💧', '💙', '🧢', '🚙', '🦋'] },
+  { id: 'red', name: '빨간색', bg: '#FFD3C9', dot: '#FF6B57', items: ['🍎', '🍓', '🍒', '🍅', '🚒', '🌹'] },
+  { id: 'yellow', name: '노란색', bg: '#FFEBB0', dot: '#FFC94A', items: ['🍌', '🌽', '🐤', '🍋', '⭐', '🌻'] },
+  { id: 'green', name: '초록색', bg: '#CBEFDD', dot: '#63D2A1', items: ['🥦', '🐸', '🍀', '🥒', '🌲', '🍏'] },
+  { id: 'blue', name: '파란색', bg: '#CDE9FB', dot: '#6EC1F5', items: ['🐳', '💧', '💙', '🧢', '🚙', '🦋'] },
 ]
 
 export const SAY = {

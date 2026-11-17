@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { useFeedback, useSay, Party, GameTop, speak, shuffle, type GameProps } from '@family/core'
+import { Critter, useFeedback, useSay, Party, GameTop, speak, shuffle, type CritterKind, type GameProps } from '@family/core'
 import { SAY } from './voice'
 
 // 다음은 뭘까?: 되풀이되는 규칙(패턴)을 보고 빈칸에 올 것 고르기
 // 쉬운 것(AB)부터 시작해서 별이 모이면 AAB, ABB, ABC 도 나옴
-const POOL = ['🍎', '🍌', '🍇', '⭐', '🌙', '☀️', '🐶', '🐱', '🔴', '🔵', '🟡', '🟢']
+const POOL: CritterKind[] = ['chick', 'cat', 'dog', 'pig', 'rabbit', 'bear', 'frog', 'duck']
 const UNITS = [
   [0, 1], // AB
   [0, 0, 1], // AAB
@@ -30,7 +30,7 @@ export function Pattern({ stars, onStar }: GameProps) {
   const ask = SAY.patternAsk
   useSay(ask, [round])
 
-  const choose = (c: string) => {
+  const choose = (c: CritterKind) => {
     if (c !== round.answer) return fb.no(c, SAY.patternNo)
     setSolved(true)
     fb.ok(SAY.patternOk, () => {
@@ -46,18 +46,18 @@ export function Pattern({ stars, onStar }: GameProps) {
       </GameTop>
       <div className="pattern-seq">
         {round.shown.map((s, i) => (
-          <span key={i}>{s}</span>
+          <Critter key={i} kind={s} size={84} />
         ))}
-        <span className={'pattern-q' + (solved ? ' ok' : '')}>{solved ? round.answer : '?'}</span>
+        <span className={'pattern-q' + (solved ? ' ok' : '')}>{solved ? <Critter kind={round.answer} size={84} /> : '?'}</span>
       </div>
       <div className="g-row">
         {round.choices.map((c) => (
           <button key={c} className={'g-card' + (fb.wrong === c ? ' g-shake' : '')} onClick={() => choose(c)}>
-            {c}
+            <Critter kind={c} size={110} />
           </button>
         ))}
       </div>
-      <Party show={fb.party} />
+      <Party show={fb.party} text={fb.line} />
     </div>
   )
 }

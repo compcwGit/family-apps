@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useFeedback, useSay, Party, GameTop, speak, shuffle, pick, type GameProps } from '@family/core'
 import { WORDS, firstSound } from './words'
 import { CONSONANTS } from './hangul'
-import { SAY } from './voice'
+import { SAY, euro } from './voice'
 
 // 첫소리 찾기: "기역으로 시작하는 건?" — 첫 글자가 그 자음으로 시작하는 그림 고르기
 // 글자 아래 낱말을 쓰고 첫 글자를 색으로 강조 (글자와 소리 연결)
@@ -39,11 +39,14 @@ export function FirstSound({ stars, onStar }: GameProps) {
   return (
     <div className="g-game">
       <GameTop stars={stars} onAgain={() => speak(ask)}>
+        {euro(name)} 시작하는 건 뭘까요?
+      </GameTop>
+      <div className="first-head">
         <span className="first-jamo" style={{ background: round.jamo.color }}>
           {round.jamo.ch}
-        </span>{' '}
-        으로 시작하는 건?
-      </GameTop>
+        </span>
+        <span>{euro(name)} 시작해요</span>
+      </div>
       <div className="g-row">
         {round.choices.map((c) => (
           <button
@@ -53,13 +56,15 @@ export function FirstSound({ stars, onStar }: GameProps) {
           >
             {c.e}
             <small>
-              <span className="first-hl">{c.w[0]}</span>
+              <span className="first-hl" style={{ background: round.jamo.color }}>
+                {c.w[0]}
+              </span>
               {c.w.slice(1)}
             </small>
           </button>
         ))}
       </div>
-      <Party show={fb.party} />
+      <Party show={fb.party} text={fb.line} />
     </div>
   )
 }

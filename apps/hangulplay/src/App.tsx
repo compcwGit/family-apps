@@ -1,14 +1,22 @@
 import { useState } from 'react'
-import { ParentGate, createStore, setSpeechOptions, stopSpeaking, useStars, type SpeechOptions } from '@family/core'
+import { ParentGate, ParentPage, ParentSection, PlayShell, Segmented, createStore, setSpeechOptions, stopSpeaking, useStars, type SpeechOptions } from '@family/core'
 import { JamoBoard } from './JamoBoard'
 import { Builder } from './Builder'
 import { Trace, type NumRead } from './Trace'
 import { Listen } from './Listen'
 import { FirstSound } from './FirstSound'
-import { ParentInfo } from './ParentInfo'
+import { VoiceSettings } from './VoiceSettings'
+import pkg from '../package.json'
 import './app.css'
 
-type Screen = 'jamo' | 'build' | 'trace' | 'listen' | 'first' | 'gate' | 'parent'
+const GAMES = [
+  { id: 'jamo', label: 'ㄱㄴㄷ' },
+  { id: 'build', label: '글자' },
+  { id: 'trace', label: '따라' },
+  { id: 'listen', label: '듣고' },
+  { id: 'first', label: '첫소리' },
+] as const
+type Screen = (typeof GAMES)[number]['id'] | 'gate' | 'parent'
 
 // 읽기 설정 (부모 화면에서 변경). 기본: 아이가 또박또박 들을 수 있게 조금 천천히
 const voiceStore = createStore<SpeechOptions>('hangulplay.voice', { rate: 0.75, pitch: 1.2, voice: '' })
@@ -40,49 +48,66 @@ export default function App() {
   if (screen === 'gate') return <ParentGate onPass={() => go('parent')} onCancel={() => go('jamo')} />
   if (screen === 'parent')
     return (
-      <ParentInfo
-        doneCount={done.length}
-        numRead={numRead}
-        onNumRead={(r) => {
-          setNumRead(r)
-          numStore.set(r)
-        }}
-        voice={voice}
-        onVoice={(v) => {
-          setVoice(v)
-          voiceStore.set(v)
-        }}
-        onReset={() => {
-          setDone([])
-          store.set([])
-        }}
+      <ParentPage
+        title="한글 놀이"
+        version={pkg.version}
+        accent="#6EC1F5"
+        about="자음·모음 카드, 글자 만들기(ㄱ+ㅏ=가), 따라쓰기, 낱말 듣고 찾기, 첫소리 찾기로 한글을 익히는 유아용 앱입니다."
+        nuri={[['의사소통', '자모 카드, 글자 만들기, 따라 쓰기 (읽기와 쓰기에 관심 가지기), 듣고 찾기, 첫소리 찾기 (듣기와 말하기)']]}
+        stars={[
+          ['듣고 찾기', stars.of('listen')],
+          ['첫소리 찾기', stars.of('first')],
+        ]}
+        onReset={stars.reset}
         onClose={() => go('jamo')}
-      />
+      >
+        <ParentSection
+          title="따라쓰기 진도"
+          action={
+            <button
+              className="sb-pill quiet"
+              onClick={() => {
+                setDone([])
+                store.set([])
+              }}
+            >
+              진도 초기화
+            </button>
+          }
+        >
+          <p>따라쓰기 완료: {done.length} / 34 (한글 24 + 숫자 10)</p>
+        </ParentSection>
+        <ParentSection title="숫자 읽는 소리">
+          <Segmented
+            label="숫자 읽는 소리"
+            value={numRead}
+            options={[
+              ['native', '하나, 둘, 셋'],
+              ['sino', '일, 이, 삼'],
+            ]}
+            onChange={(r) => {
+              setNumRead(r)
+              numStore.set(r)
+            }}
+          />
+        </ParentSection>
+        <VoiceSettings
+          value={voice}
+          onChange={(v) => {
+            setVoice(v)
+            voiceStore.set(v)
+          }}
+        />
+      </ParentPage>
     )
 
-  const tab = (s: Screen, label: string) => (
-    <button className={screen === s ? 'tab on' : 'tab'} onClick={() => go(s)}>
-      {label}
-    </button>
-  )
-
   return (
-    <main>
-      <nav className="tabs">
-        {tab('jamo', '🔤 ㄱㄴㄷ')}
-        {tab('build', '🧩 글자 만들기')}
-        {tab('trace', '✏️ 따라 쓰기')}
-        {tab('listen', '👂 듣고 찾기')}
-        {tab('first', 'ㄱ 첫소리 찾기')}
-      </nav>
+    <PlayShell app="한글 놀이" accent="#6EC1F5" games={GAMES} active={screen} onPick={(id) => go(id as Screen)} onParent={() => go('gate')}>
       {screen === 'jamo' && <JamoBoard done={done} />}
       {screen === 'build' && <Builder />}
       {screen === 'trace' && <Trace done={done} onDone={markDone} numRead={numRead} />}
       {screen === 'listen' && <Listen stars={stars.of('listen')} onStar={() => stars.add('listen')} />}
       {screen === 'first' && <FirstSound stars={stars.of('first')} onStar={() => stars.add('first')} />}
-      <button className="core-parent-btn" onClick={() => go('gate')} aria-label="부모 메뉴">
-        ⚙️
-      </button>
-    </main>
+    </PlayShell>
   )
 }

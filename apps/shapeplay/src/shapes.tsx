@@ -11,12 +11,12 @@ const star = (() => {
 export type Shape = { id: string; name: string; d: string; color: string }
 
 export const SHAPES: Shape[] = [
-  { id: 'circle', name: '동그라미', d: 'M8 50 A42 42 0 1 0 92 50 A42 42 0 1 0 8 50 Z', color: '#EF5350' },
-  { id: 'triangle', name: '세모', d: 'M50 8 L94 88 L6 88 Z', color: '#42A5F5' },
-  { id: 'square', name: '네모', d: 'M12 12 H88 V88 H12 Z', color: '#66BB6A' },
-  { id: 'star', name: '별', d: star, color: '#FFCA28' },
-  { id: 'heart', name: '하트', d: 'M50 90 C20 70 6 52 6 33 C6 18 18 8 30 8 C40 8 47 14 50 22 C53 14 60 8 70 8 C82 8 94 18 94 33 C94 52 80 70 50 90 Z', color: '#EC407A' },
-  { id: 'diamond', name: '마름모', d: 'M50 4 L94 50 L50 96 L6 50 Z', color: '#AB47BC' },
+  { id: 'circle', name: '동그라미', d: 'M8 50 A42 42 0 1 0 92 50 A42 42 0 1 0 8 50 Z', color: '#FF8C6B' },
+  { id: 'triangle', name: '세모', d: 'M50 8 L94 88 L6 88 Z', color: '#6EC1F5' },
+  { id: 'square', name: '네모', d: 'M12 12 H88 V88 H12 Z', color: '#63D2A1' },
+  { id: 'star', name: '별', d: star, color: '#FFC94A' },
+  { id: 'heart', name: '하트', d: 'M50 90 C20 70 6 52 6 33 C6 18 18 8 30 8 C40 8 47 14 50 22 C53 14 60 8 70 8 C82 8 94 18 94 33 C94 52 80 70 50 90 Z', color: '#FF9EC4' },
+  { id: 'diamond', name: '마름모', d: 'M50 4 L94 50 L50 96 L6 50 Z', color: '#B79CF7' },
 ]
 
 export function ShapeIcon({ shape, color, hole }: { shape: Shape; color?: string; hole?: boolean }) {
@@ -24,10 +24,10 @@ export function ShapeIcon({ shape, color, hole }: { shape: Shape; color?: string
     <svg viewBox="0 0 100 100" aria-label={shape.name}>
       <path
         d={shape.d}
-        fill={hole ? 'rgba(0,0,0,.08)' : (color ?? shape.color)}
-        stroke={hole ? '#A1887F' : 'rgba(0,0,0,.25)'}
-        strokeWidth={hole ? 4 : 3}
-        strokeDasharray={hole ? '8 6' : undefined}
+        fill={hole ? '#F3E6CC' : (color ?? shape.color)}
+        stroke={hole ? '#B49F78' : '#2A2840'}
+        strokeWidth={hole ? 4 : 5}
+        strokeDasharray={hole ? '9 7' : undefined}
         strokeLinejoin="round"
       />
     </svg>

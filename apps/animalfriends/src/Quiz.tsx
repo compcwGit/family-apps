@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { speak } from '@family/core'
+import { Critter, GameTop, speak } from '@family/core'
 import { ANIMALS, type Animal } from './animals'
 import { SAY } from './voice'
 
@@ -45,22 +45,18 @@ export function Quiz() {
 
   return (
     <div className="quiz">
-      <div className="quiz-top">
-        <button className="core-btn" onClick={() => ask(round.answer)} aria-label="다시 듣기">
-          🔊 다시 듣기
-        </button>
-        <span className="quiz-stars">⭐ {stars}</span>
-      </div>
-      {stars > 0 && stars % 5 === 0 && solved && <p className="quiz-party">🎉 대단해요! 🎉</p>}
+      <GameTop stars={stars} onAgain={() => ask(round.answer)}>
+        누구일까요?
+      </GameTop>
+      {stars > 0 && stars % 5 === 0 && solved && <p className="quiz-party">대단해요!</p>}
       <div className="quiz-grid">
         {round.choices.map((a) => (
           <button
             key={a.name}
             className={'card' + (solved && a === round.answer ? ' pop correct' : '') + (wrong === a.name ? ' shake' : '')}
-            style={{ background: a.color }}
             onClick={() => pick(a)}
           >
-            <span className="emoji">{a.emoji}</span>
+            <Critter kind={a.critter} size={130} />
             <span className="label">{a.name}</span>
           </button>
         ))}

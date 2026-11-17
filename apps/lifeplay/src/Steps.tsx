@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useFeedback, useSay, Party, GameTop, speak, shuffle, type GameProps } from '@family/core'
 import { ROUTINES, SAY } from './voice'
+import { StepIcon } from './StepIcons'
 
 // 순서대로: 생활 습관·안전 그림 카드를 할 순서대로 누르기
 export function Steps({ stars, onStar }: GameProps) {
@@ -30,32 +31,33 @@ export function Steps({ stars, onStar }: GameProps) {
   return (
     <div className="g-game">
       <GameTop stars={stars} onAgain={() => speak(ask)}>
-        {routine.icon} {routine.name}
+        {ask}
       </GameTop>
       <div className="g-row">
         {routine.steps.map((s, i) => (
           <div key={i} className="g-drop steps-slot">
             <span className="steps-num">{i + 1}</span>
             {i < done && (
-              <div className="g-card ok">
-                {s.e}
+              <div className="g-card steps-done">
+                <StepIcon e={s.e} />
                 <small>{s.t}</small>
               </div>
             )}
           </div>
         ))}
       </div>
+      <div className="g-line" />
       <div className="g-row g-tray">
         {cards.map((i) =>
           i < done ? null : (
             <button key={i} className={'g-card' + (fb.wrong === String(i) ? ' g-shake' : '')} onClick={() => tap(i)}>
-              {routine.steps[i].e}
+              <StepIcon e={routine.steps[i].e} />
               <small>{routine.steps[i].t}</small>
             </button>
           ),
         )}
       </div>
-      <Party show={fb.party} />
+      <Party show={fb.party} text={fb.line} />
     </div>
   )
 }

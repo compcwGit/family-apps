@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createStore, speak, playTone, praise, type GameProps } from '@family/core'
+import { createStore, speak, playTone, praise, EraserIcon, GameTop, type GameProps } from '@family/core'
 import { PICTURES, PALETTE, NAMES } from './pictures'
 import { SAY } from './voice'
 
@@ -35,40 +35,41 @@ export function Color({ stars, onStar }: GameProps) {
 
   return (
     <div className="g-game">
-      <div className="g-top">
-        <div className="g-row color-pics">
-          {PICTURES.map((p, i) => (
-            <button key={p.id} className={'color-pic' + (i === pic ? ' on' : '')} onClick={() => setPic(i)}>
-              {p.icon}
-            </button>
-          ))}
-        </div>
-        <span className="g-stars">⭐ {stars}</span>
-      </div>
-      <svg className="color-canvas" viewBox="0 0 200 200">
-        {picture.parts.map((part, i) => {
-          const El = part.el
-          return <El key={i} {...part.p} fill={mine[i] ?? '#FFFFFF'} stroke="#5D4037" strokeWidth={2.5} strokeLinejoin="round" onClick={() => paint(i)} />
-        })}
-      </svg>
-      <div className="g-row color-palette">
-        {PALETTE.map((p, i) => (
-          <button
-            key={p}
-            className={'color-chip' + (i === color ? ' on' : '')}
-            style={{ background: p }}
-            onClick={() => {
-              setColor(i)
-              speak(SAY.colorName(NAMES[i]))
-            }}
-            aria-label={NAMES[i]}
-          >
-            {i === PALETTE.length - 1 ? '🧽' : ''}
+      <GameTop stars={stars}>색을 골라 칠해 봐요</GameTop>
+      <div className="color-pics" role="radiogroup" aria-label="그림 고르기">
+        {PICTURES.map((p, i) => (
+          <button key={p.id} role="radio" aria-checked={i === pic} className={'color-pic' + (i === pic ? ' on' : '')} onClick={() => setPic(i)}>
+            {p.name}
           </button>
         ))}
-        <button className="core-btn off" onClick={clear}>
-          🗑️ 처음부터
-        </button>
+      </div>
+      <div className="color-main">
+        <svg className="color-canvas" viewBox="0 0 200 200" role="img" aria-label={`색칠하는 ${picture.name} 그림`}>
+          {picture.parts.map((part, i) => {
+            const El = part.el
+            return <El key={i} {...part.p} fill={mine[i] ?? '#FFFFFF'} stroke="#2A2840" strokeWidth={2.5} strokeLinejoin="round" onClick={() => paint(i)} />
+          })}
+        </svg>
+        <div className="color-palette">
+          {PALETTE.map((p, i) => (
+            <button
+              key={p}
+              className={'color-chip' + (i === color ? ' on' : '')}
+              style={{ background: p }}
+              onClick={() => {
+                setColor(i)
+                speak(SAY.colorName(NAMES[i]))
+              }}
+              aria-label={NAMES[i]}
+              aria-pressed={i === color}
+            >
+              {i === PALETTE.length - 1 ? <EraserIcon /> : null}
+            </button>
+          ))}
+          <button className="color-clear" onClick={clear}>
+            처음부터
+          </button>
+        </div>
       </div>
     </div>
   )
