@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { StampBoard } from './StampBoard'
 import { StampIcon } from './StampIcon'
-import { ICONS, MAX_TARGET, iconOf, type Board, type Plan, type Reason, type Stamp } from './stamps'
+import { ICONS, MAX_TARGET, iconOf, type Board, type Plan, type Reason } from './stamps'
 
 // 부모 화면: 도장 고르고 도장판 빈 칸 눌러 찍기(아이 화면과 같은 도장판), 칭찬도장 만들기·지우기, 약속 정하기, 최근 기록, 지우기
 export function ParentPanel({
-  stamps,
   board,
+  nextBoard,
   newestId,
   reasons,
   onReasons,
@@ -16,8 +16,8 @@ export function ParentPanel({
   onRemove,
   onClose,
 }: {
-  stamps: Stamp[]
   board: Board
+  nextBoard?: Board
   newestId: string | null
   reasons: Reason[]
   onReasons: (list: Reason[]) => void
@@ -27,7 +27,6 @@ export function ParentPanel({
   onRemove: (id: string) => void
   onClose: () => void
 }) {
-  const recent = [...stamps].reverse().slice(0, 10)
   const [target, setTarget] = useState(plan.target)
   const [reward, setReward] = useState(plan.reward)
   const [editing, setEditing] = useState(false)
@@ -89,7 +88,11 @@ export function ParentPanel({
         </div>
       )}
 
-      <StampBoard board={board} newestId={newestId} onEmpty={picked && !editing ? () => onStamp(picked) : undefined} />
+      {/* 지금 판이 다 찼으면: 다 찬 판(지우기 가능) 아래에 다음 빈 판 */}
+      <StampBoard board={board} newestId={newestId} onRemove={onRemove} onEmpty={!board.done && picked && !editing ? () => onStamp(picked) : undefined} />
+      {nextBoard && (
+        <StampBoard key={nextBoard.no} board={nextBoard} newestId={null} onEmpty={picked && !editing ? () => onStamp(picked) : undefined} />
+      )}
 
       <h2 className="recent-title">약속</h2>
       <div className="promise">
@@ -109,28 +112,6 @@ export function ParentPanel({
         </button>
       </div>
 
-      <h2 className="recent-title">최근 기록 (총 {stamps.length}개)</h2>
-      <ul className="recent">
-        {recent.length === 0 && <li className="recent-empty">아직 도장이 없어요</li>}
-        {recent.map((s) => (
-          <li key={s.id}>
-            <span>
-              <span className="mini">
-                <StampIcon emoji={iconOf(s)} />
-              </span>{' '}
-              {s.reason}
-            </span>
-            <span className="recent-date">{new Date(s.at).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit' })}</span>
-            <button className="core-link recent-del" onClick={() => onRemove(s.id)}>
-              지우기
-            </button>
-          </li>
-        ))}
-      </ul>
-
-      <button className="core-btn" onClick={onClose}>
-        아이 화면으로
-      </button>
     </main>
   )
 }

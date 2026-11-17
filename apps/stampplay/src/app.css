@@ -91,3 +91,5 @@ footer { margin-top: auto; padding-top: 24px; color: #A1887F; font-size: .85rem;
 
 /* 부모 화면 위쪽 "아이 화면으로" 버튼 */
 .parent-back { align-self: flex-start; font-size: 1.1rem; padding: 10px 18px; }
+.stamp-del { border: none; background: #FFEBEE; color: #C62828; font-size: 1rem; font-weight: 700; border-radius: 10px; padding: 6px 12px; cursor: pointer; }
+.board + .board { margin-top: 24px; }

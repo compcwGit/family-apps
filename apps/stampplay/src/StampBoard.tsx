@@ -4,7 +4,18 @@ import { iconOf, stampTime, type Board } from './stamps'
 
 // 도장판: 약속한 칸 수만큼. 도장을 누르면 찍은 날짜·시간을 보여 줌
 // onEmpty 가 있으면(부모 화면) 빈 칸을 눌러 도장을 찍음. 다음에 찍힐 칸은 깜빡임
-export function StampBoard({ board, newestId, onEmpty }: { board: Board; newestId: string | null; onEmpty?: () => void }) {
+// onRemove 가 있으면(부모 화면) 도장을 눌렀을 때 내역 옆에 "지우기"
+export function StampBoard({
+  board,
+  newestId,
+  onEmpty,
+  onRemove,
+}: {
+  board: Board
+  newestId: string | null
+  onEmpty?: () => void
+  onRemove?: (id: string) => void
+}) {
   const { no, plan, stamps, done } = board
   const [pickedId, setPickedId] = useState<string | null>(null)
   const picked = stamps.find((s) => s.id === pickedId)
@@ -57,6 +68,11 @@ export function StampBoard({ board, newestId, onEmpty }: { board: Board; newestI
           </span>
           <b>{picked.reason}</b>
           <span>{stampTime(picked.at)}</span>
+          {onRemove && (
+            <button className="stamp-del" onClick={() => onRemove(picked.id)}>
+              지우기
+            </button>
+          )}
         </p>
       )}
       {done && <p className="board-complete">🎉 도장판 완성!{plan.reward && ` 약속: ${plan.reward}`} 🎉</p>}
