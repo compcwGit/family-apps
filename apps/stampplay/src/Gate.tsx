@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { BackIcon } from './Icons'
-import { Mascot } from './Mascot'
+import { Mascot, type Kind } from './Mascot'
 
 // 부모 확인: 곱셈 문제 + 숫자 키패드 (유치원생은 못 푸는 난이도). 틀리면 지우고 다시
 const makeQuestion = () => {
@@ -9,7 +9,7 @@ const makeQuestion = () => {
   return { a, b, answer: String(a * b) }
 }
 
-export function Gate({ onPass, onCancel }: { onPass: () => void; onCancel: () => void }) {
+export function Gate({ kind, onPass, onCancel }: { kind: Kind; onPass: () => void; onCancel: () => void }) {
   const q = useMemo(makeQuestion, [])
   const [v, setV] = useState('')
   const [bad, setBad] = useState(false)
@@ -34,8 +34,8 @@ export function Gate({ onPass, onCancel }: { onPass: () => void; onCancel: () =>
       <div className="sp-gate">
         <div className="sp-gate-q">
           <div className="sp-gate-mascot">
-            <Mascot pose="peek" size={120} />
-            <p className="sp-bubble sp-bubble-line">꾹이는 안 볼게요!</p>
+            <Mascot kind={kind} pose="peek" size={120} />
+            <p className="sp-bubble sp-bubble-line">눈 감고 있을게요!</p>
           </div>
           <h1 className="sp-h1">엄마·아빠 확인</h1>
           <p className="sp-sub">아래 문제를 풀면 도장을 찍을 수 있어요.</p>

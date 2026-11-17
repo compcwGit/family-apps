@@ -8,7 +8,7 @@ import { BackIcon, BookIcon, LockIcon } from './Icons'
 import { ParentPanel } from './ParentPanel'
 import { StampBoard } from './StampBoard'
 import { StampMark } from './StampMark'
-import { addStamp, boardsOf, loadPlans, loadReasons, loadStamps, nextPlanOf, removeStamp, saveReasons, setPlan } from './stamps'
+import { addStamp, boardsOf, loadCharacter, loadPlans, loadReasons, loadStamps, nextPlanOf, removeStamp, saveCharacter, saveReasons, setPlan } from './stamps'
 import './app.css'
 
 type Screen = 'home' | 'gate' | 'parent' | 'history' | 'board' | 'done'
@@ -25,12 +25,13 @@ export default function App() {
   const [stamps, setStamps] = useState(loadStamps)
   const [plans, setPlans] = useState(loadPlans)
   const [reasons, setReasons] = useState(loadReasons)
+  const [character, setCharacter] = useState(loadCharacter)
   const [openNo, setOpenNo] = useState(1) // 칭찬 기록에서 연 도장판 번호
   const [fromParent, setFromParent] = useState(false) // 칭찬 기록을 부모 화면에서 열었는지 (지우기 가능, 닫으면 부모 화면으로)
   const boards = boardsOf(stamps, plans)
   const [newestId, setNewestId] = useState<string | null>(null)
 
-  if (screen === 'gate') return <Gate onPass={() => setScreen('parent')} onCancel={() => setScreen('home')} />
+  if (screen === 'gate') return <Gate kind={character} onPass={() => setScreen('parent')} onCancel={() => setScreen('home')} />
   if (screen === 'history')
     return (
       <History
@@ -56,7 +57,7 @@ export default function App() {
         </header>
         <div className="sp-body">
           <StampBoard key={openNo} board={b} newestId={null} onRemove={fromParent ? (id) => setStamps(removeStamp(id)) : undefined} />
-          <GoalPanel board={b} />
+          <GoalPanel board={b} kind={character} />
         </div>
       </main>
     )
@@ -90,6 +91,8 @@ export default function App() {
           setFromParent(true)
           setScreen('history')
         }}
+        character={character}
+        onCharacter={(k) => setCharacter(saveCharacter(k))}
         onClose={() => {
           // 새로 찍은 도장이 있으면 "도장 찍힘" 화면을 먼저 보여 줌
           if (newestId && stamps.some((s) => s.id === newestId)) {
@@ -106,7 +109,7 @@ export default function App() {
   if (screen === 'done') {
     const stamp = stamps.find((s) => s.id === newestId) ?? stamps[stamps.length - 1]
     const board = boards.find((b) => b.stamps.some((s) => s.id === stamp?.id)) ?? current
-    if (stamp) return <Done stamp={stamp} board={board} total={stamps.length} onClose={() => setScreen('home')} />
+    if (stamp) return <Done kind={character} stamp={stamp} board={board} total={stamps.length} onClose={() => setScreen('home')} />
   }
 
   return (
@@ -138,7 +141,7 @@ export default function App() {
       </header>
       <div className="sp-body">
         <StampBoard board={current} newestId={newestId} />
-        <GoalPanel board={current} />
+        <GoalPanel board={current} kind={character} />
       </div>
       {getPlatform() === 'web' && <p className="sp-foot">웹 미리보기</p>}
     </main>

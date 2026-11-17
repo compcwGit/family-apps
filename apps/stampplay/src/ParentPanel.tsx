@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { BackIcon, BookIcon, PencilIcon } from './Icons'
+import { KINDS, KIND_NAME, Mascot, type Kind } from './Mascot'
 import { StampBoard } from './StampBoard'
 import { StampMark } from './StampMark'
 import { ICONS, INKS, MAX_TARGET, type Board, type Ink, type Plan, type Reason } from './stamps'
@@ -18,6 +19,8 @@ export function ParentPanel({
   onStamp,
   onRemove,
   onHistory,
+  character,
+  onCharacter,
   onClose,
 }: {
   board: Board
@@ -30,6 +33,8 @@ export function ParentPanel({
   onStamp: (reason: Reason) => void
   onRemove: (id: string) => void
   onHistory: () => void
+  character: Kind
+  onCharacter: (k: Kind) => void
   onClose: () => void
 }) {
   const [target, setTarget] = useState(plan.target)
@@ -151,6 +156,18 @@ export function ParentPanel({
           </button>
         </div>
         <p className="sp-muted">지금 도장판(다 찼으면 다음 도장판)부터 적용돼요. 다음 판은 같은 약속을 이어받아요.</p>
+      </section>
+
+      <section className="sp-card sp-friends">
+        <h2 className="sp-h2">함께할 친구</h2>
+        <div className="sp-friend-grid">
+          {KINDS.map((k) => (
+            <button key={k} className={'sp-friend' + (k === character ? ' on' : '')} aria-pressed={k === character} onClick={() => onCharacter(k)}>
+              <Mascot kind={k} pose={k === character ? 'happy' : 'basic'} size={72} />
+              <span>{KIND_NAME[k]}</span>
+            </button>
+          ))}
+        </div>
       </section>
     </main>
   )

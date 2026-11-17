@@ -1,10 +1,10 @@
-import { Mascot } from './Mascot'
+import { Mascot, type Kind } from './Mascot'
 import { StarIcon } from './Icons'
 import { StampMark } from './StampMark'
 import { iconOf, inkOf, type Board, type Stamp } from './stamps'
 
 // 도장 찍힘: 부모 화면에서 도장을 찍고 아이 화면으로 돌아올 때 한 번 보여 줌
-export function Done({ stamp, board, total, onClose }: { stamp: Stamp; board: Board; total: number; onClose: () => void }) {
+export function Done({ kind, stamp, board, total, onClose }: { kind: Kind; stamp: Stamp; board: Board; total: number; onClose: () => void }) {
   const remaining = board.plan.target - board.stamps.length
 
   return (
@@ -21,7 +21,7 @@ export function Done({ stamp, board, total, onClose }: { stamp: Stamp; board: Bo
         </span>
       </div>
       <div className="sp-done-mascot">
-        <Mascot pose="happy" size={210} />
+        <Mascot kind={kind} pose="happy" size={210} />
       </div>
       <p className="sp-done-kkuk">꾹!</p>
       <StampMark emoji={iconOf(stamp)} ink={inkOf(stamp)} tilt={-8} className="sp-mark-xl stamp-in" />

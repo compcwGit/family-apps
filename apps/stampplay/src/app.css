@@ -214,3 +214,14 @@ button.sp-cell { cursor: pointer; }
   .sp-done-mascot svg { width: 120px; height: 138px; }
   .sp-done .sp-pill-lg { height: 64px; font-size: 22px; padding: 0 32px; }
 }
+
+/* 함께할 친구 (캐릭터 고르기) */
+.sp-friends { padding: 28px 36px; display: flex; flex-direction: column; gap: 14px; }
+.sp-friend-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+.sp-friend { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px 10px; border-radius: 24px;
+             border: 3px solid var(--line); background: #fff; color: var(--ink); font-family: var(--jua); font-size: 20px; cursor: pointer; }
+.sp-friend.on { border-color: var(--ink); background: var(--soft); }
+@media (max-width: 900px) {
+  .sp-friends { padding: 20px; }
+  .sp-friend-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

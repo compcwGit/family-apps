@@ -1,9 +1,9 @@
 import { GiftIcon } from './Icons'
-import { Mascot } from './Mascot'
+import { Mascot, type Kind } from './Mascot'
 import type { Board } from './stamps'
 
-// 도장판 옆 카드: 약속(선물), 모은 개수, 남은 개수, 꾹이 말풍선
-export function GoalPanel({ board }: { board: Board }) {
+// 도장판 옆 카드: 약속(선물), 모은 개수, 남은 개수, 캐릭터 말풍선
+export function GoalPanel({ board, kind }: { board: Board; kind: Kind }) {
   const { plan, stamps, done } = board
   const remaining = plan.target - stamps.length
 
@@ -32,7 +32,7 @@ export function GoalPanel({ board }: { board: Board }) {
       </p>
       <div className="sp-goal-fill" />
       <div className="sp-goal-mascot">
-        <Mascot pose={done ? 'happy' : 'basic'} size={110} />
+        <Mascot kind={kind} pose={done ? 'happy' : 'basic'} size={110} />
         <p className="sp-bubble">
           {done ? (
             <>다 모았어요!<br />최고!</>

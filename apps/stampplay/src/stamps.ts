@@ -1,4 +1,5 @@
 import { createStore } from '@family/core'
+import type { Kind } from './Mascot'
 
 // 도장 기록: 태블릿 안에만 저장
 // emoji: 찍을 때의 도장 그림을 함께 저장 (도장 종류를 지워도 기록은 그대로). '' = 참 잘했어요 도장
@@ -31,6 +32,13 @@ export type Board = { no: number; plan: Plan; stamps: Stamp[]; done: boolean }
 const DEFAULT_PLAN: Plan = { target: BOARD_SIZE, reward: '' }
 
 const store = createStore<Stamp[]>('stampplay.stamps', [])
+// 함께할 친구(캐릭터): 곰·토끼·호랑이·기린·공룡·상어
+const characterStore = createStore<Kind>('stampplay.character', 'bear')
+export const loadCharacter = () => characterStore.get()
+export function saveCharacter(k: Kind): Kind {
+  characterStore.set(k)
+  return k
+}
 const reasonStore = createStore<Reason[]>('stampplay.reasons', REASONS)
 
 export const loadReasons = () => reasonStore.get()
