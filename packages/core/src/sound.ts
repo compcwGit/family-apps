@@ -2,18 +2,24 @@
 //
 // 아이폰(Safari)·안드로이드 WebView 주의:
 //  - 소리는 "탭(click/touchend)" 안에서 한 번 켜 줘야 나옴 → 첫 탭 때 자동으로 켬 (unlock)
-//  - 아이폰 무음 스위치를 켜면 WebAudio 가 꺼짐 → audioSession 을 'playback' 으로 (iOS 17+, Safari 16.4+)
+//  - 무음 스위치를 켜면 소리가 나지 않아야 함 (부모가 정한 무음 존중) → audioSession 을 'ambient' 로 (iOS 17+, Safari 16.4+)
+//    이 설정은 녹음 목소리 재생(speech.ts 의 Audio)에도 적용됨: 아이폰은 원래 녹음 재생이 무음을 무시함
 let ctx: AudioContext | null = null
+
+// 아이폰 무음 스위치를 따르게 함 (소리를 내기 전에 한 번 호출)
+export function respectSilentSwitch() {
+  try {
+    const nav = navigator as Navigator & { audioSession?: { type: string } }
+    if (nav.audioSession) nav.audioSession.type = 'ambient'
+  } catch {
+    /* 지원 안 하는 기기는 무시 */
+  }
+}
 
 function audio(): AudioContext {
   if (!ctx) {
     ctx = new AudioContext()
-    try {
-      const nav = navigator as Navigator & { audioSession?: { type: string } }
-      if (nav.audioSession) nav.audioSession.type = 'playback'
-    } catch {
-      /* 지원 안 하는 기기는 무시 */
-    }
+    respectSilentSwitch()
   }
   if (ctx.state !== 'running') ctx.resume().catch(() => {})
   return ctx
