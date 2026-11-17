@@ -3,12 +3,14 @@
 //       <div {...drag.handle('사과')} style={drag.style('사과')} />   ← 끌 수 있는 것
 //       <div data-drop="바구니1" />                                   ← 놓는 곳
 // 놓는 곳이 아니면 onDrop 의 dropId 는 null (제자리로 돌아감)
-import { useRef, useState, type CSSProperties, type PointerEvent } from 'react'
+import { useContext, useRef, useState, type CSSProperties, type PointerEvent } from 'react'
+import { FitScale } from './FitStage'
 
 type Drag = { id: string; x: number; y: number; dx: number; dy: number }
 
 export function useDrag(onDrop: (id: string, dropId: string | null) => void) {
   const [drag, setDrag] = useState<Drag | null>(null)
+  const fit = useContext(FitScale) // 놀이판이 줄어 있으면 손가락 이동을 배율로 나눔
   const ref = useRef<Drag | null>(null)
   const set = (d: Drag | null) => {
     ref.current = d
@@ -23,7 +25,7 @@ export function useDrag(onDrop: (id: string, dropId: string | null) => void) {
     },
     onPointerMove: (e: PointerEvent<HTMLElement>) => {
       const d = ref.current
-      if (d?.id === id) set({ ...d, dx: e.clientX - d.x, dy: e.clientY - d.y })
+      if (d?.id === id) set({ ...d, dx: (e.clientX - d.x) / fit.current, dy: (e.clientY - d.y) / fit.current })
     },
     onPointerUp: (e: PointerEvent<HTMLElement>) => {
       if (ref.current?.id !== id) return

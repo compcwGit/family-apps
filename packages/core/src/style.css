@@ -21,7 +21,7 @@ h1 { font-size: 2.2rem; color: #5D4037; margin: 8px 0 24px; }
         --jua: 'Jua', system-ui, sans-serif; }
 
 /* 화면 틀 (core/PlayShell.tsx) */
-.sb-shell { height: 100vh; height: 100dvh; display: flex; flex-direction: column; background: var(--paper); color: var(--ink); font-family: var(--jua); }
+.sb-shell { height: 100vh; height: 100dvh; overflow: hidden; display: flex; flex-direction: column; background: var(--paper); color: var(--ink); font-family: var(--jua); }
 .sb-shell button { font-family: var(--jua); color: var(--ink); }
 .sb-top { display: flex; align-items: center; gap: 18px; padding: 20px 32px 12px; }
 .sb-round { width: 64px; height: 64px; flex: none; border-radius: 50%; background: #fff; border: 4px solid var(--ink);
@@ -30,30 +30,34 @@ h1 { font-size: 2.2rem; color: #5D4037; margin: 8px 0 24px; }
 .sb-app { flex: none; font-size: 26px; padding: 12px 24px; border-radius: 999px; background: var(--accent); border: 4px solid var(--ink); white-space: nowrap; }
 .sb-slot { flex: 1; min-width: 0; display: flex; }
 .sb-body { flex: 1; min-height: 0; display: flex; gap: 24px; padding: 12px 32px 32px; }
-.sb-rail { width: 108px; flex: none; display: flex; flex-direction: column; align-items: center; gap: 16px; }
-.sb-rail-btn { width: 100px; height: 92px; border-radius: 26px; background: #fff; border: 4px solid var(--ink); box-shadow: 0 4px 0 var(--ink);
+.sb-rail { width: 108px; flex: none; min-height: 0; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.sb-rail-btn { width: 100px; flex: 0 1 92px; min-height: 44px; border-radius: 26px; background: #fff; border: 4px solid var(--ink); box-shadow: 0 4px 0 var(--ink);
                font-size: 30px; line-height: 1.05; cursor: pointer; word-break: keep-all; padding: 4px; }
 .sb-rail-btn.long { font-size: 22px; }
 .sb-rail-btn.on { background: var(--accent); box-shadow: 0 7px 0 var(--ink); }
 .sb-rail-gap { flex: 1; }
-.sb-gear { width: 52px; height: 52px; border-radius: 50%; background: #F3E6CC; border: 3px solid var(--dash); color: var(--ink-soft) !important;
+.sb-gear { width: 52px; height: 52px; flex: none; border-radius: 50%; background: #F3E6CC; border: 3px solid var(--dash); color: var(--ink-soft) !important;
            display: flex; align-items: center; justify-content: center; cursor: pointer; }
-.sb-stage { flex: 1; min-width: 0; min-height: 0; overflow: auto; position: relative; background: #fff; border: 4px solid var(--ink); border-radius: 40px;
-            box-shadow: 0 8px 0 var(--ink); padding: 28px; display: flex; flex-direction: column; align-items: center; justify-content: safe center; }
-/* 폰 세로: 놀이 목록을 위쪽 가로줄로 */
+.sb-stage { flex: 1; min-width: 0; min-height: 0; overflow: hidden; position: relative; background: #fff; border: 4px solid var(--ink); border-radius: 40px;
+            box-shadow: 0 8px 0 var(--ink); }
+/* 놀이판 안: 설계 폭으로 배치 후 통째로 확대/축소 (core/FitStage.tsx) */
+.sb-fit { position: absolute; left: 0; top: 0; transform-origin: 0 0; display: flex; flex-direction: column; align-items: center; }
+/* 아이 화면에서는 페이지 자체가 스크롤되지 않게 */
+html:has(.sb-shell), html:has(.sb-shell) body { overflow: hidden; overscroll-behavior: none; height: 100%; }
+/* 폰 세로: 놀이 목록을 위쪽 가로줄로 (버튼이 폭에 맞게 줄어듦) */
 @media (max-width: 760px) {
-  .sb-top { padding: 12px 14px 6px; gap: 10px; flex-wrap: wrap; }
-  .sb-app { font-size: 20px; padding: 8px 16px; }
+  .sb-top { padding: 10px 12px 4px; gap: 8px; flex-wrap: wrap; }
+  .sb-round { width: 48px; height: 48px; }
+  .sb-app { font-size: 20px; padding: 6px 16px; }
   .sb-slot { flex-basis: 100%; }
-  .sb-body { flex-direction: column; padding: 8px 14px 20px; gap: 14px; }
-  .sb-rail { width: auto; flex-direction: row; overflow-x: auto; gap: 10px; padding-bottom: 8px; }
-  .sb-rail-btn { width: 84px; height: 72px; flex: none; font-size: 24px; }
-  .sb-rail-btn.long { font-size: 18px; }
+  .sb-body { flex-direction: column; padding: 6px 12px 16px; gap: 12px; }
+  .sb-rail { width: auto; flex-direction: row; gap: 8px; }
+  .sb-rail-btn { flex: 1 1 0; min-width: 0; width: auto; height: 60px; min-height: 0; font-size: 22px; border-radius: 20px; padding: 2px; }
+  .sb-rail-btn.long { font-size: 16px; }
   .sb-rail-gap { display: none; }
-  .sb-gear { flex: none; }
-  .sb-stage { padding: 16px; border-radius: 28px; }
+  .sb-gear { width: 44px; height: 44px; align-self: center; }
+  .sb-stage { border-radius: 28px; }
 }
-
 /* 놀이판 안의 기본 버튼 (예전 화면들: 하나 빼기, 다시 듣기 등) */
 .sb-stage .core-btn { font-family: var(--jua); font-weight: 400; font-size: 24px; background: #fff; color: var(--ink); border: 4px solid var(--ink);
                       border-radius: 999px; box-shadow: 0 5px 0 var(--ink); padding: 12px 26px; }
@@ -62,7 +66,7 @@ h1 { font-size: 2.2rem; color: #5D4037; margin: 8px 0 24px; }
 .sb-stage .core-btn.off { background: #F3E6CC; }
 
 /* 놀이 공통 (core/game.tsx) */
-.g-game { width: 100%; max-width: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: space-around; gap: 28px; flex: 1; }
+.g-game { width: 100%; max-width: 1000px; display: flex; flex-direction: column; align-items: center; gap: 36px; }
 .g-top { flex: 1; min-width: 0; display: flex; align-items: center; gap: 18px; }
 .g-bubble { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; background: #fff;
             border: 4px solid var(--ink); border-radius: 30px; padding: 8px 10px 8px 28px; box-shadow: 0 5px 0 var(--ink); min-height: 64px; }
@@ -94,14 +98,6 @@ h1 { font-size: 2.2rem; color: #5D4037; margin: 8px 0 24px; }
 .g-placed { animation: g-pop .4s ease; display: flex; }
 .g-emoji { font-size: 6rem; line-height: 1; }
 .g-shadow { filter: brightness(0); opacity: .2; }
-@media (max-width: 760px) {
-  .g-row { gap: 16px; }
-  .g-card { min-width: 96px; min-height: 96px; font-size: 52px; border-radius: 24px; }
-  .g-card small { font-size: 18px; }
-  .g-drop { min-width: 110px; min-height: 110px; border-radius: 26px; }
-  .g-piece, .g-slot { width: 110px; height: 110px; }
-  .g-piece svg, .g-placed svg, .g-drop > svg { width: 92px; height: 92px; }
-}
 @keyframes g-pop { 50% { transform: scale(1.15); } }
 @keyframes g-shake { 0% { transform: rotate(0); } 25% { transform: rotate(-6deg) translateX(-8px); } 60% { transform: rotate(5deg) translateX(8px); } 100% { transform: rotate(0); } }
 
@@ -163,3 +159,24 @@ h1 { font-size: 2.2rem; color: #5D4037; margin: 8px 0 24px; }
 .sb-stars span { font-size: 14px; color: var(--ink-soft); }
 .sb-stars b { font-family: var(--jua); font-weight: 400; font-size: 30px; }
 .sb-card select, .sb-card input[type=range] { accent-color: var(--ink); font: inherit; }
+
+/* 키가 낮은 화면(폰 가로 등): 위 줄·놀이 목록을 작게 (아래 기본 규칙보다 우선하도록 파일 끝에 둠) */
+@media (max-height: 560px) {
+  .sb-shell .sb-top { padding: 6px 14px 2px; gap: 10px; }
+  .sb-shell .sb-round { width: 40px; height: 40px; border-width: 3px; box-shadow: 0 3px 0 var(--ink); }
+  .sb-shell .sb-round svg { width: 22px; height: 22px; }
+  .sb-shell .sb-app { font-size: 17px; padding: 4px 12px; border-width: 3px; }
+  .sb-shell .sb-body { padding: 6px 14px 12px; gap: 12px; }
+  .sb-shell .sb-rail { width: 78px; gap: 6px; }
+  .sb-shell .sb-rail-btn { width: 74px; min-height: 30px; font-size: 20px; border-radius: 16px; border-width: 3px; box-shadow: 0 3px 0 var(--ink); }
+  .sb-shell .sb-rail-btn.long { font-size: 15px; }
+  .sb-shell .sb-rail-btn.on { box-shadow: 0 4px 0 var(--ink); }
+  .sb-shell .sb-gear { width: 34px; height: 34px; }
+  .sb-shell .sb-stage { border-radius: 24px; border-width: 3px; box-shadow: 0 5px 0 var(--ink); }
+  .sb-shell .g-bubble { min-height: 40px; padding: 2px 4px 2px 16px; border-width: 3px; box-shadow: 0 3px 0 var(--ink); }
+  .sb-shell .g-ask { font-size: 19px; }
+  .sb-shell .g-again { width: 34px; height: 34px; border-width: 3px; }
+  .sb-shell .g-again svg { width: 18px; height: 18px; }
+  .sb-shell .g-stars { font-size: 19px; padding: 2px 12px 2px 6px; border-width: 3px; box-shadow: 0 3px 0 var(--ink); }
+  .sb-shell .g-stars svg { width: 24px; height: 24px; }
+}

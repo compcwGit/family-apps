@@ -1,7 +1,9 @@
 // 앱 화면 틀 (디자인 시안 "스티커북"): 위 줄(처음으로 · 앱 이름 · 질문 말풍선 · 별) + 왼쪽 놀이 목록 + 놀이판
 // 놀이 화면의 <GameTop> 은 위 줄의 말풍선 자리로 들어감 (portal)
+// 놀이판은 FitStage: 내용이 화면에 꼭 맞게 확대/축소 → 태블릿·폰 모두 스크롤 없음
 import { createContext, useState, type CSSProperties, type ReactNode } from 'react'
 import { HomeIcon, GearIcon } from './icons'
+import { FitStage } from './FitStage'
 
 export const ShellSlot = createContext<HTMLElement | null>(null)
 
@@ -52,7 +54,7 @@ export function PlayShell({
           </button>
         </nav>
         <ShellSlot.Provider value={slot}>
-          <div className="sb-stage">{children}</div>
+          <FitStage>{children}</FitStage>
         </ShellSlot.Provider>
       </div>
     </div>

@@ -23,7 +23,7 @@
              background: var(--paper); border: 4px solid var(--ink); box-shadow: 0 3px 0 var(--ink); cursor: pointer; }
 .color-pic.on { background: var(--accent); box-shadow: 0 5px 0 var(--ink); }
 .color-main { display: flex; align-items: center; justify-content: center; gap: 56px; flex-wrap: wrap; }
-.color-canvas { width: min(80vw, 54vh, 460px); aspect-ratio: 1; background: #fff; border: 4px solid var(--line); border-radius: 32px;
+.color-canvas { width: 440px; aspect-ratio: 1; background: #fff; border: 4px solid var(--line); border-radius: 32px;
                 padding: 8px; touch-action: manipulation; }
 .color-canvas > * { cursor: pointer; transition: fill .15s; }
 .color-palette { display: grid; grid-template-columns: repeat(3, 72px); gap: 20px; justify-items: center; }
@@ -32,8 +32,3 @@
 .color-chip.on { border-width: 5px; box-shadow: 0 0 0 6px #fff, 0 0 0 10px var(--ink); }
 .color-clear { grid-column: span 3; height: 52px; padding: 0 20px; border-radius: 999px; border: 3px solid var(--dash); background: #fff;
                font-family: var(--jua); font-size: 22px; color: var(--ink-soft); cursor: pointer; }
-@media (max-width: 760px) {
-  .color-palette { grid-template-columns: repeat(6, 52px); gap: 12px; }
-  .color-chip { width: 52px; height: 52px; }
-  .color-clear { grid-column: span 6; }
-}

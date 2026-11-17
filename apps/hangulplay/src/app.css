@@ -30,13 +30,6 @@
         box-shadow: 0 4px 0 var(--ink); cursor: pointer; }
 .pick.on { outline: 4px solid var(--accent); outline-offset: 2px; }
 .pick.none { background: #EFEBE9; font-size: 1.1rem; color: var(--ink-soft); }
-@media (max-width: 600px) {
-  .formula { gap: 6px; }
-  .f-part { font-size: 2.4rem; min-width: 36px; }
-  .f-op { font-size: 1.6rem; }
-  .f-result { font-size: 4rem; padding: 2px 18px; }
-  .pick { width: 52px; height: 52px; font-size: 1.7rem; }
-}
 .pick-label { margin: 6px 0 -8px; font-size: 1rem; color: var(--ink-soft); }
 
 /* 따라쓰기 */
@@ -44,7 +37,7 @@
 .arrow { border: 4px solid var(--ink); background: #fff; box-shadow: 0 4px 0 var(--ink); border-radius: 50%; width: 56px; height: 56px; font-size: 1.4rem; color: var(--ink-soft); cursor: pointer; }
 .trace-title { border: none; background: none; font-size: 2.6rem; color: var(--ink); cursor: pointer; }
 .trace-title small { font-size: 1.3rem; color: var(--ink-soft); }
-.trace-pad { width: min(78vw, 48vh, 520px); aspect-ratio: 1; background: #fff; border-radius: 28px; border: 4px solid var(--ink);
+.trace-pad { width: 440px; aspect-ratio: 1; background: #fff; border-radius: 28px; border: 4px solid var(--ink);
              box-shadow: 0 6px 0 var(--ink); touch-action: none; }
 .trace-pad polyline { fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .g-todo { stroke: #EEEEEE; stroke-width: 14; }

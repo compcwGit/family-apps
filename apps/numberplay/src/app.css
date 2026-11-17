@@ -1,11 +1,11 @@
 /* 하나씩 세기 */
 .counter { width: 100%; max-width: 720px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-.big { width: min(70vw, 380px); aspect-ratio: 1; border: 5px solid var(--ink); border-radius: 48px; cursor: pointer;
+.big { width: 360px; aspect-ratio: 1; border: 5px solid var(--ink); border-radius: 48px; cursor: pointer;
        display: flex; flex-direction: column; align-items: center; justify-content: center;
        box-shadow: 0 10px 0 var(--ink); transition: transform .1s; font-family: var(--jua); }
 .big:active { transform: translateY(7px); box-shadow: 0 3px 0 var(--ink); }
 .big:disabled { cursor: default; }
-.big-num { font-size: clamp(5rem, 20vw, 9rem); color: var(--ink); line-height: 1; }
+.big-num { font-size: 140px; color: var(--ink); line-height: 1; }
 .big-word { font-size: 34px; color: var(--ink); margin-top: 12px; }
 .big.pop .big-num { animation: pop .3s ease; }
 @keyframes pop { 50% { transform: scale(1.25); } }
@@ -20,8 +20,8 @@
 .row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
 /* 100판 */
-.board { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; width: 100%; max-width: min(720px, 62vh); }
-.cell { border: 3px solid var(--ink); border-radius: 14px; aspect-ratio: 1; font-family: var(--jua); font-size: clamp(1rem, 3vw, 1.7rem);
+.board { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; width: 100%; max-width: 640px; }
+.cell { border: 3px solid var(--ink); border-radius: 14px; aspect-ratio: 1; font-family: var(--jua); font-size: 26px;
         color: var(--ink); opacity: .4; cursor: pointer; padding: 0; }
 .cell.done { opacity: 1; box-shadow: 0 3px 0 var(--ink); }
 .cell.pop { animation: pop .4s ease; opacity: 1; }

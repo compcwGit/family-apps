@@ -67,7 +67,7 @@ export function Party({ show, text = '' }: { show: boolean; text?: string }) {
   const [critter] = useState(() => CHEER_CRITTERS[Math.floor(Math.random() * CHEER_CRITTERS.length)])
   if (!show) return null
   const [big, ...rest] = splitSentences(text)
-  return (
+  return createPortal(
     <div className="g-party" role="status">
       <div className="g-party-burst">
         <svg className="g-party-rays" viewBox="0 0 400 400" aria-hidden="true">
@@ -87,7 +87,8 @@ export function Party({ show, text = '' }: { show: boolean; text?: string }) {
         )}
         <div className="g-party-plus">별 +1</div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
 
