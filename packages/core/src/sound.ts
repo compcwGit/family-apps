@@ -27,8 +27,20 @@ function audio(): AudioContext {
 }
 
 // 첫 탭 때 소리 켜기: 무음 1샘플을 재생해서 이후 소리가 바로 나게 함
+// 웹(아이폰 Safari)에서는 기기 음성도 탭 안에서 한 번 말해야 그 뒤에 말할 수 있어서, 들리지 않는 말을 한 번 함
+let speechUnlocked = false
 if (typeof window !== 'undefined') {
   const unlock = () => {
+    if (!speechUnlocked && 'speechSynthesis' in window) {
+      speechUnlocked = true
+      try {
+        const u = new SpeechSynthesisUtterance(' ')
+        u.volume = 0
+        window.speechSynthesis.speak(u)
+      } catch {
+        /* 무시 */
+      }
+    }
     const c = audio()
     const src = c.createBufferSource()
     src.buffer = c.createBuffer(1, 1, 22050)

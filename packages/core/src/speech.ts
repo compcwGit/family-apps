@@ -4,6 +4,7 @@ import { TextToSpeech } from '@capacitor-community/text-to-speech'
 import { playTone } from './sound'
 import { splitSentences } from './talk'
 import { createStore } from './storage'
+import { Capacitor } from '@capacitor/core'
 import { followMediaVolume } from './sound'
 
 // 읽기 설정. 앱마다 setSpeechOptions 로 바꿀 수 있음 (기본값은 기존과 같음)
@@ -81,6 +82,19 @@ function clipsFor(text: string): string[] | null {
   return parts.length && parts.every(Boolean) ? parts : null
 }
 
+// 앞의 말 끊기. 웹(아이폰 Safari)은 끊자마자 말하면 새 말을 버리므로, 말하는 중일 때만 끊고 잠깐 기다림
+async function stopBeforeSpeak() {
+  const synth = typeof window !== 'undefined' && 'speechSynthesis' in window ? window.speechSynthesis : null
+  if (synth && !Capacitor.isNativePlatform()) {
+    if (synth.speaking || synth.pending) {
+      synth.cancel()
+      await new Promise((r) => setTimeout(r, 80))
+    }
+    return
+  }
+  await TextToSpeech.stop()
+}
+
 export async function speak(text: string, fallbackFreq = 523): Promise<void> {
   const id = ++playId
   audio?.pause()
@@ -96,7 +110,8 @@ export async function speak(text: string, fallbackFreq = 523): Promise<void> {
   }
   try {
     const idx = opts.voice ? (await allVoices()).findIndex((v) => voiceId(v) === opts.voice) : -1
-    await TextToSpeech.stop()
+    await stopBeforeSpeak()
+    if (id !== playId) return // 기다리는 사이에 다른 말이 시작됨
     await TextToSpeech.speak({
       text,
       lang: 'ko-KR',

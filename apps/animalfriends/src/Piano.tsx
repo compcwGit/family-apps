@@ -19,11 +19,17 @@ const ANIMAL_KEYS = ['소', '돼지', '사자', '강아지', '고양이', '오�
 export function Piano() {
   const [animal, setAnimal] = useState(false)
   const [hit, setHit] = useState<number | null>(null)
-  const press = (i: number) => {
+  const hitKey = (i: number) => {
     setHit(i)
     setTimeout(() => setHit((h) => (h === i ? null : h)), 250)
+  }
+  // 피아노 소리는 닿는 순간(빠르게), 동물 소리는 탭(click) — 아이폰은 탭 안에서만 기기 음성을 허락함
+  const down = (i: number) => {
+    hitKey(i)
+    if (!animal) playPiano(KEYS[i].freq)
+  }
+  const click = (i: number) => {
     if (animal) speak(SAY.piano(ANIMAL_KEYS[i]), KEYS[i].freq)
-    else playPiano(KEYS[i].freq)
   }
   return (
     <div className="g-game">
@@ -37,7 +43,7 @@ export function Piano() {
       </div>
       <div className="piano">
         {KEYS.map((k, i) => (
-          <button key={i} className={'piano-key' + (hit === i ? ' hit' : '')} style={{ background: k.color }} onPointerDown={() => press(i)}>
+          <button key={i} className={'piano-key' + (hit === i ? ' hit' : '')} style={{ background: k.color }} onPointerDown={() => down(i)} onClick={() => click(i)}>
             <span className="piano-animal"><Critter kind={ANIMAL_KEYS[i].critter} size={72} /></span>
             <span className="piano-note">{k.note}</span>
           </button>
