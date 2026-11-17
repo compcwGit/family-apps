@@ -102,12 +102,12 @@ button.sp-cell { cursor: pointer; }
 .sp-bubble-line { margin-bottom: 36px; background: #fff; border: 2px solid var(--line); font-size: 19px; }
 
 /* 부모 확인 */
-.sp-gate { flex: 1; display: flex; align-items: center; justify-content: center; gap: 96px; flex-wrap: wrap; }
-.sp-gate-q { width: 440px; max-width: 100%; display: flex; flex-direction: column; gap: 20px; }
+.sp-gate { flex: 1; display: flex; align-items: center; justify-content: center; gap: 72px; flex-wrap: wrap; }
+.sp-gate-q { width: 520px; max-width: 100%; display: flex; flex-direction: column; gap: 20px; }
 .sp-gate-q .sp-h1 { font-size: 44px; }
 .sp-gate-q .sp-sub { font-size: 20px; line-height: 1.5; margin: 0; }
 .sp-gate-mascot { display: flex; align-items: flex-end; gap: 8px; }
-.sp-gate-eq { display: flex; align-items: center; gap: 20px; margin-top: 12px; font-family: var(--jua); font-size: 72px; }
+.sp-gate-eq { display: flex; align-items: center; gap: 20px; margin-top: 12px; font-family: var(--jua); font-size: 64px; white-space: nowrap; }
 .sp-gate-ans { min-width: 150px; height: 104px; padding: 0 16px; border-radius: 24px; background: #fff; border: 3px solid var(--ink);
                display: flex; align-items: center; justify-content: center; }
 .sp-gate-ans.empty { color: #B9A58C; }
@@ -203,8 +203,8 @@ button.sp-cell { cursor: pointer; }
   .sp-promise { padding: 20px; }
   .sp-history { grid-template-columns: 1fr; }
   .sp-gate { gap: 28px; }
-  .sp-gate-eq { font-size: 52px; }
-  .sp-gate-ans { min-width: 110px; height: 80px; }
+  .sp-gate-eq { font-size: 42px; gap: 12px; }
+  .sp-gate-ans { min-width: 100px; height: 72px; }
   .sp-keypad { grid-template-columns: repeat(3, 88px); gap: 12px; }
   .sp-key { width: 88px; height: 72px; font-size: 30px; }
   .sp-key-sm { font-size: 18px; white-space: nowrap; }

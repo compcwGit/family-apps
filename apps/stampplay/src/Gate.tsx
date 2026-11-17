@@ -2,11 +2,14 @@ import { useMemo, useState } from 'react'
 import { BackIcon } from './Icons'
 import { Mascot, type Kind } from './Mascot'
 
-// 부모 확인: 곱셈 문제 + 숫자 키패드 (유치원생은 못 푸는 난이도). 틀리면 지우고 다시
+// 부모 확인: 두 자리 수 덧셈 + 숫자 키패드. 받아올림이 있게 내서 유치원생은 어렵게. 틀리면 지우고 다시
+const rand = (n: number) => Math.floor(Math.random() * n)
 const makeQuestion = () => {
-  const a = 3 + Math.floor(Math.random() * 7)
-  const b = 3 + Math.floor(Math.random() * 7)
-  return { a, b, answer: String(a * b) }
+  const ua = 1 + rand(9) // 일의 자리 1~9
+  const ub = 10 - ua + rand(ua) // 일의 자리 합이 10 이상 → 받아올림
+  const a = (1 + rand(8)) * 10 + ua // 11~89
+  const b = (1 + rand(8)) * 10 + ub
+  return { a, b, answer: String(a + b) }
 }
 
 export function Gate({ kind, onPass, onCancel }: { kind: Kind; onPass: () => void; onCancel: () => void }) {
@@ -41,7 +44,7 @@ export function Gate({ kind, onPass, onCancel }: { kind: Kind; onPass: () => voi
           <p className="sp-sub">아래 문제를 풀면 도장을 찍을 수 있어요.</p>
           <div className="sp-gate-eq">
             <span>
-              {q.a} × {q.b} =
+              {q.a} + {q.b} =
             </span>
             <span className={'sp-gate-ans' + (v ? '' : ' empty')}>{v || '?'}</span>
           </div>
