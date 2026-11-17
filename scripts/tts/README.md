@@ -6,6 +6,10 @@
 - MeloTTS는 Ubuntu + Python 3.9에서 개발·테스트됐고, Windows는 Docker를 권장합니다
   → 여기서는 **WSL2(Ubuntu)** 로 설치합니다 (Docker보다 가벼움)
 
+## 가장 쉬운 방법: 더블클릭
+`scripts\tts\음성만들기.bat` 을 더블클릭 → WSL 이 없으면 설치 방법을 알려 주고, 있으면 MeloTTS 를 (처음 한 번) 설치한 뒤
+작은 앱부터 음성을 만듭니다 (`scripts/tts/wsl-make.sh`). 한글 놀이는 마지막이고 오래 걸려요.
+
 ## 1. 설치 (집 PC, 한 번만)
 
 **PowerShell (관리자)** — WSL이 없을 때만. 끝나면 재부팅
