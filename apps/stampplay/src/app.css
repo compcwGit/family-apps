@@ -117,6 +117,8 @@ button.sp-cell { cursor: pointer; }
           font-family: var(--jua); font-size: 36px; cursor: pointer; }
 .sp-key:active { background: var(--peach); }
 .sp-key-sm { font-size: 22px; color: var(--muted); }
+.sp-choices { display: grid; grid-template-columns: repeat(2, 168px); gap: 18px; }
+.sp-choice { width: 168px; height: 120px; border-radius: 30px; font-size: 48px; }
 .sp-key-ok { background: var(--ink); border-color: var(--ink); color: #FFF6E8; font-size: 24px; }
 
 /* 부모 화면 */
@@ -208,6 +210,8 @@ button.sp-cell { cursor: pointer; }
   .sp-keypad { grid-template-columns: repeat(3, 88px); gap: 12px; }
   .sp-key { width: 88px; height: 72px; font-size: 30px; }
   .sp-key-sm { font-size: 18px; white-space: nowrap; }
+  .sp-choices { grid-template-columns: repeat(2, 140px); gap: 14px; }
+  .sp-choice { width: 140px; height: 96px; font-size: 40px; }
   .sp-done-title { font-size: 34px; }
   .sp-done > .sp-done-mascot { position: static; }
   .sp-done > .sp-done-deco { display: none; }

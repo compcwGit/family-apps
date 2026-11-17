@@ -1,31 +1,30 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { BackIcon } from './Icons'
 import { Mascot, type Kind } from './Mascot'
 
-// 부모 확인: 두 자리 수 덧셈 + 숫자 키패드. 받아올림이 있게 내서 유치원생은 어렵게. 틀리면 지우고 다시
+// 부모 확인: 두 자리 수 덧셈, 보기 4개 중 고르기. 받아올림이 있게 내서 유치원생은 어렵게
+// 틀리면 새 문제 (찍어서 맞히기 어렵게)
 const rand = (n: number) => Math.floor(Math.random() * n)
 const makeQuestion = () => {
   const ua = 1 + rand(9) // 일의 자리 1~9
   const ub = 10 - ua + rand(ua) // 일의 자리 합이 10 이상 → 받아올림
   const a = (1 + rand(8)) * 10 + ua // 11~89
   const b = (1 + rand(8)) * 10 + ub
-  return { a, b, answer: String(a + b) }
+  const answer = a + b
+  // 헷갈리는 보기: 받아올림을 빼먹은 답(-10), ±1, ±10, ±11 중에서
+  const pool = [answer - 10, answer + 10, answer - 1, answer + 1, answer - 11, answer + 11].filter((n) => n > 0)
+  const choices = new Set([answer, answer - 10])
+  while (choices.size < 4) choices.add(pool[rand(pool.length)])
+  return { a, b, answer, choices: [...choices].sort(() => Math.random() - 0.5) }
 }
 
 export function Gate({ kind, onPass, onCancel }: { kind: Kind; onPass: () => void; onCancel: () => void }) {
-  const q = useMemo(makeQuestion, [])
-  const [v, setV] = useState('')
+  const [q, setQ] = useState(makeQuestion)
   const [bad, setBad] = useState(false)
-  const press = (d: string) => {
-    if (v.length < 3) setV(v + d)
-    setBad(false)
-  }
-  const check = () => {
-    if (v === q.answer) onPass()
-    else {
-      setV('')
-      setBad(true)
-    }
+  const pick = (n: number) => {
+    if (n === q.answer) return onPass()
+    setBad(true)
+    setQ(makeQuestion())
   }
 
   return (
@@ -41,34 +40,25 @@ export function Gate({ kind, onPass, onCancel }: { kind: Kind; onPass: () => voi
             <p className="sp-bubble sp-bubble-line">눈 감고 있을게요!</p>
           </div>
           <h1 className="sp-h1">엄마·아빠 확인</h1>
-          <p className="sp-sub">아래 문제를 풀면 도장을 찍을 수 있어요.</p>
+          <p className="sp-sub">아래 문제의 답을 골라 주세요.</p>
           <div className="sp-gate-eq">
             <span>
               {q.a} + {q.b} =
             </span>
-            <span className={'sp-gate-ans' + (v ? '' : ' empty')}>{v || '?'}</span>
+            <span className="sp-gate-ans empty">?</span>
           </div>
           {bad && (
             <p role="status" className="sp-gate-bad">
-              앗, 다시 한번 풀어 볼까요?
+              앗, 새 문제로 다시 풀어 볼까요?
             </p>
           )}
         </div>
-        <div className="sp-keypad">
-          {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((d) => (
-            <button key={d} className="sp-key" onClick={() => press(d)}>
-              {d}
+        <div className="sp-choices">
+          {q.choices.map((n) => (
+            <button key={`${q.a}-${q.b}-${n}`} className="sp-key sp-choice" onClick={() => pick(n)}>
+              {n}
             </button>
           ))}
-          <button className="sp-key sp-key-sm" onClick={() => setV('')}>
-            지우기
-          </button>
-          <button className="sp-key" onClick={() => press('0')}>
-            0
-          </button>
-          <button className="sp-key sp-key-ok" onClick={check}>
-            확인
-          </button>
         </div>
       </div>
     </main>
