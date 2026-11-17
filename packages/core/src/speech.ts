@@ -4,7 +4,7 @@ import { TextToSpeech } from '@capacitor-community/text-to-speech'
 import { playTone } from './sound'
 import { splitSentences } from './talk'
 import { createStore } from './storage'
-import { respectSilentSwitch } from './sound'
+import { followMediaVolume } from './sound'
 
 // 읽기 설정. 앱마다 setSpeechOptions 로 바꿀 수 있음 (기본값은 기존과 같음)
 // voice: 목소리 id (listKoreanVoices 의 id), '' = 기기 기본 목소리
@@ -56,7 +56,7 @@ let playId = 0
 function playFile(src: string, id: number): Promise<boolean> {
   return new Promise((resolve) => {
     if (id !== playId) return resolve(false)
-    respectSilentSwitch() // 무음 스위치를 켜면 녹음 목소리도 나지 않게
+    followMediaVolume() // 녹음 목소리도 미디어 볼륨을 따름
     audio = new Audio(base + src)
     audio.onended = () => resolve(true)
     audio.onerror = () => resolve(false)
@@ -103,7 +103,7 @@ export async function speak(text: string, fallbackFreq = 523): Promise<void> {
       rate: opts.rate,
       pitch: opts.pitch,
       volume: 1,
-      category: 'ambient',
+      category: 'playback', // 미디어 볼륨을 따름 (벨소리 무음 스위치와 상관없음)
       ...(idx >= 0 ? { voice: idx } : {}),
     })
   } catch {
