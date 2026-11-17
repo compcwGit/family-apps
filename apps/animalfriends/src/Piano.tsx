@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Critter, playTone, speak } from '@family/core'
+import { Critter, playPiano, speak } from '@family/core'
 import { ANIMALS } from './animals'
 import { SAY } from './voice'
 
@@ -23,7 +23,7 @@ export function Piano() {
     setHit(i)
     setTimeout(() => setHit((h) => (h === i ? null : h)), 250)
     if (animal) speak(SAY.piano(ANIMAL_KEYS[i]), KEYS[i].freq)
-    else playTone(KEYS[i].freq)
+    else playPiano(KEYS[i].freq)
   }
   return (
     <div className="g-game">

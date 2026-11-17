@@ -1,6 +1,6 @@
 export { ParentGate } from './ParentGate'
 export { createStore } from './storage'
-export { playTone } from './sound'
+export { playTone, playPiano } from './sound'
 export { speak, stopSpeaking, setVoiceFiles, hasVoiceFiles, usesVoiceFiles, setUseVoiceFiles, setSpeechRate, setSpeechOptions, listKoreanVoices, type SpeechOptions } from './speech'
 export { getPlatform } from './platform'
 export { useDrag } from './drag'
