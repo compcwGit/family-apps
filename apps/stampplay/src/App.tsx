@@ -21,6 +21,7 @@ export default function App() {
   const [plans, setPlans] = useState(loadPlans)
   const [reasons, setReasons] = useState(loadReasons)
   const [openNo, setOpenNo] = useState(1) // 칭찬 기록에서 연 도장판 번호
+  const [fromParent, setFromParent] = useState(false) // 칭찬 기록을 부모 화면에서 열었는지 (지우기 가능, 닫으면 부모 화면으로)
   const boards = boardsOf(stamps, plans)
   const [newestId, setNewestId] = useState<string | null>(null)
 
@@ -33,14 +34,19 @@ export default function App() {
           setOpenNo(no)
           setScreen('board')
         }}
-        onClose={() => setScreen('home')}
+        onClose={() => setScreen(fromParent ? 'parent' : 'home')}
       />
     )
   if (screen === 'board')
     return (
       <main>
         <h1>📖 지난 도장판</h1>
-        <StampBoard board={boards[openNo - 1] ?? boards[boards.length - 1]} newestId={null} />
+        <StampBoard
+          key={openNo}
+          board={boards[openNo - 1] ?? boards[boards.length - 1]}
+          newestId={null}
+          onRemove={fromParent ? (id) => setStamps(removeStamp(id)) : undefined}
+        />
         <button className="core-btn history-btn" onClick={() => setScreen('history')}>
           ← 칭찬 기록
         </button>
@@ -67,6 +73,10 @@ export default function App() {
           playTone(196)
         }}
         onRemove={(id) => setStamps(removeStamp(id))}
+        onHistory={() => {
+          setFromParent(true)
+          setScreen('history')
+        }}
         onClose={() => {
           setScreen('home')
           if (newestId) stampSound()
@@ -78,7 +88,13 @@ export default function App() {
     <main onAnimationEnd={() => setNewestId(null)}>
       <h1>칭찬 도장판</h1>
       <StampBoard board={current} newestId={newestId} />
-      <button className="core-btn history-btn" onClick={() => setScreen('history')}>
+      <button
+        className="core-btn history-btn"
+        onClick={() => {
+          setFromParent(false)
+          setScreen('history')
+        }}
+      >
         📖 칭찬 기록
       </button>
       <footer>실행 환경: {getPlatform()}</footer>

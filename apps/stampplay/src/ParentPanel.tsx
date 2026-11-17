@@ -14,6 +14,7 @@ export function ParentPanel({
   onPlan,
   onStamp,
   onRemove,
+  onHistory,
   onClose,
 }: {
   board: Board
@@ -25,6 +26,7 @@ export function ParentPanel({
   onPlan: (plan: Plan) => void
   onStamp: (reason: Reason) => void
   onRemove: (id: string) => void
+  onHistory: () => void
   onClose: () => void
 }) {
   const [target, setTarget] = useState(plan.target)
@@ -93,6 +95,9 @@ export function ParentPanel({
       {nextBoard && (
         <StampBoard key={nextBoard.no} board={nextBoard} newestId={null} onEmpty={picked && !editing ? () => onStamp(picked) : undefined} />
       )}
+      <button className="core-btn history-btn" onClick={onHistory}>
+        📖 지난 도장판 보기
+      </button>
 
       <h2 className="recent-title">약속</h2>
       <div className="promise">
