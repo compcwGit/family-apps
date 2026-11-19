@@ -36,14 +36,14 @@ export function Color({ stars, onStar }: GameProps) {
   return (
     <div className="g-game">
       <GameTop stars={stars}>색을 골라 칠해 봐요</GameTop>
-      <div className="color-pics" role="radiogroup" aria-label="그림 고르기">
-        {PICTURES.map((p, i) => (
-          <button key={p.id} role="radio" aria-checked={i === pic} className={'color-pic' + (i === pic ? ' on' : '')} onClick={() => setPic(i)}>
-            {p.name}
-          </button>
-        ))}
-      </div>
       <div className="color-main">
+        <div className="color-pics" role="radiogroup" aria-label="그림 고르기">
+          {PICTURES.map((p, i) => (
+            <button key={p.id} role="radio" aria-checked={i === pic} className={'color-pic' + (i === pic ? ' on' : '')} onClick={() => setPic(i)}>
+              {p.name}
+            </button>
+          ))}
+        </div>
         <svg className="color-canvas" viewBox="0 0 200 200" role="img" aria-label={`색칠하는 ${picture.name} 그림`}>
           {picture.parts.map((part, i) => {
             const El = part.el
