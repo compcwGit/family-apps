@@ -4,7 +4,7 @@ import { TextToSpeech } from '@capacitor-community/text-to-speech'
 import { playTone } from './sound'
 import { splitSentences } from './talk'
 import { createStore } from './storage'
-import { Capacitor } from '@capacitor/core'
+import { Capacitor, registerPlugin } from '@capacitor/core'
 import { followMediaVolume } from './sound'
 
 // 읽기 설정. 앱마다 setSpeechOptions 로 바꿀 수 있음 (기본값은 기존과 같음)
@@ -95,9 +95,34 @@ async function stopBeforeSpeak() {
   await TextToSpeech.stop()
 }
 
+// 안드로이드 앱: 말하는 동안 다른 앱 소리(음악)를 멈추지 않고 잠깐 줄였다가 되돌림 (packages/audio-focus)
+// 말이 끝나고 조금 기다렸다 되돌림 → 연달아 말할 때 음악 소리가 들쑥날쑥하지 않게
+// 웹(아이폰 Safari)·PC는 해당 없음
+const AudioFocus = registerPlugin<{ duck(): Promise<void>; release(): Promise<void> }>('AudioFocus')
+let releaseTimer: ReturnType<typeof setTimeout> | undefined
+function duckOthers() {
+  if (!Capacitor.isNativePlatform()) return
+  clearTimeout(releaseTimer)
+  AudioFocus.duck().catch(() => {})
+}
+function restoreOthers(id = playId) {
+  if (!Capacitor.isNativePlatform() || id !== playId) return // 다른 말이 이어지면 그대로 줄인 채
+  clearTimeout(releaseTimer)
+  releaseTimer = setTimeout(() => AudioFocus.release().catch(() => {}), 500)
+}
+
 export async function speak(text: string, fallbackFreq = 523): Promise<void> {
   const id = ++playId
   audio?.pause()
+  duckOthers()
+  try {
+    await speakNow(text, fallbackFreq, id)
+  } finally {
+    restoreOthers(id)
+  }
+}
+
+async function speakNow(text: string, fallbackFreq: number, id: number): Promise<void> {
   const clips = clipsFor(text)
   if (clips) {
     try {
@@ -129,6 +154,7 @@ export async function speak(text: string, fallbackFreq = 523): Promise<void> {
 export async function stopSpeaking(): Promise<void> {
   playId++
   audio?.pause()
+  restoreOthers() // 멈추면 다른 앱 소리도 원래대로
   try {
     await TextToSpeech.stop()
   } catch {

@@ -1,0 +1,9 @@
+{
+  "name": "@family/audio-focus",
+  "version": "0.1.0",
+  "private": true,
+  "description": "안드로이드: 앱이 말하는 동안 다른 앱 소리(음악)를 잠깐 줄였다가 되돌림 (오디오 포커스 MAY_DUCK)",
+  "capacitor": {
+    "android": { "src": "android" }
+  }
+}

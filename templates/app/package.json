@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "@capacitor/android": "^8.6.2",
-    "@capacitor/core": "^8.6.2"
+    "@capacitor/core": "^8.6.2",
+    "@family/audio-focus": "*"
   },
   "devDependencies": {
     "@family/core": "*",
