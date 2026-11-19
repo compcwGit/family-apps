@@ -3,6 +3,7 @@ import { ParentGate, ParentPage, PlayShell, stopSpeaking, useStars, setSpeechOpt
 import { ShapeMatch } from './ShapeMatch'
 import { Sort } from './Sort'
 import { Color } from './Color'
+import { Tangram } from './Tangram'
 import pkg from '../package.json'
 import './app.css'
 
@@ -12,11 +13,12 @@ const GAMES = [
   { id: 'shape', label: '도형', View: ShapeMatch },
   { id: 'sort', label: '끼리끼리', View: Sort },
   { id: 'color', label: '색칠', View: Color },
+  { id: 'tangram', label: '칠교', View: Tangram },
 ] as const
-const GAME_NAMES: Record<string, string> = { shape: '도형 맞추기', sort: '끼리끼리', color: '색칠 놀이' }
+const GAME_NAMES: Record<string, string> = { shape: '도형 맞추기', sort: '끼리끼리', color: '색칠 놀이', tangram: '칠교놀이' }
 type Screen = (typeof GAMES)[number]['id'] | 'gate' | 'parent'
 
-// 모양 놀이: 도형 맞추기 + 같은 색·모양끼리 모으기 + 색칠 놀이
+// 모양 놀이: 도형 맞추기 + 같은 색·모양끼리 모으기 + 색칠 놀이 + 칠교놀이
 export default function App() {
   const [screen, setScreen] = useState<Screen>('shape')
   const stars = useStars('shapeplay.stars')
@@ -32,9 +34,9 @@ export default function App() {
         title="모양 놀이"
         version={pkg.version}
         accent="#B79CF7"
-        about="도형을 같은 모양 자리에 끌어다 맞추고, 같은 색·같은 모양끼리 바구니에 모으고, 그림을 색칠하는 유아용 앱입니다."
+        about="도형을 같은 모양 자리에 끌어다 맞추고, 같은 색·같은 모양끼리 바구니에 모으고, 그림을 색칠하고, 칠교 조각으로 모양을 만드는 유아용 앱입니다."
         nuri={[
-          ['자연탐구', '도형 맞추기, 끼리끼리 모으기 (모양·색 구별, 분류하기)'],
+          ['자연탐구', '도형 맞추기, 끼리끼리 모으기, 칠교놀이 (모양·색 구별, 분류하기, 공간 감각)'],
           ['예술경험', '색칠 놀이 (색으로 표현하기)'],
         ]}
         stars={GAMES.map((g) => [GAME_NAMES[g.id], stars.of(g.id)] as [string, number])}

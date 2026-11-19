@@ -31,6 +31,14 @@
               display: flex; align-items: center; justify-content: center; color: var(--ink); }
 .color-chip.on { border-width: 5px; box-shadow: 0 0 0 6px #fff, 0 0 0 10px var(--ink); }
 .color-pics { flex-basis: 100%; }
+/* 폰(좁은 화면): 도안 목록은 한 줄, 좌우로 밀어서 넘김 */
+@media (max-width: 760px) {
+  .color-main { width: 100%; }
+  .color-pics { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; padding: 4px 4px 10px;
+                width: 100%; min-width: 0; box-sizing: border-box;
+                scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
+  .color-pic { flex: none; scroll-snap-align: start; }
+}
 .color-clear { grid-column: span 3; height: 52px; padding: 0 20px; border-radius: 999px; border: 3px solid var(--dash); background: #fff;
                font-family: var(--jua); font-size: 22px; color: var(--ink-soft); cursor: pointer; }
 
@@ -44,3 +52,12 @@
   .color-chip { width: 64px; height: 64px; }
   .color-clear { grid-column: span 2; }
 }
+
+/* 칠교놀이 */
+.tg-board { max-width: 100%; height: auto; overflow: visible; }
+.tg-slot { fill: #F3E6CC; stroke: #B49F78; stroke-width: 3; stroke-dasharray: 8 6; stroke-linejoin: round; }
+.tg-slot.filled { stroke: #2A2840; stroke-dasharray: none; stroke-width: 4; }
+.tg-tray { gap: 22px; }
+.tg-piece { display: flex; cursor: grab; transition: transform .2s; filter: drop-shadow(0 5px 0 rgba(42,40,64,.15)); }
+.tg-piece svg { overflow: visible; }
+.tg-shape { stroke: #2A2840; stroke-width: 4; stroke-linejoin: round; }

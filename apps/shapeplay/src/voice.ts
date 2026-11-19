@@ -3,6 +3,7 @@
 import { voiceList, MATCH, eun } from '@family/core/voicelist'
 import { SHAPES } from './shapes'
 import { PICTURES, NAMES } from './pictures'
+import { PUZZLES } from './tangram'
 
 // 끼리끼리 모으기: 색 묶음
 export const COLORS = [
@@ -20,6 +21,9 @@ export const SAY = {
   sortIn: ['쏙!', '좋아요!', '맞아요!'],
   colorDone: (praise: string, name: string) => `${praise} 예쁜 ${name} 완성!`,
   colorName: (n: string) => `${n}!`,
+  tangramAsk: (name: string) => `조각을 끌어다 ${name} 모양을 만들어요!`,
+  tangramNo: '거기가 아니에요. 같은 모양 자리를 찾아볼까?',
+  tangramDone: (name: string) => `${name} 완성!`,
 }
 
 export function voiceLines() {
@@ -32,5 +36,7 @@ export function voiceLines() {
     for (const a of group) for (const b of group) if (a !== b) v.add('sort', SAY.sortRule(a, b))
   for (const p of PICTURES) v.add('color', SAY.colorDone('', p.name))
   for (const n of NAMES) v.add('color', SAY.colorName(n))
+  v.add('tangram', SAY.tangramNo)
+  for (const p of PUZZLES) v.add('tangram', SAY.tangramAsk(p.name), SAY.tangramDone(p.name))
   return v.lines
 }
