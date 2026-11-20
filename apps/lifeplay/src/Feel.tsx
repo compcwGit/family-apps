@@ -25,7 +25,7 @@ export function Feel({ stars, onStar }: GameProps) {
         <span className="feel-scene">{story.e}</span>
         <p>{story.t}</p>
       </div>
-      <div className="g-row">
+      <div className="g-row feel-faces">
         {FEELS.map((f) => (
           <button
             key={f.id}

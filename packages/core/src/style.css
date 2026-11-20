@@ -51,8 +51,10 @@ html:has(.sb-shell), html:has(.sb-shell) body { overflow: hidden; overscroll-beh
   .sb-app { font-size: 20px; padding: 6px 16px; }
   .sb-slot { flex-basis: 100%; }
   .sb-body { flex-direction: column; padding: 6px 12px 16px; gap: 12px; }
-  .sb-rail { width: auto; flex-direction: row; gap: 8px; }
-  .sb-rail-btn { flex: 1 1 0; min-width: 0; width: auto; height: 60px; min-height: 0; font-size: 22px; border-radius: 20px; padding: 2px; }
+  /* 놀이가 많으면(생활 놀이 7개) 한 줄 좌우 스크롤, 적으면 지금처럼 꽉 채움 */
+  .sb-rail { width: auto; flex-direction: row; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 2px 2px 8px; }
+  .sb-rail::-webkit-scrollbar { display: none; }
+  .sb-rail-btn { flex: 1 0 auto; min-width: 64px; width: auto; height: 60px; min-height: 0; font-size: 22px; border-radius: 20px; padding: 2px 10px; }
   .sb-rail-btn.long { font-size: 16px; }
   .sb-rail-gap { display: none; }
   .sb-gear { width: 44px; height: 44px; align-self: center; }

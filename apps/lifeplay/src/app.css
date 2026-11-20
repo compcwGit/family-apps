@@ -9,7 +9,28 @@
 .g-card small { font-size: 24px; }
 .steps-emoji { font-size: 80px; line-height: 1; }
 
-/* 기분 맞추기 */
+/* 기분 맞추기: 표정 6개 → 3개씩 2줄 */
+.g-row.feel-faces { display: grid; grid-template-columns: repeat(3, auto); justify-content: center; }
 .feel-story { background: var(--paper); border: 4px solid var(--line); border-radius: 36px; padding: 18px 40px; text-align: center; max-width: 680px; }
 .feel-scene { font-size: 7rem; line-height: 1.1; }
 .feel-story p { font-family: var(--jua); font-size: 36px; color: var(--ink); margin: 8px 0 0; word-break: keep-all; }
+
+/* 고르기 놀이 (안전·고운 말·도움): 보기 카드 */
+.choice-card { min-width: 190px; }
+.choice-card small { white-space: nowrap; }
+
+/* 제자리에 정리해요 */
+.tidy-place { width: 300px; min-height: 230px; border: 4px dashed var(--line); border-radius: 36px; padding: 14px; display: flex; flex-direction: column; align-items: center; }
+.tidy-label { font-family: var(--jua); font-size: 30px; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.tidy-icon { font-size: 56px; }
+.tidy-in { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; font-size: 54px; margin-top: 6px; }
+.tidy-item { font-size: 84px; line-height: 1; }
+
+/* 날씨에 맞게 입어요 */
+.wear-kid { position: relative; width: 420px; height: 280px; border: 4px dashed var(--line); border-radius: 40px; display: flex; align-items: center; justify-content: center; }
+.wear-weather { position: absolute; top: 10px; left: 18px; font-size: 64px; }
+.wear-face { font-size: 150px; line-height: 1; }
+.wear-on { position: absolute; right: 16px; top: 16px; bottom: 16px; display: flex; flex-direction: column; justify-content: center; gap: 4px; font-size: 52px; }
+.wear-item { display: flex; flex-direction: column; align-items: center; font-size: 76px; line-height: 1; }
+.wear-item small { font-family: var(--jua); font-size: 22px; color: var(--ink); margin-top: 6px; }
+.tidy-item, .wear-item { width: 140px; height: 150px; }
