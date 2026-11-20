@@ -2,7 +2,7 @@
 """Vrew AI 목소리로 앱 음성 만들기 (반자동) — 집 PC 에서 실행
 
 1) 대본 만들기:  python scripts/tts/vrew.py script [앱...]      (더블클릭: Vrew대본만들기.bat)
-     → scripts/tts/vrew-work/<앱>_01.txt, _02.txt …  (한 줄 = 한 문장, 300줄씩)
+     → scripts/tts/vrew-work/<앱>_01.txt, _02.txt …  (한 줄 = 한 문장, 2,950자씩)
      기본은 녹음이 아직 없는 말만. --all 이면 전부 (목소리를 Vrew 로 통일할 때)
 2) Vrew 에서 (파일마다): [새로 만들기] → [텍스트로 비디오 만들기] → 대본 붙여 넣기 → AI 목소리 고르기
      → [파일] → [오디오 내보내기] (MP3)  +  [자막 내보내기] (SRT)
@@ -54,7 +54,17 @@ def make_script(a):
             if a.all or not has_audio(app, vid):
                 texts.setdefault(t, []).append(vid)
         items = list(texts.items())
-        chunks = [items[i:i + a.size] for i in range(0, len(items), a.size)]
+        # 대본 하나는 문장 수(--size)와 글자 수(--max-chars, 줄바꿈 포함) 둘 다 넘지 않게 나눔 (Vrew 무료 요금제는 대본 3,000자 제한)
+        chunks, cur, cur_len = [], [], 0
+        for it in items:
+            add = len(it[0]) + 1
+            if cur and (len(cur) >= a.size or cur_len + add > a.max_chars):
+                chunks.append(cur)
+                cur, cur_len = [], 0
+            cur.append(it)
+            cur_len += add
+        if cur:
+            chunks.append(cur)
         for n, chunk in enumerate(chunks, 1):
             name = f'{app}_{n:02d}'
             (WORK / f'{name}.txt').write_text('\n'.join(t for t, _ in chunk) + '\n', encoding='utf-8')
@@ -172,7 +182,8 @@ def main():
     s = sub.add_parser('script', help='Vrew 에 붙여 넣을 대본 만들기')
     s.add_argument('apps', nargs='*')
     s.add_argument('--all', action='store_true', help='녹음이 있는 말도 전부 (목소리 통일)')
-    s.add_argument('--size', type=int, default=300, help='대본 하나에 넣을 문장 수')
+    s.add_argument('--size', type=int, default=5000, help='대본 하나에 넣을 문장 수(글자 수 제한이 먼저 걸림)')
+    s.add_argument('--max-chars', type=int, default=2950, help='대본 하나에 넣을 글자 수(줄바꿈 포함). Vrew 무료 요금제는 3,000자')
     p = sub.add_parser('split', help='Vrew 오디오+자막을 문장마다 잘라 앱에 넣기')
     p.add_argument('--pad', type=float, default=0.08, help='앞뒤 여유 (초)')
     a = ap.parse_args()
