@@ -4,7 +4,7 @@ import { Choice, type Make, type Option } from './Choice'
 import { FoodIcon, PlaceIcon } from './Icons'
 import { SAY } from './voice'
 
-// 퀴즈 5종 (모두 Choice 틀): 소리 · 이름 · 누구일까 · 다리 · 크기. 사는 곳 · 먹이도 같은 틀이라 여기에 같이 둠
+// 퀴즈 4종 (모두 Choice 틀): 소리 · 이름 · 누구일까 · 다리. 사는 곳 · 먹이도 같은 틀이라 여기에 같이 둠
 const others = <T,>(answer: T, pool: readonly T[], n: number) => shuffle(pool.filter((x) => x !== answer)).slice(0, n)
 const fresh = (prev?: { answer: string }) => ANIMALS.filter((a) => a.name !== prev?.answer)
 const withLabel = (a: Animal, size = 150): Option => ({
@@ -65,17 +65,7 @@ const legsMake: Make = (_s, prev) => {
   })
   return { ask: SAY.legsAsk(a), prompt: <Critter kind={a.critter} size={210} />, options: [2, 4, 8].map(num), answer: String(a.legs), ok: SAY.legsOk(a), no: () => SAY.legsNo }
 }
-export const LegsQuiz = (p: GameProps) => <Choice {...p} make={legsMake} cols={3} size={200} />
-
-// 누가 더 클까? / 더 작을까?
-const bigMake: Make = (_s, prev) => {
-  const big = Math.random() < 0.5
-  const a = pick(fresh(prev))
-  const b = pick(ANIMALS.filter((x) => Math.abs(x.size - a.size) >= 3))
-  const win = (a.size > b.size) === big ? a : b
-  return { ask: SAY.bigAsk(big), options: shuffle([a, b]).map((x) => picture(x, 210)), answer: win.name, ok: SAY.bigOk(win, big), no: () => SAY.bigNo }
-}
-export const BigQuiz = (p: GameProps) => <Choice {...p} make={bigMake} size={300} psize={300} />
+export const LegsQuiz = (p: GameProps) => <Choice {...p} make={legsMake} cols={3} size={200} psize={118} />
 
 // 어디에 살까? (사는 곳 4곳 중에서)
 const HOME_LIST = Object.keys(HOMES) as Home[]

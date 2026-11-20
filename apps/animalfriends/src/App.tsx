@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ParentGate, ParentPage, PlayShell, stopSpeaking, useStars } from '@family/core'
 import { Meet } from './Meet'
 import { Baby } from './Baby'
-import { SoundQuiz, NameQuiz, WhoQuiz, LegsQuiz, BigQuiz, HomeQuiz, EatQuiz } from './Quizzes'
+import { SoundQuiz, NameQuiz, WhoQuiz, LegsQuiz, HomeQuiz, EatQuiz } from './Quizzes'
 import { Shadow, ShadowFind, ShadowWho } from './Shadow'
 import { AnimalPiano, FollowPiano, FreePiano } from './Piano'
 import { SubTabs } from './SubTabs'
@@ -31,7 +31,6 @@ const SUBS = {
     { id: 'name', label: '이름' },
     { id: 'who', label: '누구?' },
     { id: 'legs', label: '다리' },
-    { id: 'big', label: '크기' },
   ],
   shadow: [
     { id: 'sfind', label: '찾기' },
@@ -49,7 +48,7 @@ type Subs = Record<Game, string>
 // 별을 모으는 놀이 이름 (부모 화면에 보임). 'shadow' 는 예전 그림자 맞추기 별을 그대로 이어 씀
 const STAR_NAMES: [string, string][] = [
   ['home', '사는 곳'], ['eat', '먹이'],
-  ['sound', '소리 퀴즈'], ['name', '이름 퀴즈'], ['who', '누구일까'], ['legs', '다리 수'], ['big', '크기 비교'],
+  ['sound', '소리 퀴즈'], ['name', '이름 퀴즈'], ['who', '누구일까'], ['legs', '다리 수'],
   ['sfind', '그림자 찾기'], ['shadow', '그림자 맞추기'], ['swho', '누구 그림자'],
   ['follow', '따라 치기'],
 ]
@@ -96,7 +95,6 @@ export default function App() {
       case 'name': return <NameQuiz {...star('name')} />
       case 'who': return <WhoQuiz {...star('who')} />
       case 'legs': return <LegsQuiz {...star('legs')} />
-      case 'big': return <BigQuiz {...star('big')} />
       case 'sfind': return <ShadowFind {...star('sfind')} />
       case 'shadow': return <Shadow {...star('shadow')} />
       case 'swho': return <ShadowWho {...star('swho')} />
@@ -107,7 +105,7 @@ export default function App() {
   })()
 
   return (
-    <PlayShell design={[1000, 420]} app="동물 친구들" accent="#FF8C6B" games={GAMES} active={screen} onPick={(id) => go(id as Screen)} onParent={() => go('gate')}>
+    <PlayShell design={[1000, 420]} top app="동물 친구들" accent="#FF8C6B" games={GAMES} active={screen} onPick={(id) => go(id as Screen)} onParent={() => go('gate')}>
       <SubTabs tabs={SUBS[game]} active={sub} onPick={(id) => setSubs({ ...subs, [game]: id })} />
       <div key={sub} className="sub-body">
         {view}

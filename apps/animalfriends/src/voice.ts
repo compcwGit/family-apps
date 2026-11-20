@@ -29,9 +29,6 @@ export const SAY = {
   legsOk: (a: Animal) => `${eun(a.name)} 다리가 ${LEGS[a.legs!]} 개예요!`,
   legsNo: '다시 세어 볼까요?',
   // 퀴즈 · 크기
-  bigAsk: (big: boolean) => (big ? '누가 더 클까요?' : '누가 더 작을까요?'),
-  bigOk: (a: Animal, big: boolean) => `${iga(a.name)} 더 ${big ? '커요' : '작아요'}!`,
-  bigNo: '다시 비교해 볼까요?',
   // 사는 곳 · 먹이
   homeAsk: (a: Animal) => `${eun(a.name)} 어디에 살까요?`,
   homeOk: (a: Animal) => `${eun(a.name)} ${HOMES[a.home].place} 살아요!`,
@@ -54,14 +51,13 @@ export const SAY = {
 
 export function voiceLines() {
   const v = voiceList().common()
-  v.add('game', SAY.shadow, MATCH.all, SAY.homeTap, SAY.babyTap, SAY.whoAsk, SAY.whoNo, SAY.legsNo, SAY.bigAsk(true), SAY.bigAsk(false), SAY.bigNo)
+  v.add('game', SAY.shadow, MATCH.all, SAY.homeTap, SAY.babyTap, SAY.whoAsk, SAY.whoNo, SAY.legsNo)
   v.add('game', SAY.shadowFindNo, SAY.shadowWho, SAY.followNo, SAY.followOk, SAY.freeAsk)
   for (const s of SONGS) v.add('song', SAY.followAsk(s.title))
   for (const b of BABIES) v.add('baby', SAY.babyShow(b.mother, b.baby))
   for (const a of ANIMALS) {
     v.add('animal', SAY.board(a), SAY.fact(a), SAY.quizAsk(a), SAY.quizOk(a), SAY.quizNo(a), SAY.piano(a), MATCH.name(a.name), MATCH.placed(a.name), MATCH.wrong(a.name))
     v.add('animal', SAY.findAsk(a), SAY.findNo(a), SAY.shadowFind(a), SAY.homeAsk(a), SAY.homeOk(a), SAY.homeNo(a))
-    v.add('animal', SAY.bigOk(a, true), SAY.bigOk(a, false))
     if (a.legs) v.add('animal', SAY.legsAsk(a), SAY.legsOk(a))
     if (a.food) v.add('animal', SAY.eatAsk(a), SAY.eatOk(a), SAY.eatNo(a))
   }

@@ -14,12 +14,14 @@ export function FitStage({
   design = [1000, 600],
   max = 1.5,
   narrow = 0,
+  top = false,
 }: {
   children: ReactNode
   className?: string
   design?: [landscape: number, portrait: number] // 배치할 때 쓰는 폭
   max?: number // 최대 확대 배율
   narrow?: number // 폭이 이보다 좁으면 가로로 길어도 세로용 폭으로 배치 (부모 화면)
+  top?: boolean // 세로 가운데 대신 위쪽에 붙임 (화면마다 내용 높이가 달라도 위쪽 메뉴 위치가 그대로)
 }) {
   const stage = useRef<HTMLDivElement>(null)
   const inner = useRef<HTMLDivElement>(null)
@@ -48,7 +50,7 @@ export function FitStage({
       }
       const w = el.offsetWidth
       scale.current = s
-      el.style.transform = `translate(${PAD + (W - w * s) / 2}px, ${PAD + (H - h * s) / 2}px) scale(${s})`
+      el.style.transform = `translate(${PAD + (W - w * s) / 2}px, ${top ? PAD : PAD + (H - h * s) / 2}px) scale(${s})`
       busy = false
     }
     fit()
