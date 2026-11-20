@@ -1,14 +1,17 @@
 import { useRef, useState } from 'react'
 import { Critter, speak } from '@family/core'
 import { ANIMALS, type Animal } from './animals'
+import { usePortrait } from './usePortrait'
 import { SAY } from './voice'
 
-// 동물 만나기: 8마리씩 쪽 넘기기 (카드를 크게) (스크롤 없음). 누르면 이름 · 울음소리 · 한마디를 읽어 주고 통통 튐
-const PAGE = 8
-const PAGES = Math.ceil(ANIMALS.length / PAGE)
+// 동물 만나기: 가로 화면 8마리, 세로 화면(폰) 4마리씩 쪽 넘기기 (카드를 크게) (스크롤 없음). 누르면 이름 · 울음소리 · 한마디를 읽어 주고 통통 튐
 
 export function Meet() {
-  const [page, setPage] = useState(0)
+  const portrait = usePortrait()
+  const PAGE = portrait ? 4 : 8
+  const PAGES = Math.ceil(ANIMALS.length / PAGE)
+  const [pg, setPage] = useState(0)
+  const page = Math.min(pg, PAGES - 1)
   const [active, setActive] = useState<Animal | null>(null)
   const [pop, setPop] = useState<string | null>(null)
   const timer = useRef(0)

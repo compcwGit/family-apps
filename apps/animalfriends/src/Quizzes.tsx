@@ -75,7 +75,7 @@ const bigMake: Make = (_s, prev) => {
   const win = (a.size > b.size) === big ? a : b
   return { ask: SAY.bigAsk(big), options: shuffle([a, b]).map((x) => picture(x, 210)), answer: win.name, ok: SAY.bigOk(win, big), no: () => SAY.bigNo }
 }
-export const BigQuiz = (p: GameProps) => <Choice {...p} make={bigMake} size={300} />
+export const BigQuiz = (p: GameProps) => <Choice {...p} make={bigMake} size={300} psize={300} />
 
 // 어디에 살까? (사는 곳 4곳 중에서)
 const HOME_LIST = Object.keys(HOMES) as Home[]

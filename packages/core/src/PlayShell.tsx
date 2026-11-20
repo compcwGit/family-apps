@@ -16,6 +16,7 @@ export function PlayShell({
   active,
   onPick,
   onParent,
+  design,
   children,
 }: {
   app: string // 앱 이름 (위 줄 왼쪽)
@@ -24,6 +25,7 @@ export function PlayShell({
   active: string
   onPick: (id: string) => void
   onParent: () => void
+  design?: [landscape: number, portrait: number] // 놀이판 설계 폭 (기본 1000, 600). 세로 폭을 줄이면 세로 화면에서 그림·글자가 더 크게 보임
   children: ReactNode
 }) {
   const [slot, setSlot] = useState<HTMLDivElement | null>(null)
@@ -54,7 +56,7 @@ export function PlayShell({
           </button>
         </nav>
         <ShellSlot.Provider value={slot}>
-          <FitStage>{children}</FitStage>
+          <FitStage design={design}>{children}</FitStage>
         </ShellSlot.Provider>
       </div>
     </div>

@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { Critter, DragMatch, pick, shuffle, type GameProps } from '@family/core'
 import { ANIMALS, byName } from './animals'
+import { usePortrait } from './usePortrait'
 import { Choice, type Make } from './Choice'
 import { SAY } from './voice'
 
 // 그림자 맞추기: 동물을 같은 모양 그림자에 끌어다 놓기. 별 6개부터 4마리씩
 export function Shadow({ stars, onStar }: GameProps) {
+  const px = usePortrait() ? 112 : 190
   const [round, setRound] = useState(0)
   const [rounds] = useState(() => new Map<number, typeof ANIMALS>())
   if (!rounds.has(round)) rounds.set(round, shuffle(ANIMALS).slice(0, stars >= 6 ? 4 : 3))
@@ -15,8 +17,8 @@ export function Shadow({ stars, onStar }: GameProps) {
       items={rounds.get(round)!.map((a) => ({
         id: a.name,
         name: a.name,
-        piece: <Critter kind={a.critter} size={190} />,
-        hole: <Critter kind={a.critter} size={190} shadow />,
+        piece: <Critter kind={a.critter} size={px} />,
+        hole: <Critter kind={a.critter} size={px} shadow />,
       }))}
       prompt={SAY.shadow}
       stars={stars}
