@@ -126,3 +126,17 @@
 @media (orientation: landscape) and (min-height: 501px) {
   .sb-slot { min-height: 76px; align-items: center; }
 }
+
+/* 점토 테마: 다른 앱(숫자·한글)처럼 카드를 둥글고 볼록하게, 줄마다 파스텔 색을 번갈아 (연보라 · 분홍 · 민트 · 노랑) */
+.clay .card { background: linear-gradient(#FFFFFF, #FBF5EF); border-radius: 40px; box-shadow: var(--clay); }
+.clay .card:active { box-shadow: var(--clay-press); }
+.clay .meet-grid > .card:nth-child(4n+1), .clay .ch-grid > .card:nth-child(4n+1), .clay .baby-grid > .card:nth-child(4n+1) { background: linear-gradient(#FFFFFF, #EFE6FF); }
+.clay .meet-grid > .card:nth-child(4n+2), .clay .ch-grid > .card:nth-child(4n+2), .clay .baby-grid > .card:nth-child(4n+2) { background: linear-gradient(#FFFFFF, #FFE5EF); }
+.clay .meet-grid > .card:nth-child(4n+3), .clay .ch-grid > .card:nth-child(4n+3), .clay .baby-grid > .card:nth-child(4n+3) { background: linear-gradient(#FFFFFF, #DFF5EA); }
+.clay .meet-grid > .card:nth-child(4n+4), .clay .ch-grid > .card:nth-child(4n+4), .clay .baby-grid > .card:nth-child(4n+4) { background: linear-gradient(#FFFFFF, #FFF0CF); }
+.clay .card.correct { background: linear-gradient(#9BE6BE, #5CCB8F) !important; }
+.clay .card.shake { background: linear-gradient(#FFF3EF, #FFE3DC) !important; border-style: solid; }
+.clay .piano-key { box-shadow: var(--clay-sm), inset 0 6px 0 rgba(255, 255, 255, .35); }
+.clay .piano-key.hit { box-shadow: var(--clay-press); }
+.clay .piano-mode button, .clay .subtab:not(.on) { background: linear-gradient(#FFFFFF, #FBF5EF); }
+.clay .subtab, .clay .piano-mode button { border: none; }
