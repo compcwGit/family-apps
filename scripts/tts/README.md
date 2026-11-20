@@ -13,6 +13,17 @@
 **WSL**: `scripts\tts\음성만들기.bat` 을 더블클릭 → WSL 이 없으면 설치 방법을 알려 주고, 있으면 MeloTTS 를 (처음 한 번) 설치한 뒤
 작은 앱부터 음성을 만듭니다 (`scripts/tts/wsl-make.sh`). 한글 놀이는 마지막이고 오래 걸려요.
 
+## Vrew AI 목소리로 만들기 (반자동, 2026-11-20)
+MeloTTS 대신 Vrew 의 AI 목소리를 쓸 수 있습니다 (Vrew 공식 도움말: AI 목소리 상업적 이용 가능). Vrew 는 API 가 없어서 반자동입니다.
+1. `scripts\tts\Vrew대본만들기.bat` 더블클릭 → `scripts\tts\vrew-work\<앱>_01.txt` … (한 줄 = 한 문장, 300줄씩). 녹음이 없는 말만.
+   목소리를 Vrew 로 통일하려면 `Vrew대본만들기.bat --all` (전부 다시). 글자 수와 필요한 크레딧(1 크레딧 = 100자)을 보여 줌
+2. Vrew 에서 대본 파일마다: [새로 만들기] → [텍스트로 비디오 만들기] → txt 내용 붙여 넣기 → AI 목소리 고르기(모든 파일 같은 목소리)
+   → [파일] → [오디오 내보내기] (MP3) 와 자막(SRT) 내보내기 → txt 와 **같은 이름**으로 `vrew-work` 에 저장 (`hangulplay_01.mp3`, `hangulplay_01.srt`)
+3. `scripts\tts\Vrew음성자르기.bat` 더블클릭 → 자막 시간대로 문장마다 잘라 `apps/<앱>/public/voice/` 에 넣고 재생 목록 갱신
+   - Vrew 가 문장을 자막 여러 줄로 나누거나 두 문장을 한 줄로 합쳐도 글자 단위로 맞춤
+   - 합쳐진 줄은 글자 비율로 나눠 "들어 보고 확인" 목록에 표시, 글자가 다른 문장은 건너뛰고 목록에 표시 (그 문장은 예전 녹음·기기 음성)
+4. `python scripts/tts/check_voices.py` 로 빠진 것 확인 → 커밋
+
 ## 1. 설치 (집 PC, 한 번만)
 
 **PowerShell (관리자)** — WSL이 없을 때만. 끝나면 재부팅

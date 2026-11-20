@@ -44,7 +44,8 @@
 외부에서 추가·변경한 말(`apps/<앱>/src/voice.ts`)의 음성은 집 PC에서 MeloTTS로 만든다 (찬욱 결정 2026-11-20).
 "집이야" 세팅(위 3번)이 끝나면 찬욱이 따로 말하지 않아도 이어서 한다.
 1. `npm run voice-lines` → `python scripts/tts/check_voices.py` 로 빠진 음성을 찾고, 앱별 개수를 찬욱에게 보여 준다
-2. 빠진 게 있으면 집 PC에서 `scripts\tts\win-make.ps1` 을 실행한다 (= `음성만들기-windows.bat`. 이미 만든 건 건너뛰고 새 것만 만듦)
+2. 빠진 게 있으면 만든다. **Vrew AI 목소리(반자동)** 를 쓰기로 했으면 `scripts\tts\vrew.py script` 로 대본을 만들고 찬욱에게 Vrew 작업(붙여 넣기 → MP3·SRT 내보내기)을 안내한 뒤 `vrew.py split` 로 넣는다 (`scripts/tts/README.md`)
+   MeloTTS 로 할 때는 집 PC에서 `scripts\tts\win-make.ps1` 을 실행한다 (= `음성만들기-windows.bat`. 이미 만든 건 건너뛰고 새 것만 만듦)
    - 오래 걸리면 백그라운드로 돌리고 진행은 `scripts\tts\win-make.log` 로 확인한다
    - 빠진 앱만: `win-make.ps1 -Apps lifeplay,shapeplay`
 3. 다시 검사해서 통과하면 mp3 와 `apps/<앱>/src/voice-files.json` 을 커밋하고, 집 모드 끝날 때 push 한다 (`-Publish` 로 한 번에 해도 됨)
