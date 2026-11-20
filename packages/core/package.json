@@ -9,7 +9,8 @@
     "./style.css": "./src/style.css",
     "./talk": "./src/talk.ts",
     "./voicelist": "./src/voicelist.ts",
-    "./critter": "./src/Critter.tsx"
+    "./critter": "./src/Critter.tsx",
+    "./strokes": "./src/strokes.ts"
   },
   "peerDependencies": {
     "react": "^19.0.0",

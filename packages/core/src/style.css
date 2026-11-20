@@ -214,3 +214,14 @@ html:has(.sb-parent), html:has(.sb-parent) body { overflow: hidden; overscroll-b
   .sb-parent .sb-ptabs { padding: 0 14px 6px; gap: 4px; flex-wrap: nowrap; }
   .sb-parent .sb-ptabs button { min-height: 32px; padding: 0 10px; font-size: 12px; white-space: nowrap; }
 }
+
+/* 따라 쓰기 판 (TracePad) — 한글 놀이·숫자 놀이 */
+.trace-pad { width: 440px; aspect-ratio: 1; background: #fff; border-radius: 28px; border: 4px solid var(--ink);
+             box-shadow: 0 6px 0 var(--ink); touch-action: none; }
+.trace-pad polyline { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.trace-pad .g-todo { stroke: #EEEEEE; stroke-width: 14; }
+.trace-pad .g-done { stroke: #81C784; stroke-width: 14; }
+.trace-pad .g-now { stroke: #BDBDBD; stroke-width: 3; stroke-dasharray: 4 4; }
+.trace-pad .g-ink { stroke: #FF7043; stroke-width: 9; }
+.trace-pad .g-start { fill: #43A047; }
+.trace-pad .g-num { fill: #fff; font-size: 7px; text-anchor: middle; pointer-events: none; }
