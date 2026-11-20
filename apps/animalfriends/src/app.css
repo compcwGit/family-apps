@@ -45,7 +45,7 @@
 .meet-grid { width: 100%; }
 .meet-grid .card { width: min(210px, calc(50% - 10px)); flex: none; }
 .meet-bar { display: flex; align-items: center; gap: 18px; width: 100%; max-width: 860px; }
-.meet-fact { flex: 1; margin: 0; text-align: center; font-family: var(--jua); font-size: 32px; color: var(--ink); min-height: 40px; }
+.meet-fact { flex: 1; margin: 0; display: flex; align-items: center; justify-content: center; text-align: center; font-family: var(--jua); font-size: 30px; line-height: 1.25; color: var(--ink); height: 3.75em; overflow: hidden; } /* 3줄 높이 고정: 글이 없거나 길어도 아래 레이아웃이 안 움직임 */
 .pager { width: 76px; height: 76px; flex: none; border-radius: 50%; border: var(--bd, 4px solid var(--ink)); background: #fff; box-shadow: var(--sh, 0 4px 0 var(--ink));
          font-size: 22px; color: var(--ink); cursor: pointer; }
 .pager:disabled { opacity: .3; box-shadow: none; }
