@@ -140,3 +140,9 @@
 .clay .piano-key.hit { box-shadow: var(--clay-press); }
 .clay .piano-mode button, .clay .subtab:not(.on) { background: linear-gradient(#FFFFFF, #FBF5EF); }
 .clay .subtab, .clay .piano-mode button { border: none; }
+
+/* 따라 치기: 눌러야 할 건반 — 점토 테마 그림자가 불빛 테두리를 덮어서 안 보이던 것을 고침.
+   건반이 위로 솟고 커지며 굵은 흰·강조색 테두리가 깜빡이고, 나머지 건반은 흐리게 */
+.clay .piano-key.glow { box-shadow: var(--clay-sm), 0 0 0 6px #fff, 0 0 0 13px var(--accent), 0 0 28px 12px rgba(255, 190, 40, .75); transform: translateY(-14px) scale(1.07); z-index: 2; animation: blink .6s ease-in-out infinite alternate; }
+.piano:has(.glow) .piano-key:not(.glow) { opacity: .5; filter: saturate(.6); }
+.piano:has(.glow) { padding-top: 16px; }
