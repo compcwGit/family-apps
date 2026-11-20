@@ -39,7 +39,7 @@ function Keys({ down, click, glow }: { down?: (i: number) => void; click?: (i: n
           }}
           onClick={() => click?.(i)}
         >
-          <span className="piano-animal"><Critter kind={ANIMAL_KEYS[i].critter} size={60} /></span>
+          <span className="piano-animal"><Critter kind={ANIMAL_KEYS[i].critter} size={64} /></span>
           <span className="piano-note">{k.note}</span>
         </button>
       ))}

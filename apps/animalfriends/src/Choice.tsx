@@ -15,7 +15,7 @@ export type Round = {
 }
 export type Make = (stars: number, prev?: Round) => Round
 
-export function Choice({ make, stars, onStar, cols = 2, size = 150 }: GameProps & { make: Make; cols?: number; size?: number }) {
+export function Choice({ make, stars, onStar, cols = 2, size = 240, side = false }: GameProps & { make: Make; cols?: number; size?: number; side?: boolean }) {
   const [round, setRound] = useState(() => make(stars))
   const fb = useFeedback(onStar)
   useSay(round.ask, [round])
@@ -31,13 +31,15 @@ export function Choice({ make, stars, onStar, cols = 2, size = 150 }: GameProps 
       <GameTop stars={stars} onAgain={() => speak(round.ask)}>
         {round.ask}
       </GameTop>
-      {round.prompt && <div className="ch-prompt">{round.prompt}</div>}
-      <div className="ch-grid" style={{ gridTemplateColumns: `repeat(${cols}, ${size}px)` }}>
-        {round.options.map((o) => (
-          <button key={o.id} className={'card' + (fb.wrong === o.id ? ' shake' : '')} style={{ width: size, height: size }} onClick={() => tap(o.id)}>
-            {o.view}
-          </button>
-        ))}
+      <div className={'ch-body' + (side ? ' side' : '')}>
+        {round.prompt && <div className="ch-prompt">{round.prompt}</div>}
+        <div className="ch-grid" style={{ maxWidth: cols * size + (cols - 1) * 24 }}>
+          {round.options.map((o) => (
+            <button key={o.id} className={'card' + (fb.wrong === o.id ? ' shake' : '')} style={{ width: size, height: size }} onClick={() => tap(o.id)}>
+              {o.view}
+            </button>
+          ))}
+        </div>
       </div>
       <Party show={fb.party} text={fb.line} />
     </div>

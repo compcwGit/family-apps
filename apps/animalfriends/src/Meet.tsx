@@ -3,8 +3,8 @@ import { Critter, speak } from '@family/core'
 import { ANIMALS, type Animal } from './animals'
 import { SAY } from './voice'
 
-// 동물 만나기: 12마리씩 쪽 넘기기 (스크롤 없음). 누르면 이름 · 울음소리 · 한마디를 읽어 주고 통통 튐
-const PAGE = 12
+// 동물 만나기: 8마리씩 쪽 넘기기 (카드를 크게) (스크롤 없음). 누르면 이름 · 울음소리 · 한마디를 읽어 주고 통통 튐
+const PAGE = 8
 const PAGES = Math.ceil(ANIMALS.length / PAGE)
 
 export function Meet() {
@@ -31,7 +31,7 @@ export function Meet() {
       <div className="meet-grid">
         {ANIMALS.slice(page * PAGE, page * PAGE + PAGE).map((a) => (
           <button key={a.name} className={pop === a.name ? 'card pop' : 'card'} onClick={() => tap(a)}>
-            <Critter kind={a.critter} size={96} />
+            <Critter kind={a.critter} size={140} />
             <span className="label">{a.name}</span>
           </button>
         ))}

@@ -15,8 +15,8 @@ export function Shadow({ stars, onStar }: GameProps) {
       items={rounds.get(round)!.map((a) => ({
         id: a.name,
         name: a.name,
-        piece: <Critter kind={a.critter} size={150} />,
-        hole: <Critter kind={a.critter} size={150} shadow />,
+        piece: <Critter kind={a.critter} size={190} />,
+        hole: <Critter kind={a.critter} size={190} shadow />,
       }))}
       prompt={SAY.shadow}
       stars={stars}
@@ -32,25 +32,25 @@ const findMake: Make = (_s, prev) => {
   const three = shuffle([a, ...shuffle(ANIMALS.filter((x) => x !== a)).slice(0, 2)])
   return {
     ask: SAY.shadowFind(a),
-    prompt: <Critter kind={a.critter} size={150} />,
-    options: three.map((x) => ({ id: x.name, view: <span className="dark"><Critter kind={x.critter} size={120} shadow /></span> })),
+    prompt: <Critter kind={a.critter} size={200} />,
+    options: three.map((x) => ({ id: x.name, view: <span className="dark"><Critter kind={x.critter} size={150} shadow /></span> })),
     answer: a.name,
     ok: SAY.quizOk(a),
     no: () => SAY.shadowFindNo,
   }
 }
-export const ShadowFind = (p: GameProps) => <Choice {...p} make={findMake} cols={3} size={150} />
+export const ShadowFind = (p: GameProps) => <Choice {...p} make={findMake} cols={3} size={200} />
 
 // 누구 그림자? 까만 그림자만 보고 이름 맞히기
 const whoMake: Make = (_s, prev) => {
   const a = pick(ANIMALS.filter((x) => x.name !== prev?.answer))
   return {
     ask: SAY.shadowWho,
-    prompt: <span className="dark"><Critter kind={a.critter} size={190} shadow /></span>,
-    options: shuffle([a, ...shuffle(ANIMALS.filter((x) => x !== a)).slice(0, 3)]).map((x) => ({ id: x.name, view: <Critter kind={x.critter} size={120} /> })),
+    prompt: <span className="dark"><Critter kind={a.critter} size={260} shadow /></span>,
+    options: shuffle([a, ...shuffle(ANIMALS.filter((x) => x !== a)).slice(0, 3)]).map((x) => ({ id: x.name, view: <Critter kind={x.critter} size={130} /> })),
     answer: a.name,
     ok: SAY.quizOk(a),
     no: (id) => SAY.findNo(byName(id)),
   }
 }
-export const ShadowWho = (p: GameProps) => <Choice {...p} make={whoMake} />
+export const ShadowWho = (p: GameProps) => <Choice {...p} make={whoMake} side size={200} />
