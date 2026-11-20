@@ -104,6 +104,7 @@ export function FreePiano() {
 }
 
 // 따라 치기 — 불이 켜진 건반을 순서대로. 틀려도 벌점 없이 계속 (눌러야 할 건반은 계속 켜져 있음)
+// 건반을 누르면 맞든 틀리든, 말하는 중이든 항상 피아노 소리가 남 (소리는 닿는 순간, 맞았는지 판단은 탭에서)
 export function FollowPiano({ stars, onStar }: GameProps) {
   const [song, setSong] = useState(0)
   const [step, setStep] = useState(0)
@@ -115,7 +116,6 @@ export function FollowPiano({ stars, onStar }: GameProps) {
   const press = (i: number) => {
     if (fb.busy()) return
     if (i !== notes[step]) return fb.no(String(i), SAY.followNo)
-    playPiano(KEYS[i].freq)
     if (step + 1 < notes.length) return setStep(step + 1)
     fb.ok(SAY.followOk, () => {
       setStep(0)
@@ -149,7 +149,7 @@ export function FollowPiano({ stars, onStar }: GameProps) {
           <i key={n} style={{ background: n < step ? KEYS[k].color : '#E9E1CF' }} />
         ))}
       </div>
-      <Keys click={press} glow={notes[step]} />
+      <Keys down={(i) => playPiano(KEYS[i].freq)} click={press} glow={notes[step]} />
       <Party show={fb.party} text={fb.line} />
     </div>
   )
