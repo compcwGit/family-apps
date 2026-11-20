@@ -1,5 +1,6 @@
-// 먹이·사는 곳 그림 (이모지 대신 직접 그림 — 기기마다 같은 모양, core/Critter 와 같은 선 모양)
+// 먹이·사는 곳 그림: 점토 테마에서는 3D 그림 이모지(npm run emoji), 없으면 직접 그린 그림 (core/Critter 와 같은 방식)
 import type { ReactNode } from 'react'
+import { Emo, hasEmoji } from '@family/core'
 import type { FoodKind, Home } from './animals'
 
 const INK = '#2A2840'
@@ -77,7 +78,21 @@ const FOOD_ART: Record<FoodKind, ReactNode> = {
   ),
 }
 
+const FOOD_EMOJI: Record<FoodKind, string> = {
+  carrot: '🥕', honey: '🍯', acorn: '🌰', banana: '🍌', grass: '🌿', fish: '🐟', bone: '🦴', grain: '🌾', leaf: '🍃',
+}
+const PLACE_EMOJI: Record<Home, string> = { farm: '🏡', forest: '🌲', water: '🌊', plain: '🏞️' }
+
+function Pic({ e, size, label }: { e: string; size: number; label: string }) {
+  return (
+    <span className="critter-emo" role="img" aria-label={label} style={{ fontSize: size * 0.92, width: size, height: size }}>
+      <Emo e={e} />
+    </span>
+  )
+}
+
 export function FoodIcon({ kind, size = 120 }: { kind: FoodKind; size?: number }) {
+  if (hasEmoji(FOOD_EMOJI[kind])) return <Pic e={FOOD_EMOJI[kind]} size={size} label={kind} />
   return (
     <svg viewBox="0 0 120 120" width={size} height={size} role="img" aria-label={kind}>
       {FOOD_ART[kind]}
@@ -120,6 +135,7 @@ const PLACE_ART: Record<Home, ReactNode> = {
 }
 
 export function PlaceIcon({ kind, size = 120 }: { kind: Home; size?: number }) {
+  if (hasEmoji(PLACE_EMOJI[kind])) return <Pic e={PLACE_EMOJI[kind]} size={size} label={kind} />
   return (
     <svg viewBox="0 0 120 120" width={size} height={size} role="img" aria-label={kind}>
       {PLACE_ART[kind]}

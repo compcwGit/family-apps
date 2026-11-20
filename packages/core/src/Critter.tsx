@@ -208,6 +208,7 @@ export const critterName = (k: CritterKind) => ART[k][0]
 export const CRITTER_EMOJI: Record<CritterKind, string> = {
   cat: '🐱', dog: '🐶', chick: '🐥', pig: '🐷', rabbit: '🐰', bear: '🐻', cow: '🐮',
   frog: '🐸', lion: '🦁', duck: '🦆', hen: '🐔', sheep: '🐑', horse: '🐴', elephant: '🐘',
+  fox: '🦊', squirrel: '🐿️', tiger: '🐯', monkey: '🐵', giraffe: '🦒', penguin: '🐧', fish: '🐟', whale: '🐳', turtle: '🐢', octopus: '🐙',
 }
 
 export function Critter({ kind, size = 150, shadow = false }: { kind: CritterKind; size?: number; shadow?: boolean }) {

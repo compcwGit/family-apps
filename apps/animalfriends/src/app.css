@@ -32,10 +32,11 @@
 
 /* 세부 메뉴 줄 */
 .subtabs { display: flex; gap: 12px; justify-content: center; margin-bottom: 14px; }
-.subtab { height: 52px; padding: 0 22px; border-radius: 999px; border: 4px solid var(--ink); background: #fff; box-shadow: 0 4px 0 var(--ink);
+.subtab { height: 52px; padding: 0 22px; border-radius: 999px; border: var(--bd, 4px solid var(--ink)); background: #fff; box-shadow: var(--sh, 0 4px 0 var(--ink));
           font-family: var(--jua); font-size: 24px; color: var(--ink); cursor: pointer; white-space: nowrap; }
-.subtab.on { background: var(--accent); box-shadow: 0 6px 0 var(--ink); }
-.subtab:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink); }
+.subtab.on { background: var(--accent); box-shadow: var(--sh, 0 6px 0 var(--ink)); }
+.clay .subtab.on { background: linear-gradient(color-mix(in srgb, var(--accent) 70%, #fff), var(--accent)); }
+.subtab:active { transform: translateY(3px) scale(.97); box-shadow: var(--sh-press, 0 1px 0 var(--ink)); }
 .sub-body { display: flex; flex-direction: column; align-items: center; width: 100%; }
 
 /* 동물 만나기 (한 쪽 12마리) */
@@ -43,7 +44,7 @@
 .meet-grid { display: grid; grid-template-columns: repeat(4, 150px); gap: 16px; }
 .meet-bar { display: flex; align-items: center; gap: 18px; width: 100%; max-width: 700px; }
 .meet-fact { flex: 1; margin: 0; text-align: center; font-family: var(--jua); font-size: 26px; color: var(--ink); min-height: 34px; }
-.pager { width: 64px; height: 64px; flex: none; border-radius: 50%; border: 4px solid var(--ink); background: #fff; box-shadow: 0 4px 0 var(--ink);
+.pager { width: 64px; height: 64px; flex: none; border-radius: 50%; border: var(--bd, 4px solid var(--ink)); background: #fff; box-shadow: var(--sh, 0 4px 0 var(--ink));
          font-size: 22px; color: var(--ink); cursor: pointer; }
 .pager:disabled { opacity: .3; box-shadow: none; }
 
@@ -55,9 +56,9 @@
 .dots { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; max-width: 100px; }
 .dots i { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 2px solid var(--ink); }
 .dark { display: flex; }
-.dark svg { opacity: .85 !important; }
-.peek { width: 200px; height: 200px; border: 4px solid var(--ink); border-radius: 36px; overflow: hidden; position: relative; background: #FFF6E2; box-sizing: border-box; }
-.peek svg { position: absolute; left: -49px; top: -49px; max-width: none; }
+.dark svg, .dark .critter-emo { opacity: .85 !important; }
+.peek { width: 200px; height: 200px; border: var(--bd, 4px solid var(--ink)); border-radius: 36px; overflow: hidden; position: relative; background: #FFF6E2; box-sizing: border-box; box-shadow: var(--clay-hole, none); }
+.peek > * { position: absolute; left: -49px; top: -49px; max-width: none; }
 
 /* 엄마와 아기 */
 .baby { display: flex; flex-direction: column; align-items: center; gap: 14px; }
@@ -68,7 +69,7 @@
 .baby-q { font-family: var(--jua); font-size: 60px; width: 64px; text-align: center; color: var(--ink-soft, #8a8599); }
 
 /* 피아노 (따라 치기 · 자유 연주) */
-.piano-key.glow { box-shadow: 0 8px 0 var(--ink), 0 0 0 8px #fff, 0 0 0 12px var(--ink); animation: blink .7s ease-in-out infinite alternate; }
+.piano-key.glow { box-shadow: var(--sh, 0 8px 0 var(--ink)), 0 0 0 7px #fff, 0 0 0 12px var(--accent); animation: blink .7s ease-in-out infinite alternate; }
 @keyframes blink { to { filter: brightness(1.18); } }
 .seq { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; min-height: 26px; max-width: 760px; }
 .seq i { width: 20px; height: 20px; border-radius: 50%; border: 3px solid var(--ink); }
