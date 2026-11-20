@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDrag, useFeedback, useSay, Party, GameTop, speak, shuffle, pick, type GameProps } from '@family/core'
+import { useDrag, useFeedback, useSay, Party, GameTop, speak, shuffle, pick, Emo, type GameProps } from '@family/core'
 import { PLACES, SAY } from './voice'
 
 // 제자리에 정리해요: 흩어진 물건을 알맞은 곳(장난감 상자·옷장·싱크대·책꽂이)에 끌어다 넣기
@@ -40,13 +40,13 @@ export function Tidy({ stars, onStar }: GameProps) {
         {round.places.map((p) => (
           <div key={p.id} className="tidy-place" data-drop={p.id} style={{ background: p.bg }}>
             <div className="tidy-label">
-              <span className="tidy-icon">{p.icon}</span> {p.name}
+              <span className="tidy-icon"><Emo e={p.icon} /></span> {p.name}
             </div>
             <div className="tidy-in">
               {round.items
                 .filter((i) => i.place === p.id && done.includes(i.id))
                 .map((i) => (
-                  <span key={i.id}>{i.e}</span>
+                  <Emo key={i.id} e={i.e} />
                 ))}
             </div>
           </div>
@@ -58,7 +58,7 @@ export function Tidy({ stars, onStar }: GameProps) {
           .filter((i) => !done.includes(i.id))
           .map((i) => (
             <div key={i.id} className={'g-piece tidy-item' + (fb.wrong === i.id ? ' g-shake' : '')} {...drag.handle(i.id)} style={drag.style(i.id)}>
-              {i.e}
+              <Emo e={i.e} />
             </div>
           ))}
       </div>

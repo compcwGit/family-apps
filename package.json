@@ -4,14 +4,19 @@
   "private": true,
   "type": "module",
   "description": "서버 없는 앱 모음: React 하나로 Windows(Electron) + Android(Capacitor) + 웹 미리보기",
-  "workspaces": ["packages/*", "apps/*"],
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
     "new-app": "node scripts/new-app.mjs",
     "build:pages": "node scripts/build-pages.mjs",
-    "voice-lines": "tsx scripts/tts/lines.ts"
+    "voice-lines": "tsx scripts/tts/lines.ts",
+    "emoji": "tsx scripts/emoji.ts"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.6.2",
+    "@lobehub/fluent-emoji-3d": "^1.1.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.3.0",

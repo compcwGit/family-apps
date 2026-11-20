@@ -5,6 +5,7 @@ import { Children, isValidElement, useState, type CSSProperties, type ReactEleme
 import { FitStage } from './FitStage'
 import { eun } from './talk'
 import { hasVoiceFiles, setUseVoiceFiles, usesVoiceFiles } from './speech'
+import { usesEmojiFiles } from './Emo'
 
 // 앱별 설정 칸 (children 안에서 씀)
 export function ParentSection({ title, action, children }: { title: string; action?: ReactNode; children: ReactNode }) {
@@ -159,6 +160,14 @@ export function ParentPage({
       </p>
     </ParentSection>,
   )
+  // 3D 그림 이모지를 쓰는 앱: MIT 라이선스 표시
+  if (usesEmojiFiles())
+    sections.push(
+      <ParentSection key="license" title="오픈소스">
+        <p>그림: Microsoft Fluent Emoji 3D</p>
+        <p className="muted">MIT License · Copyright (c) Microsoft Corporation. 자유롭게 사용·수정·배포할 수 있으며, 소프트웨어는 "있는 그대로" 제공되고 어떠한 보증도 하지 않습니다.</p>
+      </ParentSection>,
+    )
   const at = Math.min(tab, sections.length - 1)
 
   return (

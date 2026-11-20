@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useFeedback, useSay, Party, GameTop, speak, shuffle, type GameProps } from '@family/core'
+import { useFeedback, useSay, Party, GameTop, speak, shuffle, Emo, type GameProps } from '@family/core'
 import { FEELS, STORIES, SAY, type FeelId } from './voice'
 
 // 기분 맞추기: 상황 이야기를 듣고 어떤 기분일지 표정 고르기. 정답보다 "그럴 때 그런 기분이 들 수 있어"를 배우는 놀이
@@ -22,7 +22,7 @@ export function Feel({ stars, onStar }: GameProps) {
         기분이 어떨까요?
       </GameTop>
       <div className="feel-story">
-        <span className="feel-scene">{story.e}</span>
+        <span className="feel-scene"><Emo e={story.e} /></span>
         <p>{story.t}</p>
       </div>
       <div className="g-row feel-faces">
@@ -32,7 +32,7 @@ export function Feel({ stars, onStar }: GameProps) {
             className={'g-card' + (fb.wrong === f.id ? ' g-shake' : '') + (fb.party && f.id === story.feel ? ' ok' : '')}
             onClick={() => tap(f.id)}
           >
-            {f.face}
+            <Emo e={f.face} />
             <small>{f.name}</small>
           </button>
         ))}

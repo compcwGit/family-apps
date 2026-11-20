@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDrag, useFeedback, useSay, Party, GameTop, speak, shuffle, type GameProps } from '@family/core'
+import { useDrag, useFeedback, useSay, Party, GameTop, speak, shuffle, Emo, type GameProps } from '@family/core'
 import { WEATHERS, CLOTHES, SAY } from './voice'
 
 // 날씨에 맞게 입어요: 날씨를 보고 맞는 옷·물건만 아이에게 끌어다 입히기 (안 맞는 것 3개 섞임)
@@ -34,14 +34,14 @@ export function Weather({ stars, onStar }: GameProps) {
   return (
     <div className="g-game">
       <GameTop stars={stars} onAgain={() => speak(ask)}>
-        {w.icon} {w.name}
+        <Emo e={w.icon} /> {w.name}
       </GameTop>
       <div className="wear-kid" data-drop="kid" style={{ background: w.bg }}>
-        <span className="wear-weather">{w.icon}</span>
-        <span className="wear-face">🧒</span>
+        <span className="wear-weather"><Emo e={w.icon} /></span>
+        <span className="wear-face"><Emo e="🧒" /></span>
         <div className="wear-on">
           {worn.map((c) => (
-            <span key={c}>{c}</span>
+            <Emo key={c} e={c} />
           ))}
         </div>
       </div>
@@ -51,7 +51,7 @@ export function Weather({ stars, onStar }: GameProps) {
           .filter((c) => !worn.includes(c))
           .map((c) => (
             <div key={c} className={'g-piece wear-item' + (fb.wrong === c ? ' g-shake' : '')} {...drag.handle(c)} style={drag.style(c)}>
-              {c}
+              <Emo e={c} />
               <small>{CLOTHES[c]}</small>
             </div>
           ))}

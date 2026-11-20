@@ -34,3 +34,9 @@
 .wear-item { display: flex; flex-direction: column; align-items: center; font-size: 76px; line-height: 1; }
 .wear-item small { font-family: var(--jua); font-size: 22px; color: var(--ink); margin-top: 6px; }
 .tidy-item, .wear-item { width: 140px; height: 150px; }
+
+/* 점토 테마 (core/clay.css) 일 때 생활 놀이 부품 */
+.clay .steps-num { border: none; box-shadow: var(--clay-sm); background: linear-gradient(color-mix(in srgb, var(--accent) 70%, #fff), var(--accent)); }
+.clay .steps-done { outline: none; box-shadow: 0 0 0 5px var(--ok), var(--clay) !important; }
+.clay .feel-story { border: none; background: linear-gradient(#FFFDF9, #FBF2E6); box-shadow: var(--clay); border-radius: 44px; }
+.clay .tidy-place, .clay .wear-kid { border: 4px dashed var(--dash); box-shadow: var(--clay-hole); }

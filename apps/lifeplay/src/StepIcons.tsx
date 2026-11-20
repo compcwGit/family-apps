@@ -1,5 +1,6 @@
 // 순서대로 카드 그림 (디자인 시안 "손 씻기"). 그림이 없는 단계는 이모지로 보임
 import type { ReactNode } from 'react'
+import { Emo, hasEmoji } from '@family/core'
 
 const INK = '#2A2840'
 const ICONS: Record<string, ReactNode> = {
@@ -33,7 +34,14 @@ const ICONS: Record<string, ReactNode> = {
   ),
 }
 
+// 3D 그림 이모지가 있으면 그걸 씀 (점토 테마). 없으면 손으로 그린 그림 → 이모지 글자
 export function StepIcon({ e }: { e: string }) {
+  if (hasEmoji(e))
+    return (
+      <span className="steps-emoji" aria-hidden="true">
+        <Emo e={e} />
+      </span>
+    )
   return ICONS[e] ? (
     <svg width="96" height="96" viewBox="0 0 100 100" aria-hidden="true">
       {ICONS[e]}

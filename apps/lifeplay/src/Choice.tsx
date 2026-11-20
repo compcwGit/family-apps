@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useFeedback, useSay, Party, GameTop, speak, shuffle, type GameProps } from '@family/core'
+import { useFeedback, useSay, Party, GameTop, speak, shuffle, Emo, type GameProps } from '@family/core'
 import { SAFETY, SAFE_OPTS, TALKS, WORDS, HELPS, HELPERS, SAY, type Opt, type Quiz } from './voice'
 
 // 고르기 놀이 공통: 그림 + 상황을 듣고 답 하나 고르기. 맞으면 이유를 들려주고 다음 문제
@@ -34,7 +34,7 @@ function Choice({ stars, onStar, list, opts, title, ask, all }: GameProps & {
         {title}
       </GameTop>
       <div className="feel-story">
-        <span className="feel-scene">{q.e}</span>
+        <span className="feel-scene"><Emo e={q.e} /></span>
         <p>{q.t}</p>
       </div>
       <div className="g-row">
@@ -44,7 +44,7 @@ function Choice({ stars, onStar, list, opts, title, ask, all }: GameProps & {
             className={'g-card choice-card' + (fb.wrong === o.id ? ' g-shake' : '') + (fb.party && o.id === q.answer ? ' ok' : '')}
             onClick={() => tap(o.id)}
           >
-            {o.face}
+            <Emo e={o.face} />
             <small>{o.name}</small>
           </button>
         ))}
