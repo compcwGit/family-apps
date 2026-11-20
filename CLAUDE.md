@@ -40,6 +40,17 @@
 - 집과 외부에서 같은 파일을 고쳐 충돌이 나면 집에서 해결한다
 - 끝날 때 push를 안 했으면 찬욱에게 꼭 알린다 (안 하면 외부에서 옛날 코드로 작업하게 됨)
 
+## 집 모드에서 추가로 — 음성 파일 만들기 (family-apps 만)
+외부에서 추가·변경한 말(`apps/<앱>/src/voice.ts`)의 음성은 집 PC에서 MeloTTS로 만든다 (찬욱 결정 2026-11-20).
+"집이야" 세팅(위 3번)이 끝나면 찬욱이 따로 말하지 않아도 이어서 한다.
+1. `npm run voice-lines` → `python scripts/tts/check_voices.py` 로 빠진 음성을 찾고, 앱별 개수를 찬욱에게 보여 준다
+2. 빠진 게 있으면 집 PC에서 `scripts\tts\win-make.ps1` 을 실행한다 (= `음성만들기-windows.bat`. 이미 만든 건 건너뛰고 새 것만 만듦)
+   - 오래 걸리면 백그라운드로 돌리고 진행은 `scripts\tts\win-make.log` 로 확인한다
+   - 빠진 앱만: `win-make.ps1 -Apps lifeplay,shapeplay`
+3. 다시 검사해서 통과하면 mp3 와 `apps/<앱>/src/voice-files.json` 을 커밋하고, 집 모드 끝날 때 push 한다 (`-Publish` 로 한 번에 해도 됨)
+4. Claude 가 집 PC 명령을 직접 실행할 수 없으면 찬욱에게 `scripts\tts\음성만들기-windows.bat` 더블클릭을 안내한다
+- 외부 모드에서 말을 추가·변경하면 커밋 메시지에 `집에서 확인: 음성 만들기 (앱 N개)` 를 남긴다
+
 ## 아이디어를 받으면 반드시
 1. **실현 가능한지 확인**: 기술, Google Play 정책, 비용. 정책·가격처럼 바뀌는 정보는 검색해서 근거를 남긴다
 2. **실현 가능한 방향으로 가이드**: 그대로 어려우면 대안을 제시한다
