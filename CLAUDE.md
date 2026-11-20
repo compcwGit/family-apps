@@ -42,6 +42,10 @@
 
 ## 집 모드에서 추가로 — 음성 파일 만들기 (family-apps 만)
 외부에서 추가·변경한 말(`apps/<앱>/src/voice.ts`)의 음성은 집 PC에서 MeloTTS로 만든다 (찬욱 결정 2026-11-20).
+**⚠️ 현재 진행 중 (2026-11-20 결정): 목소리 통일을 위해 기존 MeloTTS 음성까지 버리고 Vrew AI 목소리 하나로 전부 처음부터 다시 만든다.**
+정리 문서는 `docs/TTS.md` (앱별 읽는 말, 분량 3,714문장·16,881자·약 169 크레딧, 순서, 찬욱이 확인할 것). "집이야" 세팅 후 이 문서를 먼저 읽고,
+`npm run voice-lines` → `python scripts/tts/vrew.py script --all` 로 대본(15개)을 만든 뒤, 목소리 샘플 확인부터 찬욱과 같이 진행한다. Vrew 작업(붙여 넣기 → MP3·SRT 내보내기)은 찬욱이 직접 한다.
+끝나면 `docs/TTS.md` 의 "선택한 목소리"를 채우고, 이 안내를 "완료"로 바꾼다. 이후 새 말은 같은 Vrew 목소리로 빠진 것만 만든다.
 "집이야" 세팅(위 3번)이 끝나면 찬욱이 따로 말하지 않아도 이어서 한다.
 1. `npm run voice-lines` → `python scripts/tts/check_voices.py` 로 빠진 음성을 찾고, 앱별 개수를 찬욱에게 보여 준다
 2. 빠진 게 있으면 만든다. **Vrew AI 목소리(반자동)** 를 쓰기로 했으면 `scripts\tts\vrew.py script` 로 대본을 만들고 찬욱에게 Vrew 작업(붙여 넣기 → MP3·SRT 내보내기)을 안내한 뒤 `vrew.py split` 로 넣는다 (`scripts/tts/README.md`)
