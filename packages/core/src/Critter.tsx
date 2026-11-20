@@ -120,6 +120,84 @@ const ART = {
     {eyes(50, 14)}
     <circle cx="36" cy="66" r="6" fill="#FFB3C7" /><circle cx="84" cy="66" r="6" fill="#FFB3C7" />
   </>],
+  fox: ['여우', <>
+    <path d="M22 58 L26 10 L56 34 Z" fill="#F08A3C" {...s} /><path d="M98 58 L94 10 L64 34 Z" fill="#F08A3C" {...s} />
+    <path d="M30 46 L31 24 L46 35 Z" fill="#FFF3E0" /><path d="M90 46 L89 24 L74 35 Z" fill="#FFF3E0" />
+    <path d="M12 66 Q60 18 108 66 Q100 108 60 110 Q20 108 12 66 Z" fill="#F08A3C" {...s} />
+    <path d="M18 72 Q42 70 60 94 Q78 70 102 72 Q94 104 60 106 Q26 104 18 72 Z" fill="#FFF3E0" />
+    {eyes(64, 20)}<ellipse cx="60" cy="96" rx="6.5" ry="5" fill={INK} />
+  </>],
+  squirrel: ['다람쥐', <>
+    <path d="M78 96 Q116 90 108 52 Q104 26 82 22 Q96 44 84 62" fill="#B5703C" {...s} />
+    <circle cx="36" cy="30" r="11" fill="#B5703C" {...s} /><circle cx="76" cy="30" r="11" fill="#B5703C" {...s} />
+    <circle cx="56" cy="68" r="38" fill="#B5703C" {...s} />
+    <ellipse cx="56" cy="80" rx="22" ry="17" fill="#FFE8C8" stroke={INK} strokeWidth="4" />
+    {eyes(62, 15)}<ellipse cx="56" cy="74" rx="5" ry="4" fill={INK} />
+    <path d="M50 84 L50 90 M62 84 L62 90" stroke={INK} strokeWidth="3" strokeLinecap="round" /><rect x="50" y="85" width="12" height="8" rx="2" fill="#FFFFFF" stroke={INK} strokeWidth="2.5" />
+  </>],
+  tiger: ['호랑이', <>
+    <circle cx="26" cy="32" r="14" fill="#FFA640" {...s} /><circle cx="94" cy="32" r="14" fill="#FFA640" {...s} />
+    <circle cx="60" cy="64" r="44" fill="#FFA640" {...s} />
+    <path d="M52 22 L56 38 M60 20 L60 38 M68 22 L64 38 M16 56 L32 60 M16 70 L30 70 M104 56 L88 60 M104 70 L90 70" stroke={INK} strokeWidth="5" strokeLinecap="round" />
+    <ellipse cx="60" cy="82" rx="22" ry="16" fill="#FFF3E0" stroke={INK} strokeWidth="4" />
+    {eyes(58, 17)}<path d="M53 74 L67 74 L60 81 Z" fill={INK} stroke={INK} strokeWidth="2" strokeLinejoin="round" />
+    <path d="M60 81 L60 87 M52 88 Q60 93 68 88" fill="none" stroke={INK} strokeWidth="3.5" strokeLinecap="round" />
+  </>],
+  monkey: ['원숭이', <>
+    <circle cx="16" cy="62" r="15" fill="#9A6A45" {...s} /><circle cx="104" cy="62" r="15" fill="#9A6A45" {...s} />
+    <circle cx="16" cy="62" r="7" fill="#FFD3B0" /><circle cx="104" cy="62" r="7" fill="#FFD3B0" />
+    <circle cx="60" cy="60" r="42" fill="#9A6A45" {...s} />
+    <path d="M30 56 Q38 40 60 50 Q82 40 90 56 Q94 86 60 98 Q26 86 30 56 Z" fill="#FFD9B8" stroke={INK} strokeWidth="4" />
+    {eyes(62, 13)}<circle cx="55" cy="78" r="2.5" fill={INK} /><circle cx="65" cy="78" r="2.5" fill={INK} />
+    <path d="M48 86 Q60 96 72 86" fill="none" stroke={INK} strokeWidth="3.5" strokeLinecap="round" />
+  </>],
+  giraffe: ['기린', <>
+    <path d="M46 28 L44 8 M74 28 L76 8" stroke={INK} strokeWidth="5" strokeLinecap="round" />
+    <circle cx="44" cy="8" r="6" fill="#B5703C" {...s} /><circle cx="76" cy="8" r="6" fill="#B5703C" {...s} />
+    <ellipse cx="26" cy="46" rx="13" ry="7" transform="rotate(-20 26 46)" fill="#FFD166" {...s} /><ellipse cx="94" cy="46" rx="13" ry="7" transform="rotate(20 94 46)" fill="#FFD166" {...s} />
+    <ellipse cx="60" cy="58" rx="32" ry="38" fill="#FFD166" {...s} />
+    <circle cx="44" cy="36" r="6" fill="#B5703C" /><circle cx="78" cy="42" r="5" fill="#B5703C" /><circle cx="68" cy="28" r="4" fill="#B5703C" />
+    <ellipse cx="60" cy="86" rx="24" ry="22" fill="#FFF0C4" stroke={INK} strokeWidth="4" />
+    {eyes(54, 15)}<ellipse cx="52" cy="86" rx="3.5" ry="5" fill={INK} /><ellipse cx="68" cy="86" rx="3.5" ry="5" fill={INK} />
+    <path d="M52 100 Q60 105 68 100" fill="none" stroke={INK} strokeWidth="3" strokeLinecap="round" />
+  </>],
+  penguin: ['펭귄', <>
+    <ellipse cx="60" cy="64" rx="42" ry="48" fill="#3E4A6B" {...s} />
+    <ellipse cx="60" cy="74" rx="28" ry="34" fill="#FFFFFF" stroke={INK} strokeWidth="4" />
+    <ellipse cx="14" cy="70" rx="9" ry="22" transform="rotate(14 14 70)" fill="#3E4A6B" {...s} /><ellipse cx="106" cy="70" rx="9" ry="22" transform="rotate(-14 106 70)" fill="#3E4A6B" {...s} />
+    {eyes(46, 14)}<path d="M50 56 L70 56 L60 68 Z" fill="#FF9A3C" stroke={INK} strokeWidth="4" strokeLinejoin="round" />
+    <ellipse cx="44" cy="112" rx="14" ry="6" fill="#FF9A3C" stroke={INK} strokeWidth="4" /><ellipse cx="76" cy="112" rx="14" ry="6" fill="#FF9A3C" stroke={INK} strokeWidth="4" />
+  </>],
+  fish: ['물고기', <>
+    <path d="M86 60 L114 36 L114 84 Z" fill="#FF8A65" {...s} />
+    <path d="M44 34 Q60 14 74 36 Z" fill="#FF8A65" {...s} />
+    <ellipse cx="56" cy="62" rx="44" ry="32" fill="#FFA384" {...s} />
+    <path d="M70 36 Q78 62 70 88" fill="none" stroke={INK} strokeWidth="3.5" strokeLinecap="round" />
+    <circle cx="34" cy="56" r="8" fill="#FFFFFF" stroke={INK} strokeWidth="3.5" /><circle cx="33" cy="57" r="4" fill={INK} />
+    <path d="M18 72 Q26 78 32 72" fill="none" stroke={INK} strokeWidth="3.5" strokeLinecap="round" />
+  </>],
+  whale: ['고래', <>
+    <path d="M44 22 Q38 8 28 12 M44 22 Q50 8 60 12 M44 22 L44 30" fill="none" stroke="#7DD3F5" strokeWidth="6" strokeLinecap="round" />
+    <path d="M92 76 Q112 74 112 50 Q100 56 98 62 Q104 40 118 38 Q96 36 90 62 Z" fill="#4A8FD8" {...s} />
+    <path d="M8 74 Q8 32 52 32 Q96 32 98 72 Q98 104 52 104 Q8 104 8 74 Z" fill="#4A8FD8" {...s} />
+    <path d="M14 82 Q52 112 94 80 Q80 100 52 100 Q26 100 14 82 Z" fill="#DDF1FF" />
+    <circle cx="34" cy="64" r="5.5" fill={INK} /><path d="M20 82 Q30 90 40 84" fill="none" stroke={INK} strokeWidth="3.5" strokeLinecap="round" />
+  </>],
+  turtle: ['거북', <>
+    <path d="M52 40 Q48 10 60 8 Q72 10 68 40 Z" fill="#9BD66B" {...s} />
+    <circle cx="54" cy="22" r="3.5" fill={INK} /><circle cx="66" cy="22" r="3.5" fill={INK} />
+    <ellipse cx="18" cy="82" rx="12" ry="8" fill="#9BD66B" {...s} /><ellipse cx="102" cy="82" rx="12" ry="8" fill="#9BD66B" {...s} />
+    <ellipse cx="32" cy="108" rx="12" ry="7" fill="#9BD66B" {...s} /><ellipse cx="88" cy="108" rx="12" ry="7" fill="#9BD66B" {...s} />
+    <path d="M12 88 Q14 38 60 36 Q106 38 108 88 Q60 108 12 88 Z" fill="#6BAF4A" {...s} />
+    <path d="M60 38 L60 98 M30 54 L90 54 M22 76 L98 76" stroke={INK} strokeWidth="3.5" strokeLinecap="round" />
+  </>],
+  octopus: ['문어', <>
+    <path d="M18 76 Q8 100 22 108 Q30 112 30 100 M42 82 Q36 108 46 112 Q54 114 52 102 M78 82 Q84 108 74 112 Q66 114 68 102 M102 76 Q112 100 98 108 Q90 112 90 100" fill="none" stroke={INK} strokeWidth="14" strokeLinecap="round" />
+    <path d="M18 76 Q8 100 22 108 Q30 112 30 100 M42 82 Q36 108 46 112 Q54 114 52 102 M78 82 Q84 108 74 112 Q66 114 68 102 M102 76 Q112 100 98 108 Q90 112 90 100" fill="none" stroke="#C77DDB" strokeWidth="6" strokeLinecap="round" />
+    <path d="M14 70 Q14 12 60 12 Q106 12 106 70 Q106 90 60 90 Q14 90 14 70 Z" fill="#C77DDB" {...s} />
+    {eyes(58, 17)}<circle cx="32" cy="72" r="6" fill="#E8B2F5" /><circle cx="88" cy="72" r="6" fill="#E8B2F5" />
+    <path d="M52 74 Q60 82 68 74" fill="none" stroke={INK} strokeWidth="3.5" strokeLinecap="round" />
+  </>],
 } satisfies Record<string, [string, ReactNode]>
 
 export type CritterKind = keyof typeof ART
