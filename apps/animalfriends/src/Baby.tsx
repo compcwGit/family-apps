@@ -22,8 +22,8 @@ export function Baby() {
           return (
             <button key={b.mother} className={'card baby-card' + (shown ? ' pop' : '')} onClick={() => tap(b.mother, b.baby)}>
               <div className="baby-row">
-                <Critter kind={m.critter} size={portrait ? 96 : 140} />
-                {shown ? <Critter kind={b.critter ?? m.critter} size={portrait ? (b.critter ? 80 : 60) : b.critter ? 110 : 80} /> : <span className="baby-q">?</span>}
+                <Critter kind={m.critter} size={portrait ? 72 : 140} />
+                {shown ? <Critter kind={b.critter ?? m.critter} size={portrait ? (b.critter ? 60 : 46) : b.critter ? 110 : 80} /> : <span className="baby-q">?</span>}
               </div>
               <span className="label">{shown ? b.baby : m.name}</span>
             </button>

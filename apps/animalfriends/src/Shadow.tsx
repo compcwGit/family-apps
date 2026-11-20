@@ -7,7 +7,7 @@ import { SAY } from './voice'
 
 // 그림자 맞추기: 동물을 같은 모양 그림자에 끌어다 놓기. 별 6개부터 4마리씩
 export function Shadow({ stars, onStar }: GameProps) {
-  const px = usePortrait() ? 112 : 190
+  const px = usePortrait() ? 72 : 190
   const [round, setRound] = useState(0)
   const [rounds] = useState(() => new Map<number, typeof ANIMALS>())
   if (!rounds.has(round)) rounds.set(round, shuffle(ANIMALS).slice(0, stars >= 6 ? 4 : 3))
@@ -41,7 +41,7 @@ const findMake: Make = (_s, prev) => {
     no: () => SAY.shadowFindNo,
   }
 }
-export const ShadowFind = (p: GameProps) => <Choice {...p} make={findMake} cols={3} size={200} />
+export const ShadowFind = (p: GameProps) => <Choice {...p} make={findMake} cols={3} size={200} psize={118} />
 
 // 누구 그림자? 까만 그림자만 보고 이름 맞히기
 const whoMake: Make = (_s, prev) => {
@@ -55,4 +55,4 @@ const whoMake: Make = (_s, prev) => {
     no: (id) => SAY.findNo(byName(id)),
   }
 }
-export const ShadowWho = (p: GameProps) => <Choice {...p} make={whoMake} side size={200} />
+export const ShadowWho = (p: GameProps) => <Choice {...p} make={whoMake} side size={200} psize={150} />

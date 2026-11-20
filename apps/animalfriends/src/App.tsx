@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ParentGate, ParentPage, PlayShell, stopSpeaking, useStars } from '@family/core'
+import { GameTop, ParentGate, ParentPage, PlayShell, stopSpeaking, useStars } from '@family/core'
 import { Meet } from './Meet'
 import { Baby } from './Baby'
 import { SoundQuiz, NameQuiz, WhoQuiz, LegsQuiz, HomeQuiz, EatQuiz } from './Quizzes'
@@ -46,6 +46,8 @@ const SUBS = {
 type Subs = Record<Game, string>
 
 // 별을 모으는 놀이 이름 (부모 화면에 보임). 'shadow' 는 예전 그림자 맞추기 별을 그대로 이어 씀
+// 질문 말풍선이 없는 화면: 말풍선은 그대로 두고 글자만 비움
+const QUIET = ['meet', 'baby', 'keys', 'free']
 const STAR_NAMES: [string, string][] = [
   ['home', '사는 곳'], ['eat', '먹이'],
   ['sound', '소리 퀴즈'], ['name', '이름 퀴즈'], ['who', '누구일까'], ['legs', '다리 수'],
@@ -84,6 +86,7 @@ export default function App() {
     )
 
   const game = screen as Game
+  const total = STAR_NAMES.reduce((n, [id]) => n + stars.of(id), 0) // 질문이 없는 화면의 별 칸: 모은 별 전체
   const sub = subs[game]
   const view = (() => {
     switch (sub) {
@@ -106,6 +109,7 @@ export default function App() {
 
   return (
     <PlayShell design={[1000, 420]} top bar={<SubTabs tabs={SUBS[game]} active={sub} onPick={(id) => setSubs({ ...subs, [game]: id })} />} app="동물 친구들" accent="#FF8C6B" games={GAMES} active={screen} onPick={(id) => go(id as Screen)} onParent={() => go('gate')}>
+      {QUIET.includes(sub) && <GameTop stars={total} quiet />}
       <div key={sub} className="sub-body">
         {view}
       </div>

@@ -48,7 +48,7 @@ const whoMake: Make = (_s, prev) => {
     no: () => SAY.whoNo,
   }
 }
-export const WhoQuiz = (p: GameProps) => <Choice {...p} make={whoMake} side size={200} />
+export const WhoQuiz = (p: GameProps) => <Choice {...p} make={whoMake} side size={200} psize={150} />
 
 // 다리가 몇 개?
 const legsPool = ANIMALS.filter((a) => a.legs)
@@ -88,7 +88,7 @@ const homeMake: Make = (_s, prev) => {
     no: () => SAY.homeNo(a),
   }
 }
-export const HomeQuiz = (p: GameProps) => <Choice {...p} make={homeMake} side size={200} />
+export const HomeQuiz = (p: GameProps) => <Choice {...p} make={homeMake} side size={200} psize={150} />
 
 // 뭘 먹을까? (정답 + 안 먹는 먹이 2개)
 const eatPool = ANIMALS.filter((a) => a.food)
@@ -113,4 +113,4 @@ const eatMake: Make = (_s, prev) => {
     no: () => SAY.eatNo(a),
   }
 }
-export const EatQuiz = (p: GameProps) => <Choice {...p} make={eatMake} cols={3} size={200} />
+export const EatQuiz = (p: GameProps) => <Choice {...p} make={eatMake} cols={3} size={200} psize={118} />

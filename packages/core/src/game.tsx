@@ -93,15 +93,15 @@ export function Party({ show, text = '' }: { show: boolean; text?: string }) {
   )
 }
 
-// 놀이 위쪽: 질문 말풍선(다시 듣기) + 모은 별. 화면 틀(PlayShell) 안이면 위 줄로 올라감
-export function GameTop({ stars, onAgain, children }: { stars: number; onAgain?: () => void; children?: ReactNode }) {
+// 놀이 위쪽: 질문 말풍선(다시 듣기) + 모은 별. quiet: 글자만 비우고 말풍선·버튼 자리는 그대로(질문이 없는 화면). 화면 틀(PlayShell) 안이면 위 줄로 올라감
+export function GameTop({ stars, onAgain, quiet, children }: { stars: number; onAgain?: () => void; quiet?: boolean; children?: ReactNode }) {
   const slot = useContext(ShellSlot)
   const top = (
     <div className="g-top">
       <div className="g-bubble">
         <span className="g-ask">{children}</span>
-        {onAgain && (
-          <button className="g-again" onClick={onAgain} aria-label="다시 듣기">
+        {(onAgain || quiet) && (
+          <button className="g-again" onClick={onAgain} aria-label="다시 듣기" disabled={quiet} style={quiet ? { visibility: 'hidden' } : undefined}>
             <SpeakerIcon />
           </button>
         )}
