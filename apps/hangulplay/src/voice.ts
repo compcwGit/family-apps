@@ -9,8 +9,8 @@
 //   syl/<코드>         글자 만들기      "감" (자음 14 × 모음 10 × 받침 없음+14 = 2,100개)
 //   praise/<i>, cheer/<i>, sample
 //   그 밖의 문장(듣고 찾기, 첫소리 찾기, 따라쓰기 완료 등)은 <묶음>/<해시>
-import { voiceList, eun, eul } from '@family/core/voicelist'
-import { ALL_JAMO, CONSONANTS, NUMBERS, VOWELS, compose } from './hangul'
+import { voiceList, eun, eul, MATCH } from '@family/core/voicelist'
+import { ALL_JAMO, CONSONANTS, NUMBERS, VOWELS, DOUBLES, compose } from './hangul'
 import { CHEERS, PRAISES, SAMPLE, jamoLine } from './talk'
 import { WORDS, firstSound } from './words'
 
@@ -29,6 +29,11 @@ export const SAY = {
   firstAsk: (name: string) => `${name}! ${euro(name)} 시작하는 건 뭘까요?`,
   firstNo: (w: string) => `${eun(w)} ${euro(nameOf(firstSound(w)))} 시작해요. 다시 찾아볼까?`,
   firstOk: (w: string) => `${w}의 ${w[0]}!`,
+  missAsk: (w: string) => `${w}! 빈칸에 들어갈 글자를 찾아요.`,
+  missNo: '그 글자가 아니에요. 다시 찾아볼까?',
+  orderAsk: (w: string) => `${eul(w)} 순서대로 만들어요!`,
+  orderNo: '다음 글자는 뭘까? 다시 해 볼까?',
+  matchAsk: '낱말 카드를 같은 그림에 놓아요!',
 }
 
 const code = (ch: string) => ch.codePointAt(0)!.toString(16)
@@ -51,9 +56,13 @@ export function voiceLines() {
   // 따라쓰기 완료: "우와, 잘했어요! 기역!" → 칭찬 + "기역!"
   for (const j of [...ALL_JAMO, ...NUMBERS]) v.add('trace', SAY.traceDone('', j.name), SAY.traceDone('', j.word))
   for (const c of CONSONANTS) v.add('first', SAY.firstAsk(c.name))
+  for (const j of DOUBLES) v.add('jamo2', jamoLine(j))
+  v.add('miss', SAY.missNo, SAY.orderNo, SAY.matchAsk, MATCH.all)
   for (const x of WORDS) {
     v.add('listen', SAY.listenAsk(x.w), SAY.listenOk(x.w), `그건 ${x.w}!`, `${eul(x.w)} 찾아 볼까?`)
     v.add('first', SAY.firstNo(x.w), SAY.firstOk(x.w))
+    v.add('miss', SAY.missAsk(x.w), SAY.orderAsk(x.w), MATCH.name(x.w), MATCH.placed(x.w), MATCH.wrong(x.w))
+    for (const c of x.w) v.add('miss', c)
   }
   return v.lines
 }

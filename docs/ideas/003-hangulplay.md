@@ -50,3 +50,10 @@
 - 대상 연령 설정: https://support.google.com/googleplay/android-developer/answer/9867159
 - AdMob 가족 정책 준수: https://support.google.com/admob/answer/6223431
 - Capacitor TTS 플러그인: https://github.com/capacitor-community/text-to-speech
+
+## 추가 (2026-11-20)
+
+- 🔤 ㄱㄴㄷ 카드에 **쌍·겹** 묶음: 쌍자음 5개(ㄲㄸㅃㅆㅉ), 이중모음 9개(ㅐㅔㅘㅙㅚㅝㅟㅢㅖ) — 카드만, 따라쓰기는 없음
+- ❓ **빈칸**: 그림 + "우 _" → 빠진 글자 고르기 (보기 3개)
+- 🔢 **순서**: 흩어진 글자 카드를 순서대로 눌러 낱말 만들기 (두·세 글자)
+- 🧩 **짝**: 낱말 카드를 같은 그림에 끌어다 놓기 (공통 DragMatch)

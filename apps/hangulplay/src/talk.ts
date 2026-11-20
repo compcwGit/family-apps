@@ -18,5 +18,6 @@ export const cheer = () => pick(CHEERS)
 // 자모 카드: 자음(기역)은 "기역이에요. 기차의 기!", 모음(아)은 "아! 아기의 아!"
 export function jamoLine(j: { name: string; word: string }) {
   const intro = j.name.length > 1 ? `${iEyo(j.name)}.` : `${j.name}!`
-  return `${intro} ${j.word}의 ${j.word[0]}!`
+  // 한 글자 낱말(꽃·빵·게)은 "꽃!"만
+  return `${intro} ${j.word.length > 1 ? `${j.word}의 ${j.word[0]}` : j.word}!`
 }

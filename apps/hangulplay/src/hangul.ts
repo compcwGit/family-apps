@@ -53,6 +53,16 @@ export const VOWELS: Jamo[] = [
 
 export const ALL_JAMO = [...CONSONANTS, ...VOWELS]
 
+// 쌍자음·이중모음 카드 (ㄱㄴㄷ 화면의 세 번째 묶음). 따라쓰기는 없음
+const D = (ch: string, name: string, word: string, emoji: string, color: string): Jamo => ({ ch, name, word, emoji, color, strokes: [] })
+export const DOUBLES: Jamo[] = [
+  D('ㄲ', '쌍기역', '꽃', '🌸', '#FFCDD2'), D('ㄸ', '쌍디귿', '딸기', '🍓', '#F8BBD0'), D('ㅃ', '쌍비읍', '빵', '🍞', '#E1BEE7'),
+  D('ㅆ', '쌍시옷', '씨앗', '🌱', '#D1C4E9'), D('ㅉ', '쌍지읒', '짹짹', '🐤', '#C5CAE9'),
+  D('ㅐ', '애', '개', '🐶', '#BBDEFB'), D('ㅔ', '에', '게', '🦀', '#B3E5FC'), D('ㅘ', '와', '과자', '🍪', '#B2EBF2'),
+  D('ㅙ', '왜', '돼지', '🐷', '#B2DFDB'), D('ㅚ', '외', '외계인', '👽', '#C8E6C9'), D('ㅝ', '워', '원숭이', '🐵', '#DCEDC8'),
+  D('ㅟ', '위', '쥐', '🐭', '#F0F4C3'), D('ㅢ', '의', '의자', '🪑', '#FFF9C4'), D('ㅖ', '예', '시계', '⏰', '#FFE0B2'),
+]
+
 // 호(곡선): 각도는 도(°), 0° = 오른쪽, 각도가 커지면 화면에서 시계 방향
 const arc = (cx: number, cy: number, rx: number, ry: number, from: number, to: number): Pt[] => {
   const n = Math.max(2, Math.round(Math.abs(to - from) / 15))
