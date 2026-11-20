@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { DragMatch, shuffle, type GameProps } from '@family/core'
+import { DragMatch, shuffle, type GameProps, Emo } from '@family/core'
 import { WORDS } from './words'
 import { SAY } from './voice'
 
@@ -23,7 +23,7 @@ export function WordMatch({ stars, onStar }: GameProps) {
         id: x.w,
         name: x.w,
         piece: <span className="word-chip">{x.w}</span>,
-        hole: <span className="word-pic">{x.e}</span>,
+        hole: <span className="word-pic"><Emo e={x.e} /></span>,
       }))}
     />
   )

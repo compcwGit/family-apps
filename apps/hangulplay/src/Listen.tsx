@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useFeedback, useSay, Party, GameTop, speak, shuffle, type GameProps } from '@family/core'
+import { useFeedback, useSay, Party, GameTop, speak, shuffle, type GameProps, Emo } from '@family/core'
 import { WORDS } from './words'
 import { SAY } from './voice'
 
@@ -38,7 +38,7 @@ export function Listen({ stars, onStar }: GameProps) {
             className={'g-card word-card' + (fb.wrong === c.w ? ' g-shake' : '') + (solved && c === round.answer ? ' ok' : '')}
             onClick={() => choose(c.w)}
           >
-            {c.e}
+            <Emo e={c.e} />
             <small>{solved && c === round.answer ? c.w : ' '}</small>
           </button>
         ))}

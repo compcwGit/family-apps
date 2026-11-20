@@ -1,6 +1,7 @@
 // 직접 그린 동물 캐릭터 (이모지 대신 — 기기마다 같은 모양). 디자인 시안 "스티커북"
 // <Critter kind="cat" size={150} />, 그림자: shadow
 import type { ReactNode } from 'react'
+import { Emo, hasEmoji } from './Emo'
 
 const INK = '#2A2840'
 const s = { stroke: INK, strokeWidth: 5, strokeLinejoin: 'round' as const }
@@ -125,7 +126,25 @@ export type CritterKind = keyof typeof ART
 export const CRITTERS = Object.keys(ART) as CritterKind[]
 export const critterName = (k: CritterKind) => ART[k][0]
 
+// 3D 그림 이모지가 앱에 있으면(점토 테마) 그 그림으로, 없으면 직접 그린 그림으로
+export const CRITTER_EMOJI: Record<CritterKind, string> = {
+  cat: '🐱', dog: '🐶', chick: '🐥', pig: '🐷', rabbit: '🐰', bear: '🐻', cow: '🐮',
+  frog: '🐸', lion: '🦁', duck: '🦆', hen: '🐔', sheep: '🐑', horse: '🐴', elephant: '🐘',
+}
+
 export function Critter({ kind, size = 150, shadow = false }: { kind: CritterKind; size?: number; shadow?: boolean }) {
+  const e = CRITTER_EMOJI[kind]
+  if (hasEmoji(e))
+    return (
+      <span
+        className="critter-emo"
+        role="img"
+        aria-label={shadow ? `${ART[kind][0]} 그림자` : ART[kind][0]}
+        style={{ fontSize: size * 0.92, width: size, height: size, ...(shadow ? { filter: 'brightness(0)', opacity: 0.2 } : {}) }}
+      >
+        <Emo e={e} />
+      </span>
+    )
   return (
     <svg
       viewBox="0 0 120 120"

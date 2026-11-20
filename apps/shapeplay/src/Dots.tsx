@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useFeedback, useSay, Party, GameTop, speak, playTone, type GameProps } from '@family/core'
+import { useFeedback, useSay, Party, GameTop, speak, playTone, type GameProps, Emo } from '@family/core'
 import { DOT_PICS, SAY } from './voice'
 
 // 점 잇기: 1, 2, 3… 순서대로 점을 누르면 선이 이어지고, 다 이으면 그림이 나타남
@@ -30,6 +30,7 @@ export function Dots({ stars, onStar }: GameProps) {
       <GameTop stars={stars} onAgain={() => speak(SAY.dotsAsk)}>
         {done ? pic.name : '1, 2, 3… 차례로 이어요'}
       </GameTop>
+      <div className="dots-wrap">
       <svg className="dots-board" viewBox="0 0 200 200" role="img" aria-label="점 잇기">
         {done && <polygon points={pts.map((p) => p.join(',')).join(' ')} fill={pic.color} className="dots-fill" />}
         <polyline points={line} className="dots-line" />
@@ -40,8 +41,9 @@ export function Dots({ stars, onStar }: GameProps) {
             <text x={x} y={y - 11}>{i + 1}</text>
           </g>
         ))}
-        {done && <text x="100" y="112" className="dots-emoji">{pic.icon}</text>}
       </svg>
+      {done && <span className="dots-emoji"><Emo e={pic.icon} /></span>}
+      </div>
       <Party show={fb.party} text={fb.line} />
     </div>
   )

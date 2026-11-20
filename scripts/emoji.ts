@@ -3,7 +3,7 @@
 //   npm run emoji -- lifeplay          고른 앱
 //   npm run emoji                      모든 앱
 //
-// apps/<앱>/src 의 .ts/.tsx 에서 이모지를 모아 → apps/<앱>/public/emoji/<코드>.webp 로 복사
+// apps/<앱>/src 와 packages/core/src 의 .ts/.tsx 에서 이모지를 모아 → apps/<앱>/public/emoji/<코드>.webp 로 복사
 // → apps/<앱>/src/emoji-files.json ({ 이모지: 파일 }) 저장. 그림이 없는 이모지는 글자 그대로 보임
 // 그림 출처: npm @lobehub/fluent-emoji-3d (devDependency, 앱에 넣는 건 쓰는 파일만)
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
@@ -32,7 +32,9 @@ for (const app of apps) {
   const dir = join(root, 'apps', app)
   if (!existsSync(join(dir, 'src'))) continue
   const found = new Set<string>()
-  for (const f of walk(join(dir, 'src'))) for (const m of readFileSync(f, 'utf8').matchAll(EMOJI)) found.add(m[0])
+  // 앱 소스 + core (동물 캐릭터·칭찬 별은 core 에 있음)
+  for (const f of [...walk(join(dir, 'src')), ...walk(join(root, 'packages/core/src'))])
+    for (const m of readFileSync(f, 'utf8').matchAll(EMOJI)) found.add(m[0])
   const out = join(dir, 'public/emoji')
   rmSync(out, { recursive: true, force: true })
   mkdirSync(out, { recursive: true })

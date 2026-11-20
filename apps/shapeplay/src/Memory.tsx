@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useFeedback, useSay, Party, GameTop, speak, shuffle, pick, type GameProps } from '@family/core'
+import { useFeedback, useSay, Party, GameTop, speak, shuffle, pick, type GameProps, Emo } from '@family/core'
 import { SAY, MEMORY_PICS } from './voice'
 
 // 카드 뒤집기 짝 맞추기: 뒤집힌 카드에서 같은 그림 두 장 찾기. 별 3개부터 4쌍, 8개부터 6쌍
@@ -51,7 +51,7 @@ export function Memory({ stars, onStar }: GameProps) {
             <button key={c.id} className={'mem-card' + (up ? ' up' : '') + (found.includes(i) ? ' found' : '')} onClick={() => flip(i)} aria-label={up ? c.e : '뒤집힌 카드'}>
               <span className="mem-inner">
                 <span className="mem-back">?</span>
-                <span className="mem-front">{c.e}</span>
+                <span className="mem-front"><Emo e={c.e} /></span>
               </span>
             </button>
           )

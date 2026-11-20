@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useFeedback, useSay, Party, GameTop, speak, shuffle, pick, type GameProps } from '@family/core'
+import { useFeedback, useSay, Party, GameTop, speak, shuffle, pick, type GameProps, Emo } from '@family/core'
 import { SPOT_SETS, SAY } from './voice'
 
 // 다른 그림 찾기: 왼쪽·오른쪽 그림판에서 다른 곳을 오른쪽에서 찾아 누르기. 별 3개부터 3군데
@@ -39,7 +39,7 @@ export function Spot({ stars, onStar }: GameProps) {
           className={'spot-cell' + (found.includes(i) ? ' found' : '') + (side === 'r' && fb.wrong === `s${i}` ? ' g-shake' : '')}
           onClick={() => tap(i)}
         >
-          {e}
+          <Emo e={e} />
         </button>
       ))}
     </div>

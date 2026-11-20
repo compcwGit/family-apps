@@ -9,6 +9,8 @@ html.clay {
              inset 0 -5px 0 rgba(92, 64, 80, .07), inset 0 3px 0 rgba(255, 255, 255, .85);
   --clay-press: 0 3px 8px -4px rgba(122, 88, 140, .3), inset 0 -2px 0 rgba(92, 64, 80, .07), inset 0 2px 0 rgba(255, 255, 255, .7);
   --clay-hole: inset 0 6px 12px rgba(122, 88, 140, .14), inset 0 -2px 0 rgba(255, 255, 255, .9);
+  /* 앱 CSS 의 잉크 테두리·그림자 (border: var(--bd, …), box-shadow: var(--sh, …)) → 점토 */
+  --bd: 0 solid transparent; --sh: var(--clay-sm); --sh-press: var(--clay-press);
 }
 
 /* 배경: 크림색 + 파스텔 구름 얼룩 */
@@ -69,3 +71,11 @@ html.clay {
 /* 3D 그림 이모지 (core/Emo.tsx): 글자 크기에 맞춤 */
 .emo { width: 1em; height: 1em; object-fit: contain; vertical-align: -0.12em; pointer-events: none; -webkit-user-drag: none;
        filter: drop-shadow(0 .04em .05em rgba(92, 64, 80, .18)); }
+
+/* 동물 캐릭터 3D 그림 (core/Critter.tsx), 칭찬 화면 큰 별, 별 개수 */
+.critter-emo { display: inline-flex; align-items: center; justify-content: center; line-height: 1; }
+.g-party-star { position: relative; font-size: 220px; line-height: 1; }
+.clay .g-stars .emo { width: 1.1em; height: 1.1em; }
+
+/* 따라 쓰기 판 (core/Trace.tsx) */
+.clay .trace-pad { border: none; box-shadow: var(--clay); }

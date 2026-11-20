@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
 import '@family/core/style.css'
-// 점토 테마 시안 (2026-11-20): 괜찮으면 모든 앱에 같은 두 줄 넣기
+// 점토 테마 (2026-11-20 찬욱 결정: 모든 앱)
 import '@family/core/clay.css'
 // 아이 화면 글꼴 Jua (OFL, 앱에 포함해 오프라인에서도 보임)
 import '@fontsource/jua/400.css'

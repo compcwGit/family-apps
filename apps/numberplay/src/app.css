@@ -1,15 +1,15 @@
 /* 하나씩 세기 */
 .counter { width: 100%; max-width: 720px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-.big { width: 360px; aspect-ratio: 1; border: 5px solid var(--ink); border-radius: 48px; cursor: pointer;
+.big { width: 360px; aspect-ratio: 1; border: var(--bd, 5px solid var(--ink)); border-radius: 48px; cursor: pointer;
        display: flex; flex-direction: column; align-items: center; justify-content: center;
-       box-shadow: 0 10px 0 var(--ink); transition: transform .1s; font-family: var(--jua); }
-.big:active { transform: translateY(7px); box-shadow: 0 3px 0 var(--ink); }
+       box-shadow: var(--sh, 0 10px 0 var(--ink)); transition: transform .1s; font-family: var(--jua); }
+.big:active { transform: translateY(7px); box-shadow: var(--sh, 0 3px 0 var(--ink)); }
 .big:disabled { cursor: default; }
 .big-num { font-size: 140px; color: var(--ink); line-height: 1; }
 .big-word { font-size: 34px; color: var(--ink); margin-top: 12px; }
 .big.pop .big-num { animation: pop .3s ease; }
 @keyframes pop { 50% { transform: scale(1.25); } }
-.party { font-family: var(--jua); font-size: 34px; background: #FFC94A; border: 4px solid var(--ink); border-radius: 999px; padding: 4px 24px; margin: 0; }
+.party { font-family: var(--jua); font-size: 34px; background: #FFC94A; border: var(--bd, 4px solid var(--ink)); border-radius: 999px; padding: 4px 24px; margin: 0; }
 
 /* 10개 묶음(막대) + 낱개(점) */
 .blocks { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center; gap: 6px; min-height: 64px; max-width: 640px; }
@@ -21,9 +21,9 @@
 
 /* 100판 */
 .board { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; width: 100%; max-width: 640px; }
-.cell { border: 3px solid var(--ink); border-radius: 14px; aspect-ratio: 1; font-family: var(--jua); font-size: 26px;
+.cell { border: var(--bd, 3px solid var(--ink)); border-radius: 14px; aspect-ratio: 1; font-family: var(--jua); font-size: 26px;
         color: var(--ink); opacity: .4; cursor: pointer; padding: 0; }
-.cell.done { opacity: 1; box-shadow: 0 3px 0 var(--ink); }
+.cell.done { opacity: 1; box-shadow: var(--sh, 0 3px 0 var(--ink)); }
 .cell.pop { animation: pop .4s ease; opacity: 1; }
 
 /* 몇 개일까? */
@@ -32,7 +32,7 @@
 .count-item { position: relative; border: none; background: none; cursor: pointer; padding: 0; display: flex; }
 .count-item.on { transform: translateY(-6px); }
 .count-item.on svg { animation: pop .3s ease; }
-.count-item b { position: absolute; right: -6px; top: -10px; background: #FF8C6B; color: var(--ink); border: 4px solid var(--ink); border-radius: 50%;
+.count-item b { position: absolute; right: -6px; top: -10px; background: #FF8C6B; color: var(--ink); border: var(--bd, 4px solid var(--ink)); border-radius: 50%;
                 width: 50px; height: 50px; font-family: var(--jua); font-weight: 400; font-size: 28px; display: flex; align-items: center; justify-content: center; }
 .count-num { font-size: 80px; }
 
@@ -65,7 +65,7 @@
 
 /* 숫자 따라 쓰기 (판 스타일은 core .trace-pad) */
 .write-top { display: flex; align-items: center; gap: 16px; }
-.write-arrow { border: 4px solid var(--ink); background: #fff; box-shadow: 0 4px 0 var(--ink); border-radius: 50%; width: 56px; height: 56px; font-size: 22px; color: var(--ink); cursor: pointer; }
+.write-arrow { border: var(--bd, 4px solid var(--ink)); background: #fff; box-shadow: var(--sh, 0 4px 0 var(--ink)); border-radius: 50%; width: 56px; height: 56px; font-size: 22px; color: var(--ink); cursor: pointer; }
 .write-title { border: none; background: none; font-family: var(--jua); font-size: 56px; color: var(--ink); cursor: pointer; }
 .write-title small { font-size: 28px; }
 .write-msg { min-height: 1.6em; font-family: var(--jua); font-size: 28px; color: #E65100; margin: 0; }

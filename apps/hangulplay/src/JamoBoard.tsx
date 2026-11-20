@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { speak } from '@family/core'
+import { speak, Emo } from '@family/core'
 import { CONSONANTS, VOWELS, DOUBLES, type Jamo } from './hangul'
 import { jamoLine } from './talk'
 
@@ -32,7 +32,7 @@ export function JamoBoard({ done }: { done: string[] }) {
         <button className="hero" style={{ background: active.color }} onClick={() => tap(active)}>
           <span className="hero-ch">{active.ch}</span>
           <span className="hero-word">
-            <span className="hero-emoji">{active.emoji}</span>
+            <span className="hero-emoji"><Emo e={active.emoji} /></span>
             {active.word}
           </span>
         </button>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDrag, useFeedback, useSay, Party, GameTop, speak, pick, type GameProps } from '@family/core'
+import { useDrag, useFeedback, useSay, Party, GameTop, speak, pick, type GameProps, Emo } from '@family/core'
 import { PLACE_THINGS, PLACE_SPOTS, SAY } from './voice'
 
 // 위치 놀이: "곰을 상자 위에 놓아요" → 곰을 상자 위·아래·안·옆 자리 중 맞는 곳에 끌어다 놓기
@@ -30,12 +30,12 @@ export function Place({ stars, onStar }: GameProps) {
   return (
     <div className="g-game">
       <GameTop stars={stars} onAgain={() => speak(ask)}>
-        {thing.e} {SAY.placeTitle(thing.name, spot.name)}
+        <Emo e={thing.e} /> {SAY.placeTitle(thing.name, spot.name)}
       </GameTop>
       <div className="place-scene">
         {PLACE_SPOTS.map((s) => (
           <div key={s.id} className={'place-spot place-' + s.id} data-drop={s.id}>
-            {placed === s.id ? <span className="place-thing">{thing.e}</span> : <span className="place-label">{s.name}</span>}
+            {placed === s.id ? <span className="place-thing"><Emo e={thing.e} /></span> : <span className="place-label">{s.name}</span>}
           </div>
         ))}
         <div className="place-box" aria-hidden>
@@ -46,7 +46,7 @@ export function Place({ stars, onStar }: GameProps) {
       <div className="g-row g-tray">
         {!placed && (
           <div className={'g-piece place-piece' + (fb.wrong === 'thing' ? ' g-shake' : '')} {...drag.handle('thing')} style={drag.style('thing')}>
-            {thing.e}
+            <Emo e={thing.e} />
           </div>
         )}
       </div>

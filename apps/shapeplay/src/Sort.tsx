@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { useDrag, useFeedback, useSay, Party, GameTop, speak, shuffle, pick, type GameProps } from '@family/core'
+import { useDrag, useFeedback, useSay, Party, GameTop, speak, shuffle, pick, type GameProps, Emo } from '@family/core'
 import { SHAPES, ShapeIcon } from './shapes'
 import { COLORS, SAY } from './voice'
 
@@ -13,7 +13,7 @@ function makeRound(n: number): { rule: string; baskets: Basket[]; items: Item[] 
   if (n % 2 === 0) {
     const [a, b] = shuffle(COLORS)
     const items = [a, b].flatMap((c) =>
-      shuffle(c.items).slice(0, 3).map((e, i) => ({ id: `${c.id}${i}`, group: c.id, view: <span className="g-emoji">{e}</span> })),
+      shuffle(c.items).slice(0, 3).map((e, i) => ({ id: `${c.id}${i}`, group: c.id, view: <span className="g-emoji"><Emo e={e} /></span> })),
     )
     return {
       rule: SAY.sortRule(a.name, b.name),

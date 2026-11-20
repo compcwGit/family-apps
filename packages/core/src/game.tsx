@@ -8,6 +8,7 @@ import { splitSentences } from './talk'
 import { ShellSlot } from './PlayShell'
 import { Critter, type CritterKind } from './Critter'
 import { SpeakerIcon, StarIcon } from './icons'
+import { Emo, hasEmoji } from './Emo'
 
 // 놀이 화면이 받는 값: 지금까지 모은 별(난이도 올리기용), 별 하나 더하기
 export type GameProps = { stars: number; onStar: () => void }
@@ -75,7 +76,7 @@ export function Party({ show, text = '' }: { show: boolean; text?: string }) {
             <path key={d} d={d} fill="#FFE59A" />
           ))}
         </svg>
-        <StarIcon size={220} />
+        {hasEmoji('🌟') ? <span className="g-party-star"><Emo e="🌟" /></span> : <StarIcon size={220} />}
         <div className="g-party-critter">
           <Critter kind={critter} size={170} />
         </div>
@@ -106,7 +107,7 @@ export function GameTop({ stars, onAgain, children }: { stars: number; onAgain?:
         )}
       </div>
       <span className="g-stars" aria-label={`모은 별 ${stars}개`}>
-        <StarIcon /> {stars}
+        {hasEmoji('⭐') ? <Emo e="⭐" /> : <StarIcon />} {stars}
       </span>
     </div>
   )

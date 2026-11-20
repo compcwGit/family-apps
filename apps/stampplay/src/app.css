@@ -108,7 +108,7 @@ button.sp-cell { cursor: pointer; }
 .sp-gate-q .sp-sub { font-size: 20px; line-height: 1.5; margin: 0; }
 .sp-gate-mascot { display: flex; align-items: flex-end; gap: 8px; }
 .sp-gate-eq { display: flex; align-items: center; gap: 20px; margin-top: 12px; font-family: var(--jua); font-size: 64px; white-space: nowrap; }
-.sp-gate-ans { min-width: 150px; height: 104px; padding: 0 16px; border-radius: 24px; background: #fff; border: 3px solid var(--ink);
+.sp-gate-ans { min-width: 150px; height: 104px; padding: 0 16px; border-radius: 24px; background: #fff; border: var(--bd, 3px solid var(--ink));
                display: flex; align-items: center; justify-content: center; }
 .sp-gate-ans.empty { color: #B9A58C; }
 .sp-gate-bad { margin: 0; font-size: 20px; color: var(--red-dark); }
@@ -229,3 +229,15 @@ button.sp-cell { cursor: pointer; }
   .sp-friends { padding: 20px; }
   .sp-friend-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+/* 점토 테마 (core/clay.css): 배경 파스텔 얼룩, 카드·버튼은 테두리 대신 부드러운 그림자. 도장은 잉크 도장 그대로 */
+.clay .sp-page {
+  background:
+    radial-gradient(38% 30% at 6% 12%, #F7D9EE 0, transparent 70%),
+    radial-gradient(34% 28% at 96% 88%, #D9E6FF 0, transparent 70%),
+    radial-gradient(30% 24% at 92% 8%, #FFE9B8 0, transparent 70%),
+    radial-gradient(30% 26% at 4% 92%, #D5F2E3 0, transparent 70%),
+    var(--bg);
+}
+.clay .sp-card { border: none; box-shadow: var(--clay); }
+.clay .sp-pill-light, .clay .sp-bubble-line, .clay .sp-key, .clay .sp-stepper button, .clay .sp-tag { border: none; box-shadow: var(--clay-sm); }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useFeedback, useSay, Party, GameTop, speak, shuffle, pick, type GameProps } from '@family/core'
+import { useFeedback, useSay, Party, GameTop, speak, shuffle, pick, type GameProps, Emo } from '@family/core'
 import { WORDS, firstSound } from './words'
 import { CONSONANTS } from './hangul'
 import { SAY, euro } from './voice'
@@ -54,7 +54,7 @@ export function FirstSound({ stars, onStar }: GameProps) {
             className={'g-card word-card' + (fb.wrong === c.w ? ' g-shake' : '') + (solved && c === round.answer ? ' ok' : '')}
             onClick={() => choose(c.w)}
           >
-            {c.e}
+            <Emo e={c.e} />
             <small>
               <span className="first-hl" style={{ background: round.jamo.color }}>
                 {c.w[0]}

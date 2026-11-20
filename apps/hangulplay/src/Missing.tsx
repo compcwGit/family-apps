@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useFeedback, useSay, Party, GameTop, speak, shuffle, type GameProps } from '@family/core'
+import { useFeedback, useSay, Party, GameTop, speak, shuffle, type GameProps, Emo } from '@family/core'
 import { WORDS } from './words'
 import { SAY } from './voice'
 
@@ -37,7 +37,7 @@ export function Missing({ stars, onStar }: GameProps) {
         빈칸에 들어갈 글자는?
       </GameTop>
       <div className="miss-word">
-        <span className="miss-emoji">{word.e}</span>
+        <span className="miss-emoji"><Emo e={word.e} /></span>
         <div className="miss-letters">
           {[...word.w].map((c, i) => (
             <span key={i} className={i === hole ? (solved ? 'miss-box filled' : 'miss-box hole') : 'miss-box'}>

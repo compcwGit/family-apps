@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useFeedback, useSay, Party, GameTop, speak, shuffle, type GameProps } from '@family/core'
+import { useFeedback, useSay, Party, GameTop, speak, shuffle, type GameProps, Emo } from '@family/core'
 import { WORDS } from './words'
 import { SAY } from './voice'
 
@@ -43,7 +43,7 @@ export function WordOrder({ stars, onStar }: GameProps) {
         순서대로 눌러 낱말을 만들어요
       </GameTop>
       <div className="miss-word">
-        <span className="miss-emoji">{word.e}</span>
+        <span className="miss-emoji"><Emo e={word.e} /></span>
         <div className="miss-letters">
           {[...word.w].map((_, i) => (
             <span key={i} className={i < used.length ? 'miss-box filled' : 'miss-box hole'}>
