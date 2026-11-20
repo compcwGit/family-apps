@@ -105,8 +105,7 @@ export default function App() {
   })()
 
   return (
-    <PlayShell design={[1000, 420]} top app="동물 친구들" accent="#FF8C6B" games={GAMES} active={screen} onPick={(id) => go(id as Screen)} onParent={() => go('gate')}>
-      <SubTabs tabs={SUBS[game]} active={sub} onPick={(id) => setSubs({ ...subs, [game]: id })} />
+    <PlayShell design={[1000, 420]} top bar={<SubTabs tabs={SUBS[game]} active={sub} onPick={(id) => setSubs({ ...subs, [game]: id })} />} app="동물 친구들" accent="#FF8C6B" games={GAMES} active={screen} onPick={(id) => go(id as Screen)} onParent={() => go('gate')}>
       <div key={sub} className="sub-body">
         {view}
       </div>

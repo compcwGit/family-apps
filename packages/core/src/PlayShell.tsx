@@ -18,6 +18,7 @@ export function PlayShell({
   onParent,
   design,
   top,
+  bar,
   children,
 }: {
   app: string // 앱 이름 (위 줄 왼쪽)
@@ -26,6 +27,7 @@ export function PlayShell({
   active: string
   onPick: (id: string) => void
   onParent: () => void
+  bar?: ReactNode // 놀이판 맨 위에 고정되는 줄 (예: 세부 메뉴). 확대/축소되지 않음
   top?: boolean // 내용을 세로 가운데 대신 위쪽에 붙임 (메뉴 위치 고정)
   design?: [landscape: number, portrait: number] // 놀이판 설계 폭 (기본 1000, 600). 세로 폭을 줄이면 세로 화면에서 그림·글자가 더 크게 보임
   children: ReactNode
@@ -58,7 +60,7 @@ export function PlayShell({
           </button>
         </nav>
         <ShellSlot.Provider value={slot}>
-          <FitStage design={design} top={top}>{children}</FitStage>
+          <FitStage design={design} top={top} bar={bar}>{children}</FitStage>
         </ShellSlot.Provider>
       </div>
     </div>

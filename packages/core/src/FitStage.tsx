@@ -15,16 +15,19 @@ export function FitStage({
   max = 1.5,
   narrow = 0,
   top = false,
+  bar,
 }: {
   children: ReactNode
   className?: string
   design?: [landscape: number, portrait: number] // 배치할 때 쓰는 폭
   max?: number // 최대 확대 배율
   narrow?: number // 폭이 이보다 좁으면 가로로 길어도 세로용 폭으로 배치 (부모 화면)
+  bar?: ReactNode // 놀이판 맨 위 고정 줄 (확대/축소 안 됨 → 화면이 바뀌어도 버튼 크기·위치 그대로)
   top?: boolean // 세로 가운데 대신 위쪽에 붙임 (화면마다 내용 높이가 달라도 위쪽 메뉴 위치가 그대로)
 }) {
   const stage = useRef<HTMLDivElement>(null)
   const inner = useRef<HTMLDivElement>(null)
+  const barEl = useRef<HTMLDivElement>(null)
   const scale = useRef({ current: 1 }).current
 
   useLayoutEffect(() => {
@@ -35,7 +38,8 @@ export function FitStage({
       if (busy) return
       busy = true
       const W = st.clientWidth - PAD * 2
-      const H = st.clientHeight - PAD * 2
+      const bh = barEl.current?.offsetHeight ?? 0
+      const H = st.clientHeight - PAD * 2 - bh
       if (W <= 0 || H <= 0) return void (busy = false)
       const base = W >= H && W >= narrow ? design[0] : design[1]
       let s = Math.min(W / base, max)
@@ -50,19 +54,25 @@ export function FitStage({
       }
       const w = el.offsetWidth
       scale.current = s
-      el.style.transform = `translate(${PAD + (W - w * s) / 2}px, ${top ? PAD : PAD + (H - h * s) / 2}px) scale(${s})`
+      el.style.transform = `translate(${PAD + (W - w * s) / 2}px, ${bh + (top ? PAD : PAD + (H - h * s) / 2)}px) scale(${s})`
       busy = false
     }
     fit()
     const ro = new ResizeObserver(() => requestAnimationFrame(fit))
     ro.observe(st)
     ro.observe(el)
+    if (barEl.current) ro.observe(barEl.current)
     return () => ro.disconnect()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scale])
 
   return (
     <div className={className} ref={stage}>
+      {bar && (
+        <div className="sb-bar" ref={barEl}>
+          {bar}
+        </div>
+      )}
       <FitScale.Provider value={scale}>
         <div className="sb-fit" ref={inner}>
           {children}
