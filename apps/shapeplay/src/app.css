@@ -61,3 +61,51 @@
 .tg-piece { display: flex; cursor: grab; transition: transform .2s; filter: drop-shadow(0 5px 0 rgba(42,40,64,.15)); }
 .tg-piece svg { overflow: visible; }
 .tg-shape { stroke: #2A2840; stroke-width: 4; stroke-linejoin: round; }
+
+/* 카드 짝 찾기 */
+.mem-grid { display: grid; gap: 16px; grid-template-columns: repeat(3, 130px); }
+.mem-grid.mem-8 { grid-template-columns: repeat(4, 130px); }
+.mem-grid.mem-12 { grid-template-columns: repeat(4, 116px); }
+.mem-card { width: 100%; aspect-ratio: 1; perspective: 600px; border: none; background: none; padding: 0; cursor: pointer; }
+.mem-inner { position: relative; display: block; width: 100%; height: 100%; transition: transform .35s; transform-style: preserve-3d; }
+.mem-card.up .mem-inner { transform: rotateY(180deg); }
+.mem-back, .mem-front { position: absolute; inset: 0; border: 4px solid var(--ink); border-radius: 26px; display: flex; align-items: center; justify-content: center;
+                        backface-visibility: hidden; box-shadow: 0 5px 0 var(--ink); }
+.mem-back { background: var(--accent); font-family: var(--jua); font-size: 52px; color: #fff; }
+.mem-front { background: #fff; font-size: 64px; transform: rotateY(180deg); }
+.mem-card.found .mem-front { background: #E2F7EC; border-color: #2E9E5B; }
+
+/* 점 잇기 */
+.dots-board { width: min(440px, 100%); aspect-ratio: 1; background: #fff; border: 4px solid var(--ink); border-radius: 32px; box-shadow: 0 6px 0 var(--ink); }
+.dots-line { fill: none; stroke: var(--ink); stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+.dots-fill { stroke: none; animation: g-pop .5s ease; }
+.dots-dot { cursor: pointer; }
+.dots-dot circle:not(.dots-hit) { fill: #B9B4A6; }
+.dots-dot.on circle:not(.dots-hit) { fill: var(--ink); }
+.dots-dot.next circle:not(.dots-hit) { fill: #FF6B57; }
+.dots-hit { fill: transparent; }
+.dots-dot text { font-family: var(--jua); font-size: 14px; text-anchor: middle; fill: var(--ink); pointer-events: none; }
+.dots-emoji { font-size: 48px; text-anchor: middle; }
+
+/* 다른 그림 찾기 */
+.spot-wrap { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; }
+.spot-grid { display: grid; grid-template-columns: repeat(3, 96px); gap: 8px; padding: 14px; background: #fff; border: 4px solid var(--ink); border-radius: 28px; }
+.spot-grid.l { pointer-events: none; }
+.spot-cell { width: 96px; height: 96px; border: none; background: #FFF8EA; border-radius: 18px; font-size: 56px; cursor: pointer; padding: 0; }
+.spot-cell.found { outline: 5px solid #FF6B57; outline-offset: -3px; }
+
+/* 위치 놀이 */
+.place-scene { position: relative; width: 460px; height: 380px; }
+.place-box { position: absolute; left: 130px; top: 130px; width: 200px; height: 130px; }
+.place-box-back { position: absolute; inset: 0 0 auto 0; height: 34px; background: #C98B57; border: 4px solid var(--ink); border-radius: 10px 10px 0 0; }
+.place-box-front { position: absolute; inset: 34px 0 0 0; background: #E3A86D; border: 4px solid var(--ink); border-radius: 0 0 16px 16px;
+                   font-family: var(--jua); font-size: 28px; color: #fff; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; z-index: 2; }
+.place-spot { position: absolute; width: 110px; height: 100px; border: 4px dashed var(--line); border-radius: 24px; display: flex; align-items: center; justify-content: center; z-index: 3; }
+.place-up { left: 175px; top: 10px; }
+.place-in { left: 175px; top: 112px; height: 84px; z-index: 1; border-color: transparent; }
+.place-down { left: 175px; top: 272px; }
+.place-side { left: 345px; top: 145px; }
+.place-label { font-family: var(--jua); font-size: 22px; color: var(--ink-soft); }
+.place-in .place-label { visibility: hidden; }
+.place-thing { font-size: 64px; line-height: 1; }
+.place-piece { font-size: 90px; }
