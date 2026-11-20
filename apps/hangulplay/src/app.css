@@ -72,6 +72,7 @@
 .word-pic { font-size: 96px; line-height: 1; }
 .word-chip { background: #fff; border: var(--bd, 4px solid var(--ink)); border-radius: 22px; padding: 10px 18px; font-size: 40px; color: var(--ink); white-space: nowrap; }
 
-/* 점토 테마: 3D 그림은 글자 이모지보다 작아 보여서 크게 */
+/* 점토 테마: 3D 그림은 글자 이모지보다 작아 보여서 크게 (em 이 아니라 고정 크기로 — em 은 부모 글자 크기 기준이라 오히려 작아짐) */
 .clay .word-card { font-size: 8rem; }
-.clay .miss-emoji, .clay .word-pic { font-size: 1.25em; }
+.clay .miss-emoji { font-size: 11rem; }
+.clay .word-pic { font-size: 128px; }
