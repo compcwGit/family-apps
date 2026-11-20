@@ -30,6 +30,8 @@ function audio(): AudioContext {
 // 웹(아이폰 Safari)에서는 기기 음성도 탭 안에서 한 번 말해야 그 뒤에 말할 수 있어서, 들리지 않는 말을 한 번 함
 let speechUnlocked = false
 if (typeof window !== 'undefined') {
+  // 탭할 때마다 확인: 아이폰은 기기 음성(말하기)·전화·화면 전환 뒤에 소리가 'suspended/interrupted' 로 멈추는데,
+  // 건반을 "닿는 순간(pointerdown)"에 치면 그때는 다시 켤 수 없어서 피아노만 안 들릴 수 있음 → 탭이 끝날 때마다 다시 켬
   const unlock = () => {
     if (!speechUnlocked && 'speechSynthesis' in window) {
       speechUnlocked = true
@@ -42,17 +44,18 @@ if (typeof window !== 'undefined') {
       }
     }
     const c = audio()
-    const src = c.createBufferSource()
-    src.buffer = c.createBuffer(1, 1, 22050)
-    src.connect(c.destination)
-    src.start(0)
-    if (c.state === 'running') {
-      window.removeEventListener('touchend', unlock, true)
-      window.removeEventListener('click', unlock, true)
+    if (c.state !== 'running') {
+      const src = c.createBufferSource()
+      src.buffer = c.createBuffer(1, 1, 22050)
+      src.connect(c.destination)
+      src.start(0)
     }
   }
   window.addEventListener('touchend', unlock, true)
   window.addEventListener('click', unlock, true)
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && ctx && ctx.state !== 'running') ctx.resume().catch(() => {})
+  })
 }
 
 // 짧은 효과음 ("띵")
