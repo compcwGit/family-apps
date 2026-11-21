@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { FitStage, Segmented } from '@family/core'
 import { BackIcon, BookIcon, PencilIcon } from './Icons'
 import { KINDS, KIND_NAME, Mascot, type Kind } from './Mascot'
 import { StampBoard } from './StampBoard'
@@ -40,6 +41,7 @@ export function ParentPanel({
   const [target, setTarget] = useState(plan.target)
   const [reward, setReward] = useState(plan.reward)
   const [editing, setEditing] = useState(false)
+  const [tab, setTab] = useState<'stamp' | 'plan'>('stamp') // 한 화면에 다 넣으면 스크롤이 생겨서 두 쪽으로 나눔
   const [pickedLabel, setPickedLabel] = useState(reasons[0]?.label ?? '')
   const picked = reasons.find((r) => r.label === pickedLabel) ?? reasons[0]
   const [newLabel, setNewLabel] = useState('')
@@ -64,6 +66,10 @@ export function ParentPanel({
         </button>
       </header>
 
+      <Segmented label="부모 메뉴" value={tab} options={[['stamp', '도장 찍기'], ['plan', '약속·친구']]} onChange={setTab} />
+
+      <FitStage className="sp-fit" design={[1084, 380]} max={1} top>
+      {tab === 'stamp' && (
       <div className="sp-body">
         <div className="sp-col">
           <p className="sp-help">{picked ? '도장을 고르고, 도장판의 빈 칸을 눌러 꾹 찍어 주세요' : '먼저 칭찬도장을 만들어 주세요'}</p>
@@ -133,7 +139,10 @@ export function ParentPanel({
           )}
         </aside>
       </div>
+      )}
 
+      {tab === 'plan' && (
+      <>
       <section className="sp-card sp-promise">
         <h2 className="sp-h2">약속</h2>
         <div className="sp-promise-row">
@@ -169,6 +178,9 @@ export function ParentPanel({
           ))}
         </div>
       </section>
+      </>
+      )}
+      </FitStage>
     </main>
   )
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getPlatform, playTone } from '@family/core'
+import { FitStage, getPlatform, playTone } from '@family/core'
 import { Done } from './Done'
 import { Gate } from './Gate'
 import { GoalPanel } from './GoalPanel'
@@ -139,10 +139,12 @@ export default function App() {
           </button>
         </div>
       </header>
-      <div className="sp-body">
-        <StampBoard board={current} newestId={newestId} />
-        <GoalPanel board={current} kind={character} />
-      </div>
+      <FitStage className="sp-fit" design={[1084, 380]} max={1}>
+        <div className="sp-body">
+          <StampBoard board={current} newestId={newestId} />
+          <GoalPanel board={current} kind={character} />
+        </div>
+      </FitStage>
       {getPlatform() === 'web' && <p className="sp-foot">웹 미리보기</p>}
     </main>
   )
