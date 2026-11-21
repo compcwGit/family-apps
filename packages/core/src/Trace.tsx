@@ -44,8 +44,14 @@ export function TracePad({ strokes, step, onStart, onStroke }: {
   const cur = strokes[step]
 
   const toPt = (e: React.PointerEvent): Pt => {
-    const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(svg.current!.getScreenCTM()!.inverse())
-    return [p.x, p.y]
+    // getScreenCTM 은 아이폰 Safari 에서 CSS 확대(transform) 안의 SVG 좌표가 어긋남 → 화면 위치·크기로 직접 계산
+    // (테두리 안쪽이 viewBox 와 겹침. 확대 배율 k = 화면 폭 / 원래 폭)
+    const el = svg.current!
+    const r = el.getBoundingClientRect()
+    const k = r.width / ((el.clientWidth + el.clientLeft * 2) || 1) // svg 에는 offsetWidth 가 없어서 clientWidth + 테두리로 원래 폭을 구함
+    const w = el.clientWidth * k
+    const h = el.clientHeight * k
+    return [((e.clientX - r.left - el.clientLeft * k) / w) * 100, ((e.clientY - r.top - el.clientTop * k) / h) * 100]
   }
   const down = (e: React.PointerEvent) => {
     if (!cur) return

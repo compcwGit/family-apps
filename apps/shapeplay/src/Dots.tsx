@@ -35,7 +35,7 @@ export function Dots({ stars, onStar }: GameProps) {
         {done && <polygon points={pts.map((p) => p.join(',')).join(' ')} fill={pic.color} className="dots-fill" />}
         <polyline points={line} className="dots-line" />
         {pts.map(([x, y], i) => (
-          <g key={i} className={'dots-dot' + (i < n ? ' on' : '') + (i === n ? ' next' : '') + (fb.wrong === `d${i}` ? ' g-shake' : '')} onClick={() => tap(i)}>
+          <g key={i} className={'dots-dot' + (i < n ? ' on' : '') + (i === n ? ' next' : '') + (fb.wrong === `d${i}` ? ' g-shake' : '')} onPointerDown={() => tap(i)}>
             <circle cx={x} cy={y} r="14" className="dots-hit" />
             <circle cx={x} cy={y} r="6" />
             <text x={x} y={y - 11}>{i + 1}</text>
