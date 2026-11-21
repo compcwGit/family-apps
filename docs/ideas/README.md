@@ -10,8 +10,9 @@
 | 3 | 한글 놀이 (가칭, `apps/hangulplay`) | 유치원생 | 🔨 개발 중 (시안 v1) | [003-hangulplay.md](003-hangulplay.md) |
 | 4 | 숫자 놀이 (가칭, `apps/numberplay`) — 1~100 세기 | 유치원생 | 🔨 개발 중 (시안 v1) | [004-numberplay.md](004-numberplay.md) |
 | 5 | 누리과정 놀이 묶음 — 놀이 12개를 앱 5개에 (새 앱: 모양 놀이 `shapeplay`, 생활 놀이 `lifeplay`) | 유치원생 | 🔨 개발 중 (시안 v1) | [005-nuri-games.md](005-nuri-games.md) |
+| 6 | 유료화 범위 — 앱마다 무료 놀이 + 전체 기능 해제(1회 결제), 아이폰 웹앱은 해제 코드 | 부모 | 💡 제안 (결정 대기) | [006-paid-unlock.md](006-paid-unlock.md) |
 | 6 | 광고(영상) + 광고 제거 결제 — 6개 앱 공통 | 전체 (Android) | 📐 기획 (찬욱 결정 대기) | [006-ads-and-purchase.md](006-ads-and-purchase.md) |
 
-공통 방침: [수익화 — 광고 + 광고 제거 결제](monetization.md)
+공통 방침: [수익화 — 광고 + 광고 제거 결제](monetization.md) → 바꾸는 제안: [006 유료화 범위](006-paid-unlock.md)
 
 상태: 💡 구상 중 → 📐 설계 → 🔨 개발 중 → ✅ 완료 / ⏸ 보류
