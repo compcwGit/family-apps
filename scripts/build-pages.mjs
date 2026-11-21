@@ -5,6 +5,8 @@ import { readdirSync, existsSync, mkdirSync, cpSync, writeFileSync, readFileSync
 const apps = readdirSync('apps').filter((d) => existsSync(`apps/${d}/package.json`))
 mkdirSync('site', { recursive: true })
 const links = []
+// pages/ (개인정보처리방침 등 앱 밖 페이지) → site/ 에 그대로 복사. 주소: https://compcwgit.github.io/family-apps/privacy.html
+if (existsSync('pages')) cpSync('pages', 'site', { recursive: true })
 for (const a of apps) {
   execSync(`npm run build -w apps/${a}`, { stdio: 'inherit' })
   cpSync(`apps/${a}/dist`, `site/${a}`, { recursive: true })
@@ -15,6 +17,6 @@ writeFileSync(
   'site/index.html',
   `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>family-apps 미리보기</title><style>body{font-family:system-ui;padding:24px;font-size:1.3rem}li{margin:12px 0}</style>
-<h1>family-apps 미리보기</h1><ul>${links.join('')}</ul>`,
+<h1>family-apps 미리보기</h1><ul>${links.join('')}</ul><p><a href="./privacy.html">개인정보처리방침</a></p>`,
 )
 console.log('site/ 준비 완료:', apps.join(', '))

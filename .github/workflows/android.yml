@@ -34,6 +34,8 @@ jobs:
       fail-fast: false
       matrix:
         app: ${{ fromJson(needs.apps.outputs.list) }}
+    env:
+      HAS_UPLOAD_KEY: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
     defaults:
       run:
         working-directory: apps/${{ matrix.app }}
@@ -54,9 +56,35 @@ jobs:
       - run: npm run build
       # android 폴더가 저장소에 없으면 CI 에서 생성 (아이콘·권한을 바꾸려면 PC에서 만들어 커밋)
       - run: '[ -d android ] || npx cap add android'
+      # 앱 아이콘 (icon-1024.png / icon-android.png → 안드로이드 아이콘)
+      - run: bash ../../scripts/android-icons.sh
       - run: npx cap sync android
+      # 버전: versionCode 는 빌드 번호(올릴 때마다 커야 함), versionName 은 앱 package.json 의 version
+      - run: |
+          sed -i "s/versionCode [0-9]*/versionCode ${{ github.run_number }}/" android/app/build.gradle
+          sed -i "s/versionName \"[^\"]*\"/versionName \"$(node -p "require('./package.json').version")\"/" android/app/build.gradle
       - run: cd android && chmod +x gradlew && ./gradlew assembleDebug
       - run: cp android/app/build/outputs/apk/debug/app-debug.apk ${{ matrix.app }}.apk
+      # Play 스토어 업로드용 AAB (업로드 키가 저장소 Secrets 에 있을 때만). 키 만드는 법: docs/release/README.md
+      - name: Play 업로드용 AAB (서명)
+        if: env.HAS_UPLOAD_KEY == 'true'
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          (cd android && ./gradlew bundleRelease)
+          aab=android/app/build/outputs/bundle/release/app-release.aab
+          jarsigner -keystore "$RUNNER_TEMP/upload.jks" -storepass "$KEYSTORE_PASS" -keypass "$KEY_PASS" "$aab" "$KEY_ALIAS"
+          cp "$aab" ${{ matrix.app }}.aab
+          rm -f "$RUNNER_TEMP/upload.jks"
+      - if: env.HAS_UPLOAD_KEY == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.app }}-aab
+          path: apps/${{ matrix.app }}/${{ matrix.app }}.aab
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.app }}-apk

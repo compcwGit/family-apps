@@ -41,17 +41,30 @@ export function FitStage({
       const bh = barEl.current?.offsetHeight ?? 0
       const H = st.clientHeight - PAD * 2 - bh
       if (W <= 0 || H <= 0) return void (busy = false)
-      const base = W >= H && W >= narrow ? design[0] : design[1]
-      let s = Math.min(W / base, max)
-      el.style.width = `${W / s}px`
-      let h = el.offsetHeight
-      if (h * s > H) {
-        // 세로가 넘치면 더 줄이고, 그만큼 넓게 배치해서 다시 잼
-        s = H / h
-        el.style.width = `${W / s}px`
-        h = el.offsetHeight
-        s = Math.min(s, H / h, max)
+      // 가로 배치는 놀이판도 가로로 길고 화면(창)도 가로일 때만. 세로 폰에서 위 메뉴가 두 줄로 접혀 놀이판이
+      // 납작해져도 가로 배치(폭 1000)로 그리면 글자·그림이 아주 작아짐 (아이폰 SE)
+      const base = W >= H && W >= narrow && innerWidth >= innerHeight ? design[0] : design[1]
+      // 배율 s 일 때 폭 W/s 로 배치해서 세로가 들어가는지
+      const fits = (k: number) => {
+        el.style.width = `${W / k}px`
+        return el.offsetHeight * k <= H
       }
+      let s = Math.min(W / base, max)
+      if (!fits(s)) {
+        // 세로가 넘치면: 넓게 배치할수록 낮아지므로, 들어가는 가장 큰 배율을 반으로 나눠 찾기
+        // (예전엔 한 번 줄이고 끝이라 아이폰 SE 처럼 짧은 화면에서 지나치게 작아졌음)
+        let lo = s * 0.25
+        let hi = s
+        if (!fits(lo)) lo = Math.min(lo, H / el.offsetHeight)
+        for (let i = 0; i < 9; i++) {
+          const mid = (lo + hi) / 2
+          if (fits(mid)) lo = mid
+          else hi = mid
+        }
+        s = lo
+        fits(s)
+      }
+      const h = el.offsetHeight
       const w = el.offsetWidth
       scale.current = s
       el.style.transform = `translate(${PAD + (W - w * s) / 2}px, ${bh + (top ? PAD : PAD + (H - h * s) / 2)}px) scale(${s})`

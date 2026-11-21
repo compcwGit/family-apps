@@ -146,3 +146,9 @@
 .clay .piano-key.glow { box-shadow: var(--clay-sm), 0 0 0 6px #fff, 0 0 0 13px var(--accent), 0 0 28px 12px rgba(255, 190, 40, .75); transform: translateY(-14px) scale(1.07); z-index: 2; animation: blink .6s ease-in-out infinite alternate; }
 .piano:has(.glow) .piano-key:not(.glow) { opacity: .5; filter: saturate(.6); }
 .piano:has(.glow) { padding-top: 16px; }
+
+/* 좁은 폰(아이폰 SE·mini 등 폭 380px 이하): 세부 메뉴 4개가 한 줄에 들어가게 — 두 줄이 되면 놀이판이 작아짐 */
+@media (max-width: 380px) {
+  .subtab { height: 44px; padding: 0 12px; font-size: 19px; }
+  .subtabs { gap: 6px; flex-wrap: nowrap; }
+}

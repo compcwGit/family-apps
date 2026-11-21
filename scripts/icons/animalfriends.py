@@ -148,7 +148,8 @@ ta = np.clip((1 - td) * 25, 0, 1) * (y > C + 160)
 img = over(img, np.clip(shade(dome(td), np.array([0.96, 0.42, 0.48]), spec=0.4), 0, 1), ta)
 img = over(img, np.array([0.25, 0.12, 0.09]), blur(mouth, 1.2))
 
-K = 0.84  # 안드로이드 동그란 마스크(가운데 약 80%) 안에 귀까지 들어가게
+import os
+K = float(os.environ.get('ICON_SCALE', '0.84'))  # 안드로이드 적응형 아이콘용은 0.66 (가운데 2/3만 보임)  # 안드로이드 동그란 마스크(가운데 약 80%) 안에 귀까지 들어가게
 fg = Image.fromarray((np.clip(img, 0, 1) * 255).astype(np.uint8)).resize((int(S*K), int(S*K)), Image.LANCZOS)
 al = Image.fromarray((np.clip(ALPHA, 0, 1) * 255).astype(np.uint8)).resize((int(S*K), int(S*K)), Image.LANCZOS)
 off = (S - int(S*K)) // 2
@@ -164,5 +165,5 @@ BG = np.asarray(BG)
 res = BG * (1 - A[..., None]) + F * A[..., None] / np.maximum(A[..., None], 1e-3) * A[..., None]
 res = BG * (1 - A[..., None]) + F  # F 는 이미 알파가 곱해진 색
 out = Image.fromarray((np.clip(res, 0, 1) * 255).astype(np.uint8))
-out.save('apps/animalfriends/icon-1024.png')
+out.save(os.environ.get('ICON_OUT', 'apps/animalfriends/icon-1024.png'))
 print('ok')
