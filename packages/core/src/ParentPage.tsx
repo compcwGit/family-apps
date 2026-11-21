@@ -62,6 +62,7 @@ export function ParentPage({
   onReset,
   onClose,
   unlock,
+  ads,
   children,
 }: {
   title: string
@@ -73,6 +74,7 @@ export function ParentPage({
   onReset?: () => void
   onClose: () => void
   unlock?: { app: string; free: string[]; paid: string[]; open?: boolean } // 유료 앱: "전체 기능" 칸 (open 이면 이 칸부터 보여 줌)
+  ads?: boolean // 광고가 있는 앱 (안드로이드 Play 버전): 개인정보 안내 문구가 바뀜
   children?: ReactNode // 앱별 설정 (ParentSection)
 }) {
   const [files, setFiles] = useState(usesVoiceFiles)
@@ -157,10 +159,13 @@ export function ParentPage({
   sections.push(
     <ParentSection key="privacy" title="개인정보">
       <p>
-        {eun(title)} 이름, 사진, 위치, 기기 정보 등 <b>어떤 개인정보도 수집·저장·전송하지 않습니다.</b>
+        {eun(title)} 이름, 사진, 위치, 연락처 등 <b>개인정보를 수집·저장하지 않습니다.</b>
       </p>
       <p className="muted">
-        놀이 기록(모은 별 등)과 설정은 기기 안에만 저장되며, 인터넷 연결 없이 동작합니다. 광고·회원가입·외부 링크가 없습니다.
+        놀이 기록(모은 별 등)과 설정은 기기 안에만 저장되며, 놀이는 인터넷 연결 없이 동작합니다.
+        {ads
+          ? ' 안드로이드(Google Play) 버전은 놀이를 바꿀 때 가끔 광고가 나옵니다. 광고는 Google 애드몹이 아동용 설정(맞춤 광고 없음, 광고 ID 사용 안 함, 전체 이용가 광고만)으로 보여 주며, 광고를 보여 주는 데 필요한 기기·접속 정보는 Google 이 처리합니다. 회원가입·외부 링크는 없습니다.'
+          : ' 광고·회원가입·외부 링크가 없습니다.'}
         {unlock && ' 전체 기능 구매는 이 부모 화면에서만, Google Play 결제로 처리됩니다.'}
       </p>
     </ParentSection>,
