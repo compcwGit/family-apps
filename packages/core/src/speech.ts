@@ -58,7 +58,9 @@ function playFile(src: string, id: number): Promise<boolean> {
   return new Promise((resolve) => {
     if (id !== playId) return resolve(false)
     followMediaVolume() // 녹음 목소리도 미디어 볼륨을 따름
-    audio = new Audio(base + src)
+    // 한 번 쓴 재생기를 계속 씀: 아이폰 Safari 는 새로 만든 재생기를 탭 밖(await 뒤)에서 틀면 소리를 막는 경우가 있음
+    audio ??= new Audio()
+    audio.src = base + src
     audio.onended = () => resolve(true)
     audio.onerror = () => resolve(false)
     audio.onpause = () => resolve(false) // 다른 말이 시작되거나 멈춤
