@@ -1,6 +1,8 @@
 node_modules/
 dist/
 release/
+# 스토어 등록 자료(설명·그래픽)는 올림 — 위 release/ 는 Electron 설치 파일 출력
+!docs/release/
 site/
 **/android/app/build/
 **/android/.gradle/
