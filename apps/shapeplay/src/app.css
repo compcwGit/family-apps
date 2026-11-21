@@ -76,18 +76,6 @@
 .mem-card.found .mem-front { background: #E2F7EC; border-color: #2E9E5B; }
 
 /* 점 잇기 */
-.dots-board { width: min(440px, 100%); aspect-ratio: 1; background: #fff; border: var(--bd, 4px solid var(--ink)); border-radius: 32px; box-shadow: var(--sh, 0 6px 0 var(--ink)); }
-.dots-line { fill: none; stroke: var(--ink); stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
-.dots-fill { stroke: none; animation: g-pop .5s ease; }
-.dots-dot { cursor: pointer; }
-.dots-dot circle:not(.dots-hit) { fill: #B9B4A6; }
-.dots-dot.on circle:not(.dots-hit) { fill: var(--ink); }
-.dots-dot.next circle:not(.dots-hit) { fill: #FF6B57; }
-.dots-hit { fill: transparent; }
-.dots-dot text { font-family: var(--jua); font-size: 14px; text-anchor: middle; fill: var(--ink); pointer-events: none; }
-.dots-wrap { position: relative; width: min(440px, 100%); }
-.dots-wrap .dots-board { width: 100%; }
-.dots-emoji { position: absolute; left: 50%; top: 50%; translate: -50% -40%; font-size: 96px; line-height: 1; pointer-events: none; animation: g-pop .5s ease; }
 
 /* 다른 그림 찾기 */
 .spot-wrap { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; }

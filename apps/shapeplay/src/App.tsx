@@ -5,7 +5,6 @@ import { Sort } from './Sort'
 import { Color } from './Color'
 import { Tangram } from './Tangram'
 import { Memory } from './Memory'
-import { Dots } from './Dots'
 import { Spot } from './Spot'
 import { Place } from './Place'
 import pkg from '../package.json'
@@ -19,12 +18,11 @@ const GAMES = [
   { id: 'color', label: '색칠', View: Color },
   { id: 'tangram', label: '칠교', View: Tangram },
   { id: 'memory', label: '짝 찾기', View: Memory },
-  { id: 'dots', label: '점 잇기', View: Dots },
   { id: 'spot', label: '다른 곳', View: Spot },
   { id: 'place', label: '위치', View: Place },
 ] as const
 const GAME_NAMES: Record<string, string> = {
-  shape: '도형 맞추기', sort: '끼리끼리', color: '색칠 놀이', tangram: '칠교놀이', memory: '카드 짝 찾기', dots: '점 잇기', spot: '다른 그림 찾기', place: '위치 놀이',
+  shape: '도형 맞추기', sort: '끼리끼리', color: '색칠 놀이', tangram: '칠교놀이', memory: '카드 짝 찾기', spot: '다른 그림 찾기', place: '위치 놀이',
 }
 type Screen = (typeof GAMES)[number]['id'] | 'gate' | 'parent'
 

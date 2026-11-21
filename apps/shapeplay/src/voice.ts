@@ -17,21 +17,6 @@ export const COLORS = [
 export const MEMORY_PICS = ['🐶', '🐱', '🐰', '🐻', '🐸', '🐥', '🍎', '🍌', '🍓', '🚗', '⭐', '🎈']
 
 // 점 잇기 그림 (200×200, 1번 점부터 차례로, 마지막 점은 1번으로 이어짐)
-const star = Array.from({ length: 10 }, (_, i) => {
-  const a = ((-90 + i * 36) * Math.PI) / 180
-  const r = i % 2 ? 36 : 84
-  return [Math.round(100 + r * Math.cos(a)), Math.round(108 + r * Math.sin(a))] as [number, number]
-})
-export const DOT_PICS: { name: string; icon: string; color: string; pts: [number, number][] }[] = [
-  { name: '세모', icon: '🔺', color: '#FFD3C9', pts: [[100, 28], [172, 160], [28, 160]] },
-  { name: '네모', icon: '🟦', color: '#CDE9FB', pts: [[40, 40], [160, 40], [160, 160], [40, 160]] },
-  { name: '집', icon: '🏠', color: '#FFEBB0', pts: [[100, 24], [172, 88], [150, 88], [150, 172], [50, 172], [50, 88], [28, 88]] },
-  { name: '별', icon: '⭐', color: '#FFE38A', pts: star },
-  { name: '하트', icon: '❤️', color: '#FFC6D9', pts: [[100, 64], [124, 36], [158, 38], [176, 68], [166, 104], [100, 172], [34, 104], [24, 68], [42, 38], [76, 36]] },
-  { name: '물고기', icon: '🐟', color: '#CBEFDD', pts: [[24, 100], [70, 58], [126, 64], [176, 30], [160, 100], [176, 170], [126, 136], [70, 142]] },
-  { name: '로켓', icon: '🚀', color: '#E3DBFF', pts: [[100, 18], [128, 56], [128, 132], [156, 168], [116, 158], [100, 182], [84, 158], [44, 168], [72, 132], [72, 56]] },
-]
-
 // 다른 그림 찾기 그림 묶음
 export const SPOT_SETS = [
   ['🍎', '🍌', '🍇', '🍓', '🍊'],
@@ -61,9 +46,6 @@ export const SAY = {
   tangramDone: (name: string) => `${name} 완성!`,
   memoryAsk: '카드를 뒤집어서 같은 그림 두 장을 찾아요!',
   memoryOk: '짝을 모두 찾았어요!',
-  dotsAsk: '1번부터 차례로 점을 눌러 이어 봐요!',
-  dotsNo: (n: number) => `${n}번 점을 찾아볼까?`,
-  dotsOk: (name: string) => `짠! ${name} 완성!`,
   spotAsk: (k: number) => `오른쪽 그림에서 다른 곳 ${k === 3 ? '세' : '두'} 군데를 찾아요!`,
   spotNo: '거기는 똑같아요. 다시 찾아볼까?',
   spotFound: (n: number) => `${n === 1 ? '하나' : '둘'} 찾았다!`,
@@ -87,9 +69,6 @@ export function voiceLines() {
   v.add('tangram', SAY.tangramNo)
   for (const p of PUZZLES) v.add('tangram', SAY.tangramAsk(p.name), SAY.tangramDone(p.name))
   v.add('memory', SAY.memoryAsk, SAY.memoryOk)
-  v.add('dots', SAY.dotsAsk)
-  for (let n = 2; n <= 10; n++) v.add('dots', SAY.dotsNo(n))
-  for (const p of DOT_PICS) v.add('dots', SAY.dotsOk(p.name))
   v.add('spot', SAY.spotAsk(2), SAY.spotAsk(3), SAY.spotNo, SAY.spotFound(1), SAY.spotFound(2), SAY.spotOk)
   for (const s of PLACE_SPOTS) v.add('place', SAY.placeNo(s.name))
   for (const t of PLACE_THINGS) for (const s of PLACE_SPOTS) v.add('place', SAY.placeAsk(t.name, s.name), SAY.placeOk(t.name, s.name))
