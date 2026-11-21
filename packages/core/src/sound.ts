@@ -2,16 +2,16 @@
 //
 // 아이폰(Safari)·안드로이드 WebView 주의:
 //  - 소리는 "탭(click/touchend)" 안에서 한 번 켜 줘야 나옴 → 첫 탭 때 자동으로 켬 (unlock)
-//  - 웹(아이폰 Safari): audioSession 'ambient' = 다른 앱 음악을 멈추지 않고 같이 재생 (찬욱 결정 2026-11-20)
-//    대신 아이폰 무음 스위치를 켜면 앱 소리가 안 남. ('playback' 은 무음과 상관없이 나지만 유튜브 뮤직 등을 멈춤)
+//  - 웹(아이폰 Safari): audioSession 'playback' = 미디어 볼륨을 따르고 무음 스위치와 상관없이 소리가 남 (찬욱 결정 2026-11-21)
+//    대신 다른 앱 음악(유튜브 뮤직 등)은 멈춤. ('ambient' 는 음악과 섞이지만 무음 스위치를 켜면 앱 소리가 전부 안 남)
 //    웹은 "잠깐 줄이기"가 안 됨. 안드로이드 앱은 packages/audio-focus 로 말할 때 음악을 잠깐 줄임
 let ctx: AudioContext | null = null
 
-// 소리 방식 설정 (소리를 내기 전에 한 번 호출): 다른 앱 음악과 섞어서 재생
+// 소리 방식 설정 (소리를 내기 전에 한 번 호출): 미디어 볼륨을 따름
 export function followMediaVolume() {
   try {
     const nav = navigator as Navigator & { audioSession?: { type: string } }
-    if (nav.audioSession) nav.audioSession.type = 'ambient'
+    if (nav.audioSession) nav.audioSession.type = 'playback'
   } catch {
     /* 지원 안 하는 기기는 무시 */
   }
