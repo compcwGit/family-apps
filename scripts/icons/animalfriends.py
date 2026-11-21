@@ -164,6 +164,10 @@ BG = BG * (1 - 0.0 * glow) + np.array([1, .97, .93]) * glow * 0.0 + BG * 0
 BG = np.asarray(BG)
 res = BG * (1 - A[..., None]) + F * A[..., None] / np.maximum(A[..., None], 1e-3) * A[..., None]
 res = BG * (1 - A[..., None]) + F  # F 는 이미 알파가 곱해진 색
+if os.environ.get('ICON_ALPHA_OUT'):  # 배경 없는 강아지만 (스토어 그래픽용)
+    rgb = F / np.maximum(A[..., None], 1e-3)
+    rgba = np.dstack([np.clip(rgb, 0, 1), np.clip(A, 0, 1)])
+    Image.fromarray((rgba * 255).astype(np.uint8), 'RGBA').save(os.environ['ICON_ALPHA_OUT'])
 out = Image.fromarray((np.clip(res, 0, 1) * 255).astype(np.uint8))
 out.save(os.environ.get('ICON_OUT', 'apps/animalfriends/icon-1024.png'))
 print('ok')
