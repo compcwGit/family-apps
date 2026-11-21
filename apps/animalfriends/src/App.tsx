@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { GameTop, ParentGate, ParentPage, PlayShell, stopSpeaking, useStars } from '@family/core'
+import { useEffect, useState } from 'react'
+import { GameTop, LockedPlay, ParentGate, ParentPage, PlayShell, autoRestore, stopSpeaking, useStars, useUnlocked } from '@family/core'
 import { Meet } from './Meet'
 import { Baby } from './Baby'
 import { SoundQuiz, NameQuiz, WhoQuiz, LegsQuiz, HomeQuiz, EatQuiz } from './Quizzes'
@@ -45,6 +45,20 @@ const SUBS = {
 } as const
 type Subs = Record<Game, string>
 
+// 유료 범위 (docs/ideas/006-paid-unlock.md): 무료 6개, 나머지 8개는 전체 기능 구매 후
+const APP = 'animalfriends'
+const FREE = new Set(['meet', 'home', 'baby', 'eat', 'sound', 'keys'])
+const SUB_NAMES: Record<string, string> = Object.fromEntries(
+  Object.entries(SUBS).flatMap(([g, list]) => list.map((t) => [t.id, `${GAMES.find((x) => x.id === g)!.label} · ${t.label}`])),
+)
+// 부모 화면 목록: "친구(만나기·사는 곳)" 처럼 놀이별로 묶음
+const group = (free: boolean) =>
+  GAMES.map((g) => [g.label, SUBS[g.id].filter((t) => FREE.has(t.id) === free).map((t) => t.label)] as const)
+    .filter(([, list]) => list.length)
+    .map(([game, list]) => `${game}(${list.join('·')})`)
+const FREE_NAMES = group(true)
+const PAID_NAMES = group(false)
+
 // 별을 모으는 놀이 이름 (부모 화면에 보임). 'shadow' 는 예전 그림자 맞추기 별을 그대로 이어 씀
 // 질문 말풍선이 없는 화면: 말풍선은 그대로 두고 글자만 비움
 const QUIET = ['meet', 'baby', 'keys', 'free']
@@ -60,13 +74,17 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>('play')
   const [subs, setSubs] = useState<Subs>({ play: 'meet', quiz: 'sound', shadow: 'sfind', piano: 'keys' })
   const stars = useStars('animalfriends.stars')
+  const unlocked = useUnlocked(APP)
+  const [askUnlock, setAskUnlock] = useState(false) // 잠긴 놀이에서 부모 화면으로 오면 "전체 기능" 칸부터
+  useEffect(() => autoRestore(APP), []) // 안드로이드: 앱을 다시 깔았어도 구매 내역으로 다시 열기
+  const isLocked = (id: string) => !unlocked && !FREE.has(id)
   const star = (id: string) => ({ stars: stars.of(id), onStar: () => stars.add(id) })
   const go = (s: Screen) => {
     stopSpeaking()
     setScreen(s)
   }
 
-  if (screen === 'gate') return <ParentGate onPass={() => go('parent')} onCancel={() => go('play')} />
+  if (screen === 'gate') return <ParentGate onPass={() => go('parent')} onCancel={() => (setAskUnlock(false), go('play'))} />
   if (screen === 'parent')
     return (
       <ParentPage
@@ -81,7 +99,8 @@ export default function App() {
         ]}
         stars={STAR_NAMES.map(([id, name]) => [name, stars.of(id)] as [string, number])}
         onReset={stars.reset}
-        onClose={() => go('play')}
+        unlock={{ app: APP, free: FREE_NAMES, paid: PAID_NAMES, open: askUnlock }}
+        onClose={() => (setAskUnlock(false), go('play'))}
       />
     )
 
@@ -89,6 +108,7 @@ export default function App() {
   const total = STAR_NAMES.reduce((n, [id]) => n + stars.of(id), 0) // 질문이 없는 화면의 별 칸: 모은 별 전체
   const sub = subs[game]
   const view = (() => {
+    if (isLocked(sub)) return <LockedPlay name={SUB_NAMES[sub]} onAsk={() => (setAskUnlock(true), go('gate'))} />
     switch (sub) {
       case 'meet': return <Meet />
       case 'home': return <HomeQuiz {...star('home')} />
@@ -108,8 +128,8 @@ export default function App() {
   })()
 
   return (
-    <PlayShell design={[1000, 420]} top bar={<SubTabs tabs={SUBS[game]} active={sub} onPick={(id) => setSubs({ ...subs, [game]: id })} />} app="동물 친구들" accent="#FF8C6B" games={GAMES} active={screen} onPick={(id) => go(id as Screen)} onParent={() => go('gate')}>
-      {QUIET.includes(sub) && <GameTop stars={total} quiet />}
+    <PlayShell design={[1000, 420]} top bar={<SubTabs tabs={SUBS[game]} active={sub} locked={isLocked} onPick={(id) => setSubs({ ...subs, [game]: id })} />} app="동물 친구들" accent="#FF8C6B" games={GAMES.map((g) => ({ ...g, locked: SUBS[g.id].every((t) => isLocked(t.id)) }))} active={screen} onPick={(id) => go(id as Screen)} onParent={() => go('gate')}>
+      {(QUIET.includes(sub) || isLocked(sub)) && <GameTop stars={total} quiet />}
       <div key={sub} className="sub-body">
         {view}
       </div>

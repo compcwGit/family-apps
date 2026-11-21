@@ -1,6 +1,7 @@
 # 유료화 범위 — 기능 제한(무료) + 전체 기능 해제(유료)
 
-- 상태: 💡 제안 (2026-11-21) — ⚠️ 아래 "찬욱이 결정할 것"이 정해지면 🔨 작업으로 쪼갬
+- 상태: 🔨 동물 친구들부터 적용 (2026-11-21, 찬욱 결정: 동물 친구들 유료 버전으로 출시) — 안드로이드 Play 결제 먼저, 웹·Windows 결제는 미정
+- 구현: `packages/core/src/billing.ts`(isUnlocked·purchaseFull·restoreFull), `Unlock.tsx`(잠금 화면·부모 화면 "전체 기능" 칸), 상품 ID `<앱>_full`
 - 대상: 아이용 앱 6개 (동물·한글·숫자·모양·생활 놀이, StampPlay)
 - 기존 방침 [monetization.md](monetization.md)(광고 + 광고 제거 결제)를 이 문서가 대신함
 

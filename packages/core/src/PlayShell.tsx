@@ -2,12 +2,12 @@
 // 놀이 화면의 <GameTop> 은 위 줄의 말풍선 자리로 들어감 (portal)
 // 놀이판은 FitStage: 내용이 화면에 꼭 맞게 확대/축소 → 태블릿·폰 모두 스크롤 없음
 import { createContext, useState, type CSSProperties, type ReactNode } from 'react'
-import { HomeIcon, GearIcon } from './icons'
+import { HomeIcon, GearIcon, LockIcon } from './icons'
 import { FitStage } from './FitStage'
 
 export const ShellSlot = createContext<HTMLElement | null>(null)
 
-export type ShellGame = { id: string; label: string }
+export type ShellGame = { id: string; label: string; locked?: boolean } // locked: 유료 놀이 (🔒 표시, 누르면 잠금 안내)
 
 export function PlayShell({
   app,
@@ -52,6 +52,11 @@ export function PlayShell({
               onClick={() => onPick(g.id)}
             >
               {g.label}
+              {g.locked && (
+                <span className="sb-lock" aria-label="잠김">
+                  <LockIcon size={20} />
+                </span>
+              )}
             </button>
           ))}
           <div className="sb-rail-gap" />

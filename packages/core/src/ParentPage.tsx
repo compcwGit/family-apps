@@ -6,6 +6,7 @@ import { FitStage } from './FitStage'
 import { eun } from './talk'
 import { hasVoiceFiles, setUseVoiceFiles, usesVoiceFiles } from './speech'
 import { usesEmojiFiles } from './Emo'
+import { UnlockSection } from './Unlock'
 
 // 앱별 설정 칸 (children 안에서 씀)
 export function ParentSection({ title, action, children }: { title: string; action?: ReactNode; children: ReactNode }) {
@@ -60,6 +61,7 @@ export function ParentPage({
   stars,
   onReset,
   onClose,
+  unlock,
   children,
 }: {
   title: string
@@ -70,17 +72,19 @@ export function ParentPage({
   stars?: [game: string, n: number][] // 놀이별 모은 별
   onReset?: () => void
   onClose: () => void
+  unlock?: { app: string; free: string[]; paid: string[]; open?: boolean } // 유료 앱: "전체 기능" 칸 (open 이면 이 칸부터 보여 줌)
   children?: ReactNode // 앱별 설정 (ParentSection)
 }) {
   const [files, setFiles] = useState(usesVoiceFiles)
   const [armed, setArmed] = useState(false) // 별 초기화: 실수 막기 위해 두 번 누르기
-  const [tab, setTab] = useState(0)
+  const [tab, setTab] = useState(unlock?.open ? 1 : 0)
 
   const sections: ReactElement<{ title: string }>[] = [
     <ParentSection key="about" title="앱 소개">
       <p>{about}</p>
     </ParentSection>,
   ]
+  if (unlock) sections.push(<UnlockSection key="unlock" title="전체 기능" app={unlock.app} free={unlock.free} paid={unlock.paid} />)
   if (nuri)
     sections.push(
       <ParentSection key="nuri" title="누리과정">
@@ -156,7 +160,8 @@ export function ParentPage({
         {eun(title)} 이름, 사진, 위치, 기기 정보 등 <b>어떤 개인정보도 수집·저장·전송하지 않습니다.</b>
       </p>
       <p className="muted">
-        놀이 기록(모은 별 등)과 설정은 기기 안에만 저장되며, 인터넷 연결 없이 동작합니다. 광고·결제·회원가입·외부 링크가 없습니다.
+        놀이 기록(모은 별 등)과 설정은 기기 안에만 저장되며, 인터넷 연결 없이 동작합니다. 광고·회원가입·외부 링크가 없습니다.
+        {unlock && ' 전체 기능 구매는 이 부모 화면에서만, Google Play 결제로 처리됩니다.'}
       </p>
     </ParentSection>,
   )

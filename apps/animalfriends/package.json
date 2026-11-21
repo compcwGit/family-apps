@@ -14,10 +14,11 @@
   },
   "dependencies": {
     "@capacitor-community/text-to-speech": "^8.0.2",
-    "@fontsource/jua": "^5.3.0",
     "@capacitor/android": "^8.6.2",
     "@capacitor/core": "^8.6.2",
-    "@family/audio-focus": "*"
+    "@capgo/native-purchases": "^8.9.17",
+    "@family/audio-focus": "*",
+    "@fontsource/jua": "^5.3.0"
   },
   "devDependencies": {
     "@family/core": "*",

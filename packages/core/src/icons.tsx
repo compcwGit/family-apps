@@ -32,3 +32,10 @@ export const StarIcon = ({ size = 40 }) => (
     <path d="M20 3 L25 14 L37 15 L28 23 L31 35 L20 29 L9 35 L12 23 L3 15 L15 14 Z" fill="#FFC94A" stroke="#2A2840" strokeWidth="3" strokeLinejoin="round" />
   </svg>
 )
+export const LockIcon = ({ size = 22 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+    <rect x="4.5" y="10.5" width="15" height="10.5" rx="3" fill="#FFC94A" stroke="#2A2840" strokeWidth="2.2" />
+    <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="#2A2840" strokeWidth="2.2" strokeLinecap="round" />
+    <circle cx="12" cy="15.6" r="1.6" fill="#2A2840" />
+  </svg>
+)
