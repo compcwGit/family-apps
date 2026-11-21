@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { useDrag, useFeedback, Party, GameTop, speak, pick, shuffle, type GameProps } from '@family/core'
-import { PUZZLES, shapeKey, bounds, type Piece } from './tangram'
+import { PUZZLES, shapeKey, bounds, type Piece } from './tangram-puzzles'
 import { SAY } from './voice'
 
 // 칠교놀이: 칠교 조각을 그림자(도안) 자리에 끌어다 놓아 모양 만들기. 다 채우면 다음 도안

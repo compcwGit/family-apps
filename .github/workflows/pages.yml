@@ -18,7 +18,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false # main·external 을 같이 올릴 때 서로 취소하다 배포가 실패하던 문제 → 차례로 배포
 
 jobs:
   deploy:

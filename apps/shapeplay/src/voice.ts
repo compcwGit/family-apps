@@ -3,7 +3,7 @@
 import { voiceList, MATCH, eun, eul, ieyo, iga } from '@family/core/voicelist'
 import { SHAPES } from './shapes'
 import { PICTURES, NAMES } from './pictures'
-import { PUZZLES } from './tangram'
+import { PUZZLES } from './tangram-puzzles'
 
 // 끼리끼리 모으기: 색 묶음
 export const COLORS = [
