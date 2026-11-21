@@ -5,7 +5,7 @@ export { speak, stopSpeaking, setVoiceFiles, hasVoiceFiles, usesVoiceFiles, setU
 export { getPlatform } from './platform'
 export { useDrag } from './drag'
 export { pick, shuffle, hasBatchim, eun, ieyo, eul, iga, praise, cheer, PRAISES, CHEERS, MATCH, splitSentences } from './talk'
-export { adBreak, initAds } from './ads'
+export { ADS_ENABLED, adBreak, initAds } from './ads'
 export type { AdsConfig } from './ads'
 export { isAdFree, purchaseRemoveAds, restorePurchases, isUnlocked, useUnlocked, purchaseFull, restoreFull, autoRestore, canPurchase, productIdOf } from './billing'
 export { LockedPlay, UnlockSection } from './Unlock'

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { GameTop, LockedPlay, ParentGate, ParentPage, PlayShell, adBreak, autoRestore, initAds, stopSpeaking, useStars, useUnlocked } from '@family/core'
+import { GameTop, LockedPlay, ParentGate, ParentPage, PlayShell, ADS_ENABLED, adBreak, autoRestore, initAds, stopSpeaking, useStars, useUnlocked } from '@family/core'
 import { Meet } from './Meet'
 import { Baby } from './Baby'
 import { SoundQuiz, NameQuiz, WhoQuiz, LegsQuiz, HomeQuiz, EatQuiz } from './Quizzes'
@@ -105,7 +105,7 @@ export default function App() {
         ]}
         stars={STAR_NAMES.map(([id, name]) => [name, stars.of(id)] as [string, number])}
         onReset={stars.reset}
-        ads={!PAID}
+        ads={!PAID && ADS_ENABLED}
         unlock={PAID ? { app: APP, free: FREE_NAMES, paid: PAID_NAMES, open: askUnlock } : undefined}
         onClose={() => (setAskUnlock(false), go('play'))}
       />

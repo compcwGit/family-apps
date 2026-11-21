@@ -15,6 +15,9 @@ export type AdsConfig = {
   gap?: number
 }
 
+// 빌드 스위치: VITE_ADS=0 으로 빌드하면 광고 코드가 아예 안 돈다 (아이용 'family' 빌드). 안 정하면 켜짐
+export const ADS_ENABLED = (import.meta as unknown as { env?: Record<string, string | undefined> }).env?.VITE_ADS !== '0'
+
 const isAndroid = () => getPlatform() === 'android'
 const plugin = async () => await import('@capacitor-community/admob') // 웹·Windows 에서는 불러오지 않음
 
@@ -35,7 +38,7 @@ async function load() {
 
 /** 앱 시작 때 한 번. 실패해도 앱은 그대로 */
 export async function initAds(c: AdsConfig) {
-  if (!isAndroid() || cfg) return
+  if (!ADS_ENABLED || !isAndroid() || cfg) return
   cfg = c
   last = Date.now() - ((c.gap ?? 180) - (c.firstAfter ?? 120)) * 1000
   try {

@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       list: ${{ steps.list.outputs.list }}
+      matrix: ${{ steps.matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,6 +26,9 @@ jobs:
         run: echo "list=$(node scripts/changed-apps.mjs)" >> "$GITHUB_OUTPUT"
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+      # 앱마다 store(Play 배포용·광고 있음) + family(아이용·광고 없음, 광고를 쓰는 앱만)
+      - id: matrix
+        run: echo "matrix=$(node scripts/android-matrix.mjs '${{ steps.list.outputs.list }}')" >> "$GITHUB_OUTPUT"
 
   build:
     needs: apps
@@ -33,9 +37,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: ${{ fromJson(needs.apps.outputs.list) }}
+        include: ${{ fromJson(needs.apps.outputs.matrix) }}
     env:
       HAS_UPLOAD_KEY: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+      APP_VARIANT: ${{ matrix.variant }} # store | family (scripts/android-variant.mjs)
+      VITE_ADS: ${{ matrix.variant == 'family' && '0' || '1' }} # 아이용 빌드는 광고 코드도 끔
+      NAME: ${{ matrix.variant == 'family' && format('{0}-family', matrix.app) || matrix.app }} # 파일·아티팩트 이름
     defaults:
       run:
         working-directory: apps/${{ matrix.app }}
@@ -54,6 +61,8 @@ jobs:
         env:
           ELECTRON_SKIP_BINARY_DOWNLOAD: 1
       - run: npm run build
+      # 아이용(family): 패키지 이름 뒤에 .family, 광고 플러그인 제외 (store 는 변화 없음)
+      - run: node ../../scripts/android-variant.mjs
       # android 폴더가 저장소에 없으면 CI 에서 생성 (아이콘·권한을 바꾸려면 PC에서 만들어 커밋)
       - run: '[ -d android ] || npx cap add android'
       # 앱 아이콘 (icon-1024.png / icon-android.png → 안드로이드 아이콘)
@@ -66,10 +75,10 @@ jobs:
           sed -i "s/versionCode [0-9]*/versionCode ${{ github.run_number }}/" android/app/build.gradle
           sed -i "s/versionName \"[^\"]*\"/versionName \"$(node -p "require('./package.json').version")\"/" android/app/build.gradle
       - run: cd android && chmod +x gradlew && ./gradlew assembleDebug
-      - run: cp android/app/build/outputs/apk/debug/app-debug.apk ${{ matrix.app }}.apk
+      - run: cp android/app/build/outputs/apk/debug/app-debug.apk ${{ env.NAME }}.apk
       # Play 스토어 업로드용 AAB (업로드 키가 저장소 Secrets 에 있을 때만). 키 만드는 법: docs/release/README.md
       - name: Play 업로드용 AAB (서명)
-        if: env.HAS_UPLOAD_KEY == 'true'
+        if: env.HAS_UPLOAD_KEY == 'true' && matrix.variant == 'store'
         env:
           KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           KEYSTORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -82,18 +91,18 @@ jobs:
           jarsigner -keystore "$RUNNER_TEMP/upload.jks" -storepass "$KEYSTORE_PASS" -keypass "$KEY_PASS" "$aab" "$KEY_ALIAS"
           cp "$aab" ${{ matrix.app }}.aab
           rm -f "$RUNNER_TEMP/upload.jks"
-      - if: env.HAS_UPLOAD_KEY == 'true'
+      - if: env.HAS_UPLOAD_KEY == 'true' && matrix.variant == 'store'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.app }}-aab
           path: apps/${{ matrix.app }}/${{ matrix.app }}.aab
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.app }}-apk
-          path: apps/${{ matrix.app }}/${{ matrix.app }}.apk
+          name: ${{ env.NAME }}-apk
+          path: apps/${{ matrix.app }}/${{ env.NAME }}.apk
       - if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ matrix.app }}-android-${{ github.run_number }}
-          name: ${{ matrix.app }} Android build ${{ github.run_number }}
-          files: apps/${{ matrix.app }}/${{ matrix.app }}.apk
+          tag_name: ${{ env.NAME }}-android-${{ github.run_number }}
+          name: ${{ env.NAME }} Android build ${{ github.run_number }}
+          files: apps/${{ matrix.app }}/${{ env.NAME }}.apk

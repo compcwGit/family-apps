@@ -5,6 +5,10 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 
 if (!existsSync('android.json')) process.exit(0)
+if (process.env.APP_VARIANT === 'family') {
+  console.log('family 빌드: 광고 설정을 넣지 않음')
+  process.exit(0)
+}
 const cfg = JSON.parse(readFileSync('android.json', 'utf8'))
 const path = 'android/app/src/main/AndroidManifest.xml'
 let xml = readFileSync(path, 'utf8')
