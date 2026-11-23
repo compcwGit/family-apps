@@ -1,5 +1,4 @@
 {
-  "//": "안드로이드 빌드 때 AndroidManifest.xml 에 넣을 것 (scripts/android-manifest.mjs). 아동 전용 앱이라 광고 ID 권한은 뺌",
-  "admobAppId": "ca-app-pub-6659137972239042~8703928934",
-  "removePermissions": ["com.google.android.gms.permission.AD_ID"]
+  "//": "안드로이드 빌드 설정 (scripts/android-*.mjs). family: true 면 CI 가 아이용 family APK 도 만듦 (잠금·결제 없음, 패키지 뒤 .family). 광고는 쓰지 않음(2026-11-23)",
+  "family": true
 }

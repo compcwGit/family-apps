@@ -42,6 +42,7 @@ jobs:
       HAS_UPLOAD_KEY: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
       APP_VARIANT: ${{ matrix.variant }} # store | family (scripts/android-variant.mjs)
       VITE_ADS: ${{ matrix.variant == 'family' && '0' || '1' }} # 아이용 빌드는 광고 코드도 끔
+      VITE_FAMILY: ${{ matrix.variant == 'family' && '1' || '0' }} # 아이용 빌드는 잠금·결제 없이 전부 열림
       NAME: ${{ matrix.variant == 'family' && format('{0}-family', matrix.app) || matrix.app }} # 파일·아티팩트 이름
     defaults:
       run:

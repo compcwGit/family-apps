@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { GameTop, LockedPlay, ParentGate, ParentPage, PlayShell, ADS_ENABLED, adBreak, autoRestore, initAds, stopSpeaking, useStars, useUnlocked } from '@family/core'
+import { GameTop, LockedPlay, ParentGate, ParentPage, PlayShell, FAMILY, autoRestore, stopSpeaking, useStars, useUnlocked } from '@family/core'
 import { Meet } from './Meet'
 import { Baby } from './Baby'
 import { SoundQuiz, NameQuiz, WhoQuiz, LegsQuiz, HomeQuiz, EatQuiz } from './Quizzes'
@@ -47,11 +47,10 @@ type Subs = Record<Game, string>
 
 // 유료 범위 (docs/ideas/006-paid-unlock.md): 무료 6개, 나머지 8개는 전체 기능 구매 후
 const APP = 'animalfriends'
-// 결제 스위치: 한국은 인앱 결제에 사업자등록·통신판매업 신고가 필요해서 지금은 끔 → 전부 무료 + 광고
-// 사업자가 생기면 true 로 바꾸고 package.json 에 @capgo/native-purchases 를 다시 넣는다 (Play 상품 animalfriends_full 은 비활성으로 남겨 둠)
-const PAID = false
-// 애드몹 (앱 ID ca-app-pub-6659137972239042~8703928934 는 android.json)
-const ADS = { interstitial: 'ca-app-pub-6659137972239042/4910530298' }
+// 결제 스위치 (2026-11-23: 광고를 없애고 1회 구매만 쓰기로 함 — 사업자 등록 뒤 Play 상품 animalfriends_full 활성화 필요)
+// 아이용 'family' 빌드(VITE_FAMILY=1, APK 직접 설치)는 결제 라이브러리도 빼고 전부 열려 있음
+const PAID = true
+const LOCK = PAID && !FAMILY
 const FREE = new Set(['meet', 'home', 'baby', 'eat', 'sound', 'keys'])
 const SUB_NAMES: Record<string, string> = Object.fromEntries(
   Object.entries(SUBS).flatMap(([g, list]) => list.map((t) => [t.id, `${GAMES.find((x) => x.id === g)!.label} · ${t.label}`])),
@@ -81,12 +80,11 @@ export default function App() {
   const stars = useStars('animalfriends.stars')
   const unlocked = useUnlocked(APP)
   const [askUnlock, setAskUnlock] = useState(false) // 잠긴 놀이에서 부모 화면으로 오면 "전체 기능" 칸부터
-  useEffect(() => (PAID ? autoRestore(APP) : void initAds(ADS)), []) // 유료: 구매 내역으로 다시 열기 / 무료: 광고 준비
-  const isLocked = (id: string) => PAID && !unlocked && !FREE.has(id)
+  useEffect(() => (LOCK ? autoRestore(APP) : undefined), []) // 구매 내역으로 다시 열기
+  const isLocked = (id: string) => LOCK && !unlocked && !FREE.has(id)
   const star = (id: string) => ({ stars: stars.of(id), onStar: () => stars.add(id) })
   const go = (s: Screen) => {
     stopSpeaking()
-    if (s !== screen && s !== 'gate' && s !== 'parent' && screen !== 'gate' && screen !== 'parent') void adBreak() // 놀이를 바꿀 때만 (부모 화면 오갈 때는 X)
     setScreen(s)
   }
 
@@ -105,8 +103,7 @@ export default function App() {
         ]}
         stars={STAR_NAMES.map(([id, name]) => [name, stars.of(id)] as [string, number])}
         onReset={stars.reset}
-        ads={!PAID && ADS_ENABLED}
-        unlock={PAID ? { app: APP, free: FREE_NAMES, paid: PAID_NAMES, open: askUnlock } : undefined}
+        unlock={LOCK ? { app: APP, free: FREE_NAMES, paid: PAID_NAMES, open: askUnlock } : undefined}
         onClose={() => (setAskUnlock(false), go('play'))}
       />
     )
@@ -135,7 +132,7 @@ export default function App() {
   })()
 
   return (
-    <PlayShell design={[1000, 420]} top bar={<SubTabs tabs={SUBS[game]} active={sub} locked={isLocked} onPick={(id) => (id !== sub && void adBreak(), setSubs({ ...subs, [game]: id }))} />} app="동물 친구들" accent="#FF8C6B" games={GAMES.map((g) => ({ ...g, locked: SUBS[g.id].every((t) => isLocked(t.id)) }))} active={screen} onPick={(id) => go(id as Screen)} onParent={() => go('gate')}>
+    <PlayShell design={[1000, 420]} top bar={<SubTabs tabs={SUBS[game]} active={sub} locked={isLocked} onPick={(id) => setSubs({ ...subs, [game]: id })} />} app="동물 친구들" accent="#FF8C6B" games={GAMES.map((g) => ({ ...g, locked: SUBS[g.id].every((t) => isLocked(t.id)) }))} active={screen} onPick={(id) => go(id as Screen)} onParent={() => go('gate')}>
       {(QUIET.includes(sub) || isLocked(sub)) && <GameTop stars={total} quiet />}
       <div key={sub} className="sub-body">
         {view}

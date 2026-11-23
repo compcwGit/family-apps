@@ -78,5 +78,5 @@
   - 두 앱 이상에서 쓸 기능(부모 잠금, 저장, 광고, 결제, 공통 UI)은 앱이 아니라 core에 만든다
   - 새 앱은 `npm run new-app -- <영문이름> "<표시 이름>"`으로 만든다 (패키지 com.compcwgit.<이름>)
   - Electron 버전은 정확한 버전으로 고정한다 (범위 지정 시 electron-builder가 실패함)
-- 광고 쓰는 앱은 **광고 있는 store 빌드 + 광고 없는 family 빌드(아이용, `.family`, APK 직접 설치)** 두 개를 만든다 (스위치 방식, `docs/ideas/ads-variants.md`). 새 앱도 `android.json` 의 `admobAppId` + `ADS_ENABLED` 규칙을 따른다
+- 앱은 **store 빌드(Play 배포, 광고·결제 있음) + family 빌드(아이용, `.family`, 잠금·결제·광고 없이 전부 열림, APK 직접 설치)** 두 개를 만든다 (스위치 방식, `docs/ideas/ads-variants.md`). 새 앱도 `android.json` 에 `"family": true` 를 넣고 `FAMILY`(core) 로 잠금을 푼다. 수익 방식은 광고 대신 인앱 결제(1회 구매)를 기본으로 한다 (동물 친구들 2026-11-23 결정)
 - 아이용 앱은 Google Play 가족 정책을 따른다 (`docs/ideas/monetization.md` 참고)
