@@ -9,7 +9,10 @@
 - 웹앱(아이폰): https://compcwgit.github.io/family-apps/animalfriends/ → Safari 공유 → "홈 화면에 추가"
 - 개인정보처리방침: https://compcwgit.github.io/family-apps/privacy.html
 
-## 그래픽 (이 폴더)
+## 그래픽 (app-assets 저장소로 옮김, 2026-11-24)
+이미지 파일은 이 저장소가 아니라 공개 저장소 `compcwGit/app-assets` 의 `images/animalfriends/store/` 에 있다.
+주소: `https://raw.githubusercontent.com/compcwGit/app-assets/main/images/animalfriends/store/<파일>`
+
 | Play Console 칸 | 파일 | 크기 |
 |---|---|---|
 | 앱 아이콘 | `icon-512.png` | 512×512 |
